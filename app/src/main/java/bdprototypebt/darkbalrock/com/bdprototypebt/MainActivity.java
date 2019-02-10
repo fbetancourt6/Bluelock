@@ -44,11 +44,14 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Calendar;
 import java.util.Set;
 
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_ENABLE_BT = 0;
     private static final int REQUEST_DISCOVER_BT = 1;
+    public static final Object[] DATA_LOCK = new Object[0];
 
     String devicesFile;
 
@@ -255,14 +259,16 @@ public class MainActivity extends AppCompatActivity {
         boolean result = false;
         File path = context.getExternalFilesDir(null);
         File file = new File(path, fileName);
-        FileOutputStream stream;
         try {
-            stream = new FileOutputStream(file);
-            stream.write(toWrite.getBytes());
-            showToast("New File:"+path+"/"+fileName);
-            mPairedTv.clearComposingText();
-            mPairedTv.append("New File:"+path+"/"+fileName);
-            result = true;
+            synchronized (DATA_LOCK){
+                if(file != null && file.canWrite()){
+                    file.createNewFile();
+                    Writer out = new BufferedWriter(new FileWriter(file, true), 1024);
+                    out.write(toWrite);
+                    out.close();
+                    result = true;
+                }
+            }
         }
         catch (FileNotFoundException e) {
             Log.e("login activity", "File not found: " + e.toString());
