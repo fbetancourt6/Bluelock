@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
     android:orientation="vertical"
     android:weightSum="4"
     tools:context=".MainActivity">
@@ -134,6 +135,8 @@
         <TextView
             android:id="@+id/pairedTv"
             android:minWidth="200dp"
+            android:minHeight="200dp"
+            android:scrollbars="vertical"
             android:text=""
             android:textColor="#000"
             android:layout_width="match_parent"

@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }));*/
                     }
-                    boolean logger = writeLog(devicesFile);
+                    boolean logger = writeLog(devicesFile, "devices.txt");
                 }
                 else{
                     //BT is off so can't get paired devices
@@ -250,15 +250,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Escribe en el Log de app
-    public boolean writeLog(String toWrite){
+    public boolean writeLog(String toWrite, String fileName){
         Context context = getBaseContext();
         boolean result = false;
         File path = context.getExternalFilesDir(null);
-        File file = new File(path, "devicesFile.txt");
+        File file = new File(path, fileName);
         FileOutputStream stream;
         try {
             stream = new FileOutputStream(file);
             stream.write(toWrite.getBytes());
+            showToast("New File:"+path+"/"+fileName);
+            mPairedTv.clearComposingText();
+            mPairedTv.append("New File:"+path+"/"+fileName);
             result = true;
         }
         catch (FileNotFoundException e) {
@@ -274,38 +277,63 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
+            String log = "";
             if(action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
                 final int estado = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 switch (estado) {
                     case BluetoothAdapter.STATE_OFF:
+                        log += "\nBluetoothAdapter.STATE_OFF";
+                        showToast("BluetoothAdapter.STATE_OFF");
                         break;
                     case BluetoothAdapter.STATE_ON:
+                        log += "\nBluetoothAdapter.STATE_ON";
+                        showToast("BluetoothAdapter.STATE_ON");
                         break;
                     case BluetoothAdapter.STATE_TURNING_OFF:
+                        log += "\nBluetoothAdapter.STATE_TURNING_OFF";
+                        showToast("BluetoothAdapter.STATE_TURNING_OFF");
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON:
+                        log += "\nBluetoothAdapter.STATE_TURNING_ON";
+                        showToast("BluetoothAdapter.STATE_TURNING_ON");
                         break;
                     case BluetoothAdapter.STATE_CONNECTING:
+                        log += "\nBluetoothAdapter.STATE_CONNECTING";
+                        showToast("BluetoothAdapter.STATE_CONNECTING");
                         break;
                     case BluetoothAdapter.STATE_CONNECTED:
+                        log += "\nBluetoothAdapter.STATE_CONNECTED";
+                        showToast("BluetoothAdapter.STATE_CONNECTED");
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTING:
+                        log += "\nBluetoothAdapter.STATE_DISCONNECTING";
+                        showToast("BluetoothAdapter.STATE_DISCONNECTING");
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTED:
+                        log += "\nBluetoothAdapter.STATE_DISCONNECTED";
+                        showToast("BluetoothAdapter.STATE_DISCONNECTED");
                         break;
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE:
+                        log += "\nBluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE";
+                        showToast("BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE");
                         break;
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE:
+                        log += "\nBluetoothAdapter.SCAN_MODE_CONNECTABLE";
+                        showToast("BluetoothAdapter.SCAN_MODE_CONNECTABLE");
                         break;
                     case BluetoothAdapter.SCAN_MODE_NONE:
+                        log += "\nBluetoothAdapter.SCAN_MODE_NONE";
+                        showToast("BluetoothAdapter.SCAN_MODE_NONE");
                         break;
                     default:
                         break;
                 }
+                boolean logger = writeLog(log, "BluetoothAdapter.txt");
             }
-            if(action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
-            }
-            if(action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
+            if(action.equals(BluetoothDevice.ACTION_ACL_CONNECTED) || action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
+                log += "\nBluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED;
+                showToast("BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED);
+                boolean logger = writeLog(log, "BluetoothDevice.txt");
             }
         }
     };
