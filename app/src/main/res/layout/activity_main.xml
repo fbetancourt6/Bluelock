@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_weight="2.8"
+        android:layout_weight="2.5"
         android:layout_width="match_parent"
         android:layout_height="0dp">
         <FrameLayout
@@ -52,18 +52,19 @@
         android:background="@android:color/white"
         android:layout_margin="0dp"
         android:padding="0dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left">
 
         <!--On button-->
         <Button
             android:id="@+id/onBtn"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:background="#431F63"
             android:textSize="20sp"
             android:textColor="@android:color/white"
             android:minWidth="200dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Turn On"
             style="@style/Base.Widget.AppCompat.Button.Colored"/>
@@ -76,10 +77,22 @@
             android:textSize="20sp"
             android:textColor="@android:color/white"
             android:minWidth="200dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:text="Turn Off"
             style="@style/Base.Widget.AppCompat.Button.Colored"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right">
 
         <!--Discoverable button-->
         <Button
@@ -89,10 +102,11 @@
             android:textSize="20sp"
             android:textColor="@android:color/white"
             android:minWidth="200dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Discoverable"
             style="@style/Base.Widget.AppCompat.Button.Colored"/>
+
 
         <!--Get list of paired devices button-->
         <Button
@@ -102,25 +116,27 @@
             android:textSize="20sp"
             android:textColor="@android:color/white"
             android:minWidth="200dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:text="Get Paired Devices"
             style="@style/Base.Widget.AppCompat.Button.Colored"/>
 
-        <!--Bloquear algún dispositivo-->
-        <Button
-            android:id="@+id/blockBtn"
-            android:layout_margin="16dp"
-            android:background="@android:color/holo_orange_dark"
-            android:textSize="20sp"
-            android:textColor="@android:color/white"
-            android:minWidth="200dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Block Some Device"
-            style="@style/Base.Widget.AppCompat.Button.Colored"/>
-
     </LinearLayout>
+
+    <!--Bloquear algún dispositivo-->
+    <Button
+        android:id="@+id/blockBtn"
+        android:layout_margin="16dp"
+        android:background="@android:color/holo_orange_dark"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:minWidth="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Block Some Device"
+        style="@style/Base.Widget.AppCompat.Button.Colored"/>
+
 
     <LinearLayout
         android:orientation="vertical"
