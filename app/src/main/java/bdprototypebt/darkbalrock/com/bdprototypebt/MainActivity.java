@@ -22,6 +22,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.opengl.EGLExt;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.UserHandle;
@@ -34,8 +35,10 @@ import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -115,6 +118,12 @@ public class MainActivity extends AppCompatActivity {
         mDiscoverBtn = findViewById(R.id.discoverableBtn);
         mPairedBtn = findViewById(R.id.pairedBtn);
         mBlockBtn = findViewById(R.id.blockBtn);
+
+        //Logs
+        Spinner spinerLogs = (Spinner)findViewById(R.id.spiner_logs);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.logs, android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinerLogs.setAdapter(adapter);
 
         //adapter
         mBlueAdapter = BluetoothAdapter.getDefaultAdapter();

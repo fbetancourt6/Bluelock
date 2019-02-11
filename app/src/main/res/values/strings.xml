@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BDPrototypeBT</string>
+    <string-array name="logs">
+        <item>Devices</item>
+        <item>BluetoothAdapter</item>
+        <item>BluetoothDevice</item>
+    </string-array>
 </resources>
