@@ -2,68 +2,31 @@ package bdprototypebt.darkbalrock.com.bdprototypebt;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
- import android.bluetooth.BluetoothGattCallback;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.IntentSender;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.database.DatabaseErrorHandler;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.opengl.EGLExt;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.UserHandle;
-import android.service.autofill.TextValueSanitizer;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Calendar;
 import java.util.Set;
 
 import bdprototypebt.darkbalrock.com.bdprototypebt.Retrofit.IMyService;
 import bdprototypebt.darkbalrock.com.bdprototypebt.Retrofit.RetrofitClient;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
@@ -75,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     String devicesFile;
 
     TextView mStatusBlueTv, mPairedTv;
-    Button mOnBtn, mOffBtn, mDiscoverBtn,mPairedBtn,mBlockBtn;
+    Button OnBtn, OffBtn, DiscoverBtn, PairedBtn, BlockBtn, VerLogsBtn, verLogBTABtn, verLogDEVBtn;
 
     BluetoothAdapter mBlueAdapter;
 
@@ -113,17 +76,14 @@ public class MainActivity extends AppCompatActivity {
         mStatusBlueTv = findViewById(R.id.statusBluetoothTv);
         mPairedTv = findViewById(R.id.pairedTv);
         mBlueIv = findViewById(R.id.bluetoothIv);
-        mOnBtn = findViewById(R.id.onBtn);
-        mOffBtn = findViewById(R.id.offBtn);
-        mDiscoverBtn = findViewById(R.id.discoverableBtn);
-        mPairedBtn = findViewById(R.id.pairedBtn);
-        mBlockBtn = findViewById(R.id.blockBtn);
-
-        //Logs
-        Spinner spinerLogs = (Spinner)findViewById(R.id.spiner_logs);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.logs, android.R.layout.simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinerLogs.setAdapter(adapter);
+        OnBtn = findViewById(R.id.onBtn);
+        OffBtn = findViewById(R.id.offBtn);
+        DiscoverBtn = findViewById(R.id.discoverableBtn);
+        PairedBtn = findViewById(R.id.pairedBtn);
+        BlockBtn = findViewById(R.id.blockBtn);
+        VerLogsBtn = findViewById(R.id.verLogsBtn);
+        verLogBTABtn = findViewById(R.id.verLogBTABtn);
+        verLogDEVBtn = findViewById(R.id.verLogDEVBtn);
 
         //adapter
         mBlueAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -145,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //on btn click
-        mOnBtn.setOnClickListener(new View.OnClickListener() {
+        OnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!mBlueAdapter.isEnabled()){
@@ -161,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //discover bluetooth btn
-        mDiscoverBtn.setOnClickListener(new View.OnClickListener() {
+        DiscoverBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!mBlueAdapter.isDiscovering()){
@@ -173,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //off bluetooth btn click
-        mOffBtn.setOnClickListener(new View.OnClickListener() {
+        OffBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mBlueAdapter.isEnabled()){
@@ -187,8 +147,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //ver Logs
+        VerLogsBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
+            }
+        });
+
         //get paired devices btn click
-        mPairedBtn.setOnClickListener(new View.OnClickListener(){
+        PairedBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 devicesFile = "BT paired Devices";
@@ -242,13 +210,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //off bluetooth btn click
-        mBlockBtn.setOnClickListener(new View.OnClickListener() {
+        BlockBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showToast("Acción en desarrollo!");
             }
         });
     }
+
+
 
     //Eliminamos el BroadcastReceiver al finalizar
     @Override
@@ -350,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
                 log += "\nBluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED;
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED;
                 showToast(showToastLog);
-                boolean logger = writeLog(log, "BluetoothDevice.txt");
+                boolean logger = writeLog(log, "BluetoothAdapter.txt");
             }
         }
     };

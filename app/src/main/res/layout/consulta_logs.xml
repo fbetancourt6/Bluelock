@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:orientation="vertical"
+    android:weightSum="0"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/verLogBTABtn"
+        android:layout_margin="16dp"
+        android:background="@android:color/holo_green_dark"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:minWidth="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bluetooth Adapter"
+        style="@style/Base.Widget.AppCompat.Button.Colored"/>
+
+    <Button
+        android:id="@+id/verLogDEVBtn"
+        android:layout_margin="16dp"
+        android:background="@android:color/holo_green_dark"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:minWidth="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="BLuetooth Devices"
+        style="@style/Base.Widget.AppCompat.Button.Colored"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--Show Paired Devices Here-->
+
+        <TextView
+            android:id="@+id/logTv"
+            android:minWidth="200dp"
+            android:minHeight="200dp"
+            android:scrollbars="vertical"
+            android:text=""
+            android:textColor="#000"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+</LinearLayout>
