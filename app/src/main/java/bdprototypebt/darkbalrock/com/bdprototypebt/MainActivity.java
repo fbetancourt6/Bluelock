@@ -15,9 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     String devicesFile;
 
-    TextView mStatusBlueTv, mPairedTv;
+    TextView mStatusBlueTv, mPairedTv, mLogBT;
     Button OnBtn, OffBtn, DiscoverBtn, PairedBtn, BlockBtn, VerLogsBtn, verLogBTABtn, verLogDEVBtn;
 
     BluetoothAdapter mBlueAdapter;
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         mStatusBlueTv = findViewById(R.id.statusBluetoothTv);
         mPairedTv = findViewById(R.id.pairedTv);
         mBlueIv = findViewById(R.id.bluetoothIv);
+        mLogBT = findViewById(R.id.logTv);
         OnBtn = findViewById(R.id.onBtn);
         OffBtn = findViewById(R.id.offBtn);
         DiscoverBtn = findViewById(R.id.discoverableBtn);
@@ -147,14 +150,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //ver Logs
-        VerLogsBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-
-            }
-        });
-
         //get paired devices btn click
         PairedBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -209,16 +204,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //off bluetooth btn click
+        //block bluetooth device btn click
         BlockBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showToast("Acción en desarrollo!");
             }
         });
+
+        //ver Logs
+        VerLogsBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intentLog = new Intent(MainActivity.this, LogsActivity.class);
+                startActivity(intentLog);
+                setContentView(R.layout.consulta_logs);
+            }
+        });
+
     }
-
-
 
     //Eliminamos el BroadcastReceiver al finalizar
     @Override
@@ -255,6 +259,29 @@ public class MainActivity extends AppCompatActivity {
             Log.e("login activity", "Can not read file: " + e.toString());
         }
         return result;
+    }
+
+    //Escribe en el Log de app
+    public StringBuilder readLog(String fileName){
+        Context context = getBaseContext();
+        File path = context.getExternalFilesDir(null);
+        File file = new File(path, fileName);
+        StringBuilder textLog = new StringBuilder();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while((line = br.readLine()) != null){
+                textLog.append(line);
+                textLog.append('\n');
+            }
+            br.close();
+        }
+        catch (FileNotFoundException e) {
+            Log.e("read log activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("read log activity", "Can not read file: " + e.toString());
+        }
+        return textLog;
     }
 
     //BroadcastReceiver

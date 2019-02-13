@@ -28,6 +28,10 @@
                 <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED"></action>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".LogsActivity"
+            android:label="@string/app_name">
+        </activity>
     </application>
 
 </manifest>
