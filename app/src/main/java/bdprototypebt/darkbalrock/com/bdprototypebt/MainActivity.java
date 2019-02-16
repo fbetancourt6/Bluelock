@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Init service
+        //Init noSQL service
         Retrofit retrofitClient = RetrofitClient.getInstance();
         iMyService = retrofitClient.create(IMyService.class);
 
@@ -289,52 +290,54 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
+            final String data = intent.getDataString();
+            final Uri uriData = intent.getData();
             String log = "", showToastLog = "";
             if(action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
                 final int estado = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 switch (estado) {
                     case BluetoothAdapter.STATE_OFF:
-                        log += "\nBluetoothAdapter.STATE_OFF";
+                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_OFF");
                         showToastLog = "BluetoothAdapter.STATE_OFF";
                         break;
                     case BluetoothAdapter.STATE_ON:
-                        log += "\nBluetoothAdapter.STATE_ON";
+                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_ON");
                         showToastLog = "BluetoothAdapter.STATE_ON";
                         break;
                     case BluetoothAdapter.STATE_TURNING_OFF:
-                        log += "\nBluetoothAdapter.STATE_TURNING_OFF";
+                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_TURNING_OFF");
                         showToastLog = "BluetoothAdapter.STATE_TURNING_OFF";
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON:
-                        log += "\nBluetoothAdapter.STATE_TURNING_ON";
+                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_TURNING_ON");
                         showToastLog = "BluetoothAdapter.STATE_TURNING_ON";
                         break;
                     case BluetoothAdapter.STATE_CONNECTING:
-                        log += "\nBluetoothAdapter.STATE_CONNECTING";
+                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_CONNECTING");
                         showToastLog = "BluetoothAdapter.STATE_CONNECTING";
                         break;
                     case BluetoothAdapter.STATE_CONNECTED:
-                        log += "\nBluetoothAdapter.STATE_CONNECTED";
+                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_CONNECTED");
                         showToastLog = "BluetoothAdapter.STATE_CONNECTED";
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTING:
-                        log += "\nBluetoothAdapter.STATE_DISCONNECTING";
+                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_DISCONNECTING");
                         showToastLog = "BluetoothAdapter.STATE_DISCONNECTING";
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTED:
-                        log += "\nBluetoothAdapter.STATE_DISCONNECTED";
+                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_DISCONNECTED");
                         showToastLog = "BluetoothAdapter.STATE_DISCONNECTED";
                         break;
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE:
-                        log += "\nBluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE";
+                        log = logAdapter(log,uriData,"BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE");
                         showToastLog = "BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE";
                         break;
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE:
-                        log += "\nBluetoothAdapter.SCAN_MODE_CONNECTABLE";
+                        log = logAdapter(log,uriData,"BluetoothAdapter.SCAN_MODE_CONNECTABLE");
                         showToastLog = "BluetoothAdapter.SCAN_MODE_CONNECTABLE";
                         break;
                     case BluetoothAdapter.SCAN_MODE_NONE:
-                        log += "\nBluetoothAdapter.SCAN_MODE_NONE";
+                        log = logAdapter(log,uriData,"BluetoothAdapter.SCAN_MODE_NONE");
                         showToastLog = "BluetoothAdapter.SCAN_MODE_NONE";
                         break;
                     default:
@@ -344,13 +347,32 @@ public class MainActivity extends AppCompatActivity {
                 boolean logger = writeLog(log, "BluetoothAdapter.txt");
             }
             if(action.equals(BluetoothDevice.ACTION_ACL_CONNECTED) || action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
-                log += "\nBluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED;
+                log = logAdapter(log,uriData,"BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED);
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED;
-                showToast(showToastLog);
                 boolean logger = writeLog(log, "BluetoothAdapter.txt");
+                showToast(showToastLog);
             }
         }
     };
 
-
+    public String logAdapter(String log, Uri uriData, String state){
+        String host = uriData.getHost();
+        String path = uriData.getPath();
+        String query = uriData.getQuery();
+        String scheme = uriData.getScheme();
+        int port = uriData.getPort();
+        String uInfo = uriData.getUserInfo();
+        int hashCode = uriData.hashCode();
+        log += "\n-----"+state+"-----";
+        log += "\n Time : "+String.valueOf(Calendar.getInstance().getTime());
+        log += "\n Host : "+host;
+        log += "\n Path : "+path;
+        log += "\n Query : "+query;
+        log += "\n Scheme : "+scheme;
+        log += "\n Port : "+port;
+        log += "\n User Info : "+uInfo;
+        log += "\n Hash Code : "+hashCode;
+        log += "\n ---------------------------- \n";
+        return log;
+    }
 }
