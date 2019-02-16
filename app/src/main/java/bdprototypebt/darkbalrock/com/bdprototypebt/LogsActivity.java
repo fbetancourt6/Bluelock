@@ -1,6 +1,7 @@
 package bdprototypebt.darkbalrock.com.bdprototypebt;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,7 +23,7 @@ public class LogsActivity extends AppCompatActivity {
 
     public static final Object[] DATA_LOCK = new Object[0];
     TextView mLogBT;
-    Button VerLogsBtn, verLogBTABtn, verLogDEVBtn;
+    Button VerLogsBtn, verLogBTABtn, verLogDEVBtn, volverBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class LogsActivity extends AppCompatActivity {
         VerLogsBtn = findViewById(R.id.verLogsBtn);
         verLogBTABtn = findViewById(R.id.verLogBTABtn);
         verLogDEVBtn = findViewById(R.id.verLogDEVBtn);
-
+        volverBtn = findViewById(R.id.volverBtn);
 
         //ver Log DEVICES
         verLogDEVBtn.setOnClickListener(new View.OnClickListener(){
@@ -54,36 +55,16 @@ public class LogsActivity extends AppCompatActivity {
                 mLogBT.append(readLog("BluetoothAdapter.txt"));
             }
         });
-    }
 
-    //toast message function
-    private void showToast(String msg){
-        Toast.makeText( this, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    //Escribe en el Log de app
-    public boolean writeLog(String toWrite, String fileName){
-        Context context = getBaseContext();
-        boolean result = false;
-        File path = context.getExternalFilesDir(null);
-        File file = new File(path, fileName);
-        try {
-            synchronized (DATA_LOCK){
-                if(file != null && file.canWrite()){
-                    file.createNewFile();
-                    Writer out = new BufferedWriter(new FileWriter(file, true), 1024);
-                    out.write(toWrite);
-                    out.close();
-                    result = true;
-                }
+        //volver
+        volverBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intentLog = new Intent(LogsActivity.this, MainActivity.class);
+                startActivity(intentLog);
+                setContentView(R.layout.activity_main);
             }
-        }
-        catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        }
-        return result;
+        });
     }
 
     //Escribe en el Log de app
