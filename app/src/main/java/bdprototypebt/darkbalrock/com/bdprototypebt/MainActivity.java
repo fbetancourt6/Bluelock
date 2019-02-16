@@ -67,10 +67,16 @@ public class MainActivity extends AppCompatActivity {
 
         //Instanciamos el intent y el BroadcastReceiver
         IntentFilter filtroBT = new IntentFilter();
+        //https://developer.android.com/reference/android/bluetooth/BluetoothAdapter
         filtroBT.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filtroBT.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filtroBT.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         filtroBT.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
+        filtroBT.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
+        filtroBT.addAction(BluetoothAdapter.ACTION_LOCAL_NAME_CHANGED);
+        filtroBT.addAction(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        filtroBT.addAction(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+
         filtroBT.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
         filtroBT.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
 
@@ -163,8 +169,6 @@ public class MainActivity extends AppCompatActivity {
                     for(BluetoothDevice device: devices){
                         mPairedTv.append("\n--- Device: " + device.getName()+ " ---");
                         devicesFile += "\n--- Device: " + device.getName()+ " ---";
-                        mPairedTv.append("\nName : " + device.getName());
-                        devicesFile += "\nName : " + device.getName();
                         mPairedTv.append("\nAddress : " + device.getAddress());
                         devicesFile += "\nAddress : " + device.getAddress();
                         mPairedTv.append("\nString : " + device.toString());
@@ -179,8 +183,8 @@ public class MainActivity extends AppCompatActivity {
                         devicesFile += "\nBondState : " + device.getBondState();
                         mPairedTv.append("\nhashCode : " + device.hashCode());
                         devicesFile += "\nhashCode : " + device.hashCode();
-                        mPairedTv.append("\nEvento : " + "Consulta de Dispositivos enlazados.");
-                        devicesFile += "\nEvento : " + "Consulta de Dispositivos enlazados.";
+                        mPairedTv.append("\n-----Consulta de Dispositivos enlazados.-----");
+                        devicesFile += "\n-----Consulta de Dispositivos enlazados.-----";
                         mPairedTv.append("\n");
                         devicesFile += "\n";
                         /*GATT connectGatt(Context context, boolean autoConnect, BluetoothGattCallback callback)*/
@@ -290,10 +294,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            final String data = intent.getDataString();
             final Uri uriData = intent.getData();
             String log = "", showToastLog = "";
-            if(action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+            if(action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)
+                    ||action.equals(BluetoothAdapter.ACTION_DISCOVERY_STARTED)
+                        ||action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
+                            ||action.equals(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)) {
                 final int estado = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 switch (estado) {
                     case BluetoothAdapter.STATE_OFF:
@@ -346,7 +352,30 @@ public class MainActivity extends AppCompatActivity {
                 showToast(showToastLog);
                 boolean logger = writeLog(log, "BluetoothAdapter.txt");
             }
-            if(action.equals(BluetoothDevice.ACTION_ACL_CONNECTED) || action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
+            if(action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)){
+                final int estado = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE, BluetoothAdapter.ERROR);
+                log = logAdapter(log,uriData,"BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED :"+estado);
+                showToastLog = "BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED";
+            }
+            if(action.equals(BluetoothAdapter.ACTION_LOCAL_NAME_CHANGED)){
+                log = logAdapter(log,uriData,"BluetoothAdapter.ACTION_LOCAL_NAME_CHANGED");
+                showToastLog = "BluetoothAdapter.ACTION_LOCAL_NAME_CHANGED";
+            }
+            if(action.equals(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)){
+                log = logAdapter(log,uriData,"BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE");
+                showToastLog = "BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE";
+            }
+            if(action.equals(BluetoothAdapter.ACTION_REQUEST_ENABLE)){
+                log = logAdapter(log,uriData,"BluetoothAdapter.ACTION_REQUEST_ENABLE");
+                showToastLog = "BluetoothAdapter.ACTION_REQUEST_ENABLE";
+            }
+            if(action.equals(BluetoothAdapter.ERROR)){
+                log = String.valueOf(BluetoothAdapter.ERROR);
+                log = logAdapter(log,uriData,"BluetoothAdapter.ERROR");
+                showToastLog = "BluetoothAdapter.ERROR";
+            }
+            if(action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)
+                    || action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
                 log = logAdapter(log,uriData,"BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED);
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED;
                 boolean logger = writeLog(log, "BluetoothAdapter.txt");

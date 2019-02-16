@@ -10,19 +10,10 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java" line="177" />
+    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java" line="181" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e24ff938-000f-4ca5-a5fc-f52a989c190b" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -67,7 +58,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="gradle" value="3" />
-          <entry key="java" value="5444" />
+          <entry key="java" value="5598" />
           <entry key="txt" value="5" />
           <entry key="xml" value="1707" />
         </counts>
@@ -75,7 +66,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="3" />
-          <entry key="JAVA" value="5444" />
+          <entry key="JAVA" value="5598" />
           <entry key="PLAIN_TEXT" value="5" />
           <entry key="XML" value="1707" />
         </counts>
@@ -99,15 +90,15 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="262">
-              <caret line="351" column="16" selection-start-line="351" selection-start-column="16" selection-end-line="351" selection-end-column="16" />
+            <state relative-caret-position="225">
+              <caret line="371" column="54" lean-forward="true" selection-start-line="371" selection-start-column="54" selection-end-line="371" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#onDestroy#0;class#MainActivity#0" />
                 <element signature="method#writeLog#0;class#MainActivity#0" />
                 <element signature="method#readLog#0;class#MainActivity#0" />
-                <element signature="e#11457#15320#0" expanded="true" />
-                <element signature="e#15319#15320#0" expanded="true" />
+                <element signature="e#11651#16459#0" expanded="true" />
+                <element signature="e#16458#16459#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2787,15 +2778,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="351" column="16" selection-start-line="351" selection-start-column="16" selection-end-line="351" selection-end-column="16" />
+        <state relative-caret-position="225">
+          <caret line="371" column="54" lean-forward="true" selection-start-line="371" selection-start-column="54" selection-end-line="371" selection-end-column="54" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#onDestroy#0;class#MainActivity#0" />
             <element signature="method#writeLog#0;class#MainActivity#0" />
             <element signature="method#readLog#0;class#MainActivity#0" />
-            <element signature="e#11457#15320#0" expanded="true" />
-            <element signature="e#15319#15320#0" expanded="true" />
+            <element signature="e#11651#16459#0" expanded="true" />
+            <element signature="e#16458#16459#0" expanded="true" />
           </folding>
         </state>
       </provider>
