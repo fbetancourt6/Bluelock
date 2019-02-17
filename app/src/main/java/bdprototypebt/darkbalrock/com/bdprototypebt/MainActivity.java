@@ -73,9 +73,6 @@ public class MainActivity extends AppCompatActivity {
         filtroBT.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         filtroBT.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
         filtroBT.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
-        filtroBT.addAction(BluetoothAdapter.ACTION_LOCAL_NAME_CHANGED);
-        filtroBT.addAction(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        filtroBT.addAction(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 
         filtroBT.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
         filtroBT.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
@@ -148,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mBlueAdapter.isEnabled()){
                     mBlueAdapter.disable();
-                    showToast("Turning Bluetooth of");
+                    showToast("Turning Bluetooth off");
                     mBlueIv.setImageResource(R.drawable.ic_action_off);
                 }
                 else{
@@ -247,46 +244,33 @@ public class MainActivity extends AppCompatActivity {
         boolean result = false;
         File path = context.getExternalFilesDir(null);
         File file = new File(path, fileName);
+        Writer out = null;
         try {
             synchronized (DATA_LOCK){
-                if(file != null && file.canWrite()){
-                    file.createNewFile();
-                    Writer out = new BufferedWriter(new FileWriter(file, true), 1024);
-                    out.write(toWrite);
-                    out.close();
-                    result = true;
+                    if(file != null){
+                        file.createNewFile();
+                        if(fileName == "devices.txt"){
+                            System.out.println("devices");
+                            out = new BufferedWriter(new FileWriter(file, false), 1024);
+                        }
+                        if(fileName == "BluetoothAdapter.txt"){
+                            System.out.println("BluetoothAdapter");
+                            out = new BufferedWriter(new FileWriter(file, true), 1024);
+                        }
+                        out.write(toWrite);
+                        out.close();
+                        result = true;
                 }
             }
         }
         catch (FileNotFoundException e) {
             Log.e("login activity", "File not found: " + e.toString());
+            System.out.println("login activity File not found: " + e.toString());
         } catch (IOException e) {
             Log.e("login activity", "Can not read file: " + e.toString());
+            System.out.println("login activity File not found: " + e.toString());
         }
         return result;
-    }
-
-    //Escribe en el Log de app
-    public StringBuilder readLog(String fileName){
-        Context context = getBaseContext();
-        File path = context.getExternalFilesDir(null);
-        File file = new File(path, fileName);
-        StringBuilder textLog = new StringBuilder();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String line;
-            while((line = br.readLine()) != null){
-                textLog.append(line);
-                textLog.append('\n');
-            }
-            br.close();
-        }
-        catch (FileNotFoundException e) {
-            Log.e("read log activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("read log activity", "Can not read file: " + e.toString());
-        }
-        return textLog;
     }
 
     //BroadcastReceiver
@@ -296,6 +280,7 @@ public class MainActivity extends AppCompatActivity {
             final String action = intent.getAction();
             final Uri uriData = intent.getData();
             String log = "", showToastLog = "";
+            boolean logger;
             if(action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)
                     ||action.equals(BluetoothAdapter.ACTION_DISCOVERY_STARTED)
                         ||action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
@@ -303,105 +288,103 @@ public class MainActivity extends AppCompatActivity {
                 final int estado = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 switch (estado) {
                     case BluetoothAdapter.STATE_OFF:
-                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_OFF");
+                        log += logAdapter(uriData,"BluetoothAdapter.STATE_OFF");
                         showToastLog = "BluetoothAdapter.STATE_OFF";
                         break;
                     case BluetoothAdapter.STATE_ON:
-                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_ON");
+                        log += logAdapter(uriData,"BluetoothAdapter.STATE_ON");
                         showToastLog = "BluetoothAdapter.STATE_ON";
                         break;
                     case BluetoothAdapter.STATE_TURNING_OFF:
-                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_TURNING_OFF");
+                        log += logAdapter(uriData,"BluetoothAdapter.STATE_TURNING_OFF");
                         showToastLog = "BluetoothAdapter.STATE_TURNING_OFF";
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON:
-                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_TURNING_ON");
+                        log += logAdapter(uriData,"BluetoothAdapter.STATE_TURNING_ON");
                         showToastLog = "BluetoothAdapter.STATE_TURNING_ON";
                         break;
                     case BluetoothAdapter.STATE_CONNECTING:
-                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_CONNECTING");
+                        log += logAdapter(uriData,"BluetoothAdapter.STATE_CONNECTING");
                         showToastLog = "BluetoothAdapter.STATE_CONNECTING";
                         break;
                     case BluetoothAdapter.STATE_CONNECTED:
-                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_CONNECTED");
+                        log += logAdapter(uriData,"BluetoothAdapter.STATE_CONNECTED");
                         showToastLog = "BluetoothAdapter.STATE_CONNECTED";
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTING:
-                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_DISCONNECTING");
+                        log += logAdapter(uriData,"BluetoothAdapter.STATE_DISCONNECTING");
                         showToastLog = "BluetoothAdapter.STATE_DISCONNECTING";
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTED:
-                        log = logAdapter(log,uriData,"BluetoothAdapter.STATE_DISCONNECTED");
+                        log += logAdapter(uriData,"BluetoothAdapter.STATE_DISCONNECTED");
                         showToastLog = "BluetoothAdapter.STATE_DISCONNECTED";
                         break;
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE:
-                        log = logAdapter(log,uriData,"BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE");
+                        log += logAdapter(uriData,"BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE");
                         showToastLog = "BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE";
                         break;
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE:
-                        log = logAdapter(log,uriData,"BluetoothAdapter.SCAN_MODE_CONNECTABLE");
+                        log += logAdapter(uriData,"BluetoothAdapter.SCAN_MODE_CONNECTABLE");
                         showToastLog = "BluetoothAdapter.SCAN_MODE_CONNECTABLE";
                         break;
                     case BluetoothAdapter.SCAN_MODE_NONE:
-                        log = logAdapter(log,uriData,"BluetoothAdapter.SCAN_MODE_NONE");
+                        log += logAdapter(uriData,"BluetoothAdapter.SCAN_MODE_NONE");
                         showToastLog = "BluetoothAdapter.SCAN_MODE_NONE";
                         break;
                     default:
                         break;
-                }
+                };
+                System.out.println("Logger...");
+                logger = writeLog(log, "BluetoothAdapter.txt");
                 showToast(showToastLog);
-                boolean logger = writeLog(log, "BluetoothAdapter.txt");
             }
-            if(action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)){
+            if(action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
                 final int estado = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE, BluetoothAdapter.ERROR);
-                log = logAdapter(log,uriData,"BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED :"+estado);
+                log += logAdapter(uriData, "BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED :" + estado);
                 showToastLog = "BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED";
-            }
-            if(action.equals(BluetoothAdapter.ACTION_LOCAL_NAME_CHANGED)){
-                log = logAdapter(log,uriData,"BluetoothAdapter.ACTION_LOCAL_NAME_CHANGED");
-                showToastLog = "BluetoothAdapter.ACTION_LOCAL_NAME_CHANGED";
-            }
-            if(action.equals(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)){
-                log = logAdapter(log,uriData,"BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE");
-                showToastLog = "BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE";
-            }
-            if(action.equals(BluetoothAdapter.ACTION_REQUEST_ENABLE)){
-                log = logAdapter(log,uriData,"BluetoothAdapter.ACTION_REQUEST_ENABLE");
-                showToastLog = "BluetoothAdapter.ACTION_REQUEST_ENABLE";
+                logger = writeLog(log, "BluetoothAdapter.txt");
+                showToast(showToastLog);
             }
             if(action.equals(BluetoothAdapter.ERROR)){
-                log = String.valueOf(BluetoothAdapter.ERROR);
-                log = logAdapter(log,uriData,"BluetoothAdapter.ERROR");
+                log += String.valueOf(BluetoothAdapter.ERROR);
+                log += logAdapter(uriData,"BluetoothAdapter.ERROR");
                 showToastLog = "BluetoothAdapter.ERROR";
-            }
-            if(action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)
-                    || action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
-                log = logAdapter(log,uriData,"BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED);
-                showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED;
-                boolean logger = writeLog(log, "BluetoothAdapter.txt");
+                logger = writeLog(log, "BluetoothAdapter.txt");
                 showToast(showToastLog);
             }
+            /*if(action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)
+                    || action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
+                log += logAdapter(uriData,"BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED);
+                showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED;
+                logger = writeLog(log, "BluetoothAdapter.txt");
+                showToast(showToastLog);
+            }*/
         }
     };
 
-    public String logAdapter(String log, Uri uriData, String state){
-        String host = uriData.getHost();
-        String path = uriData.getPath();
-        String query = uriData.getQuery();
-        String scheme = uriData.getScheme();
-        int port = uriData.getPort();
-        String uInfo = uriData.getUserInfo();
-        int hashCode = uriData.hashCode();
-        log += "\n-----"+state+"-----";
-        log += "\n Time : "+String.valueOf(Calendar.getInstance().getTime());
-        log += "\n Host : "+host;
-        log += "\n Path : "+path;
-        log += "\n Query : "+query;
-        log += "\n Scheme : "+scheme;
-        log += "\n Port : "+port;
-        log += "\n User Info : "+uInfo;
-        log += "\n Hash Code : "+hashCode;
-        log += "\n ---------------------------- \n";
+    public String logAdapter(Uri uriData, String state){
+        String log = "";
+        try {
+            //String host = uriData.getHost();
+            //String path = uriData.getPath();
+            //String query = uriData.getQuery();
+            //String scheme = uriData.getScheme();
+            //int port = uriData.getPort();
+            //String uInfo = uriData.getUserInfo();
+            //int hashCode = uriData.hashCode();
+            log += "\n-----" + state + "-----";
+            log += "\n Time : " + String.valueOf(Calendar.getInstance().getTime());
+            //log += "\n Host : " + host;
+            //log += "\n Path : " + path;
+            //log += "\n Query : " + query;
+            //log += "\n Scheme : " + scheme;
+            //log += "\n Port : " + port;
+            //log += "\n User Info : " + uInfo;
+            //log += "\n Hash Code : " + hashCode;
+            //log += "\n ---------------------------- \n";
+        }catch(Exception e){
+            System.out.println(e);
+        }
         return log;
     }
 }

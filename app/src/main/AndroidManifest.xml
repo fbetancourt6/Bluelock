@@ -26,6 +26,7 @@
             <intent-filter>
                 <action android:name="android.bluetooth.device.action.ACL_CONNECTED"></action>
                 <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED"></action>
+                <action android:name="android.bluetooth.device.action"></action>
             </intent-filter>
         </activity>
         <activity
