@@ -97,10 +97,11 @@ public class MainActivity extends AppCompatActivity {
 
         //check if bt is available or not
         if(mBlueAdapter == null){
-            mStatusBlueTv.setText("Bluetooth is not available.");
+            showToast("Bluetooth no está disponible en este dispositivo.");
+            mStatusBlueTv.setText("Bluetooth no está disponible en este dispositivo.");
         }
         else{
-            mStatusBlueTv.setText("Bluetooth is available.");
+            mStatusBlueTv.setText("Bluetooth está disponible.");
         }
 
         //set image according to the bluetooth status on/off
@@ -116,13 +117,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!mBlueAdapter.isEnabled()){
-                    showToast("Turning on Bluetooth...");
+                    showToast("Iniciando Bluetooth...");
                     //intent to on Bluetooth
                     Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(intent, REQUEST_ENABLE_BT);
                 }
                 else{
-                    showToast("Bluetooth is already on!");
+                    showToast("Bluetooth ya está iniciado!");
                 }
             }
         });
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!mBlueAdapter.isDiscovering()){
-                    showToast("Making your device discoverable");
+                    showToast("Haciendo tu dispositivo detectable...");
                     Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                     startActivityForResult(intent, REQUEST_DISCOVER_BT);
                 }
@@ -145,11 +146,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mBlueAdapter.isEnabled()){
                     mBlueAdapter.disable();
-                    showToast("Turning Bluetooth off");
+                    showToast("Apagando Bluetooth...");
                     mBlueIv.setImageResource(R.drawable.ic_action_off);
                 }
                 else{
-                    showToast("Bluetooth is already off");
+                    showToast("Bluetooth ya está apagado.");
                 }
             }
         });
@@ -159,9 +160,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 devicesFile = "BT paired Devices";
-                showToast("getting paired devices...");
+                showToast("Obteniendo dispositivos emparejados...");
                 if(mBlueAdapter.isEnabled()){
-                    mPairedTv.setText("Paired Devices");
+                    mPairedTv.setText("Dispositivos Emparejados");
                     Set<BluetoothDevice> devices = mBlueAdapter.getBondedDevices();
                     for(BluetoothDevice device: devices){
                         mPairedTv.append("\n--- Device: " + device.getName()+ " ---");
@@ -180,8 +181,8 @@ public class MainActivity extends AppCompatActivity {
                         devicesFile += "\nBondState : " + device.getBondState();
                         mPairedTv.append("\nhashCode : " + device.hashCode());
                         devicesFile += "\nhashCode : " + device.hashCode();
-                        mPairedTv.append("\n-----Consulta de Dispositivos enlazados.-----");
-                        devicesFile += "\n-----Consulta de Dispositivos enlazados.-----";
+                        mPairedTv.append("\n--------------------");
+                        devicesFile += "\n--------------------";
                         mPairedTv.append("\n");
                         devicesFile += "\n";
                         /*GATT connectGatt(Context context, boolean autoConnect, BluetoothGattCallback callback)*/
@@ -200,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     //BT is off so can't get paired devices
-                    showToast("Turn on Bluetooth to get paired devices");
+                    showToast("Inicia Bluetooth para obtener los dispositivos emparejados.");
                 }
 
             }
@@ -289,39 +290,39 @@ public class MainActivity extends AppCompatActivity {
                 switch (estado) {
                     case BluetoothAdapter.STATE_OFF:
                         log += logAdapter(uriData,"BluetoothAdapter.STATE_OFF");
-                        showToastLog = "BluetoothAdapter.STATE_OFF";
+                        //showToastLog = "BluetoothAdapter.STATE_OFF";
                         break;
                     case BluetoothAdapter.STATE_ON:
                         log += logAdapter(uriData,"BluetoothAdapter.STATE_ON");
-                        showToastLog = "BluetoothAdapter.STATE_ON";
+                        //showToastLog = "BluetoothAdapter.STATE_ON";
                         break;
                     case BluetoothAdapter.STATE_TURNING_OFF:
                         log += logAdapter(uriData,"BluetoothAdapter.STATE_TURNING_OFF");
-                        showToastLog = "BluetoothAdapter.STATE_TURNING_OFF";
+                        //showToastLog = "BluetoothAdapter.STATE_TURNING_OFF";
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON:
                         log += logAdapter(uriData,"BluetoothAdapter.STATE_TURNING_ON");
-                        showToastLog = "BluetoothAdapter.STATE_TURNING_ON";
+                        //showToastLog = "BluetoothAdapter.STATE_TURNING_ON";
                         break;
                     case BluetoothAdapter.STATE_CONNECTING:
                         log += logAdapter(uriData,"BluetoothAdapter.STATE_CONNECTING");
-                        showToastLog = "BluetoothAdapter.STATE_CONNECTING";
+                        //showToastLog = "BluetoothAdapter.STATE_CONNECTING";
                         break;
                     case BluetoothAdapter.STATE_CONNECTED:
                         log += logAdapter(uriData,"BluetoothAdapter.STATE_CONNECTED");
-                        showToastLog = "BluetoothAdapter.STATE_CONNECTED";
+                        //showToastLog = "BluetoothAdapter.STATE_CONNECTED";
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTING:
                         log += logAdapter(uriData,"BluetoothAdapter.STATE_DISCONNECTING");
-                        showToastLog = "BluetoothAdapter.STATE_DISCONNECTING";
+                        //showToastLog = "BluetoothAdapter.STATE_DISCONNECTING";
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTED:
                         log += logAdapter(uriData,"BluetoothAdapter.STATE_DISCONNECTED");
-                        showToastLog = "BluetoothAdapter.STATE_DISCONNECTED";
+                        //showToastLog = "BluetoothAdapter.STATE_DISCONNECTED";
                         break;
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE:
                         log += logAdapter(uriData,"BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE");
-                        showToastLog = "BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE";
+                        //showToastLog = "BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE";
                         break;
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE:
                         log += logAdapter(uriData,"BluetoothAdapter.SCAN_MODE_CONNECTABLE");
@@ -329,14 +330,14 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case BluetoothAdapter.SCAN_MODE_NONE:
                         log += logAdapter(uriData,"BluetoothAdapter.SCAN_MODE_NONE");
-                        showToastLog = "BluetoothAdapter.SCAN_MODE_NONE";
+                        //showToastLog = "BluetoothAdapter.SCAN_MODE_NONE";
                         break;
                     default:
                         break;
                 };
                 System.out.println("Logger...");
                 logger = writeLog(log, "BluetoothAdapter.txt");
-                showToast(showToastLog);
+                //showToast(showToastLog);
             }
             if(action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
                 final int estado = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE, BluetoothAdapter.ERROR);
@@ -364,26 +365,34 @@ public class MainActivity extends AppCompatActivity {
 
     public String logAdapter(Uri uriData, String state){
         String log = "";
-        try {
-            //String host = uriData.getHost();
-            //String path = uriData.getPath();
-            //String query = uriData.getQuery();
-            //String scheme = uriData.getScheme();
-            //int port = uriData.getPort();
-            //String uInfo = uriData.getUserInfo();
-            //int hashCode = uriData.hashCode();
+        if(uriData!=null){
+            try {
+                String host = uriData.getHost();
+                String path = uriData.getPath();
+                String query = uriData.getQuery();
+                String scheme = uriData.getScheme();
+                int port = uriData.getPort();
+                String uInfo = uriData.getUserInfo();
+                int hashCode = uriData.hashCode();
+                log += "\n-----" + state + "-----";
+                log += "\n Time : " + String.valueOf(Calendar.getInstance().getTime());
+                log += "\n uriData : " + uriData;
+                log += "\n Host : " + host;
+                log += "\n Path : " + path;
+                log += "\n Query : " + query;
+                log += "\n Scheme : " + scheme;
+                log += "\n Port : " + port;
+                log += "\n User Info : " + uInfo;
+                log += "\n Hash Code : " + hashCode;
+                log += "\n ---------------------------- \n";
+            }catch(Exception e){
+                System.out.println(e);
+            }
+        }else{
             log += "\n-----" + state + "-----";
             log += "\n Time : " + String.valueOf(Calendar.getInstance().getTime());
-            //log += "\n Host : " + host;
-            //log += "\n Path : " + path;
-            //log += "\n Query : " + query;
-            //log += "\n Scheme : " + scheme;
-            //log += "\n Port : " + port;
-            //log += "\n User Info : " + uInfo;
-            //log += "\n Hash Code : " + hashCode;
-            //log += "\n ---------------------------- \n";
-        }catch(Exception e){
-            System.out.println(e);
+            log += "\n uriData : " + uriData;
+            log += "\n ---------------------------- \n";
         }
         return log;
     }
