@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     Button OnBtn, OffBtn, DiscoverBtn, PairedBtn, BlockBtn, VerLogsBtn, verLogBTABtn, verLogDEVBtn;
 
     BluetoothAdapter mBlueAdapter;
+    final ArrayAdapter<String> BTArrayAdapter = null;
 
     ImageView mBlueIv;
 
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Instanciamos el intent y el BroadcastReceiver
         IntentFilter filtroBT = new IntentFilter();
-        //https://developer.android.com/reference/android/bluetooth/BluetoothAdapter
+
         filtroBT.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filtroBT.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filtroBT.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
@@ -134,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!mBlueAdapter.isDiscovering()){
                     showToast("Haciendo tu dispositivo detectable...");
+                    BTArrayAdapter.clear();
+                    mBlueAdapter.startDiscovery();
+                    registerReceiver(mBR, new IntentFilter(BluetoothDevice.ACTION_FOUND));
                     Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                     startActivityForResult(intent, REQUEST_DISCOVER_BT);
                 }
@@ -352,6 +357,12 @@ public class MainActivity extends AppCompatActivity {
                 showToastLog = "BluetoothAdapter.ERROR";
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToast(showToastLog);
+            }
+            if(action.equals(BluetoothDevice.ACTION_FOUND)){
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
+                BTArrayAdapter.add(device.getName()+"\n"+device.getAddress()+"\n"+String.valueOf(rssi));
+                BTArrayAdapter.notifyDataSetChanged();
             }
             /*if(action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)
                     || action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
