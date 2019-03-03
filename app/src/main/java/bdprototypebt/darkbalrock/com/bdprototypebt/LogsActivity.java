@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +40,7 @@ public class LogsActivity extends AppCompatActivity {
                 mLogBT.clearComposingText();
                 mLogBT.append("\n---Log Devices Paired---");
                 mLogBT.append(readLog("devices.txt"));
+                mLogBT.setMovementMethod(new ScrollingMovementMethod());
             }
         });
 
@@ -49,6 +51,7 @@ public class LogsActivity extends AppCompatActivity {
                 mLogBT.clearComposingText();
                 mLogBT.append("\n---Log Bluetooth Adapter---");
                 mLogBT.append(readLog("BluetoothAdapter.txt"));
+                mLogBT.setMovementMethod(new ScrollingMovementMethod());
             }
         });
 

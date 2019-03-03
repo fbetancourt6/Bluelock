@@ -11,9 +11,9 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_weight="2"
+        android:layout_weight="4"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="35px">
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -107,20 +107,21 @@
             android:text="Get Paired Devices"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
-    </LinearLayout>
 
-    <!--Bloquear algún dispositivo-->
-    <Button
-        android:id="@+id/verLogsBtn"
-        android:layout_margin="16dp"
-        android:background="@android:color/holo_orange_dark"
-        android:textSize="20sp"
-        android:textColor="@android:color/white"
-        android:minWidth="200dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ver Logs"
-        style="@style/Base.Widget.AppCompat.Button.Colored"/>
+        <!--listar logs-->
+        <Button
+            android:id="@+id/verLogsBtn"
+            android:layout_margin="16dp"
+            android:background="@android:color/holo_orange_dark"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:minWidth="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ver Logs"
+            style="@style/Base.Widget.AppCompat.Button.Colored"/>
+
+    </LinearLayout>
 
     <!--Bloquear algún dispositivo-->
     <Button
