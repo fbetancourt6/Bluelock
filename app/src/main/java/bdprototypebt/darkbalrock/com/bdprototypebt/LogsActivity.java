@@ -11,16 +11,19 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 public class LogsActivity extends AppCompatActivity {
 
     public static final Object[] DATA_LOCK = new Object[0];
     TextView mLogBT;
-    Button VerLogsBtn, verLogBTABtn, verLogDEVBtn, volverBtn;
+    Button VerLogsBtn, verLogBTABtn, verLogDEVBtn, volverBtn, borrarLogsBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +35,13 @@ public class LogsActivity extends AppCompatActivity {
         verLogBTABtn = findViewById(R.id.verLogBTABtn);
         verLogDEVBtn = findViewById(R.id.verLogDEVBtn);
         volverBtn = findViewById(R.id.volverBtn);
+        borrarLogsBtn = findViewById(R.id.borrarLogsBtn);
 
         //ver Log DEVICES
         verLogDEVBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                mLogBT.clearComposingText();
+                mLogBT.setText("");
                 mLogBT.append("\n---Log Devices Paired---");
                 mLogBT.append(readLog("devices.txt"));
                 mLogBT.setMovementMethod(new ScrollingMovementMethod());
@@ -48,10 +52,43 @@ public class LogsActivity extends AppCompatActivity {
         verLogBTABtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                mLogBT.clearComposingText();
+                mLogBT. setText("");
                 mLogBT.append("\n---Log Bluetooth Adapter---");
                 mLogBT.append(readLog("BluetoothAdapter.txt"));
                 mLogBT.setMovementMethod(new ScrollingMovementMethod());
+            }
+        });
+
+        //borrar Logs BLUETOOTH
+        borrarLogsBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Context context = getBaseContext();
+                boolean result = false;
+                File path = context.getExternalFilesDir(null);
+                File filedevices = new File(path, "devices.txt");
+                File fileBluetoothAdapter = new File(path, "BluetoothAdapter.txt");
+                Writer out1 = null, out2 = null;
+                try {
+                    synchronized (DATA_LOCK){
+                        if(filedevices != null || fileBluetoothAdapter != null){
+                            filedevices.createNewFile();
+                            fileBluetoothAdapter.createNewFile();
+                            out1 = new BufferedWriter(new FileWriter(filedevices, false), 1024);
+                            out2 = new BufferedWriter(new FileWriter(fileBluetoothAdapter, false), 1024);
+                            out1.write("");
+                            out1.close();
+                            out2.write("");
+                            out2.close();
+                            result = true;
+                        }
+                    }
+                }
+                catch (FileNotFoundException e) {
+                    Log.e("logs activity", "File not found: " + e.toString());
+                } catch (IOException e) {
+                    Log.e("logs activity", "Can not read file: " + e.toString());
+                }
             }
         });
 

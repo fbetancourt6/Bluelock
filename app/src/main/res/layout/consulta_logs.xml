@@ -44,6 +44,18 @@
         android:text="BLuetooth Devices"
         style="@style/Base.Widget.AppCompat.Button.Colored"/>
 
+    <Button
+        android:id="@+id/borrarLogsBtn"
+        android:layout_margin="16dp"
+        android:background="@android:color/darker_gray"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:minWidth="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Borrar Logs"
+        style="@style/Base.Widget.AppCompat.Button.Colored"/>
+
     <LinearLayout
         android:orientation="vertical"
         android:background="@android:color/white"
