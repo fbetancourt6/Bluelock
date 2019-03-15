@@ -30,6 +30,9 @@ import java.util.Calendar;
 import java.util.Set;
 
 import bdprototypebt.darkbalrock.com.bdprototypebt.devices.*;
+import bdprototypebt.darkbalrock.com.bdprototypebt.events.event;
+import bdprototypebt.darkbalrock.com.bdprototypebt.events.eventsContract;
+import bdprototypebt.darkbalrock.com.bdprototypebt.events.eventsDBHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -279,7 +282,19 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
+            String evento = "";
             final Uri uriData = intent.getData();
+            event evt = new event();
+            evt.setTime(String.valueOf(Calendar.getInstance().getTime()));
+            evt.setUriData(uriData.toString());
+            evt.setHost(uriData.getHost());
+            evt.setPath(uriData.getPath());
+            evt.setQuery(uriData.getQuery());
+            evt.setScheme(uriData.getScheme());
+            evt.setPort(String.valueOf(uriData.getPort()));
+            evt.setUserInfo(uriData.getUserInfo());
+            evt.setHashCode(String.valueOf(uriData.hashCode()));
+            eventsDBHelper dbHelper = new eventsDBHelper(getApplicationContext());
             String log = "", showToastLog = "";
             boolean logger;
             if(action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)
@@ -289,52 +304,71 @@ public class MainActivity extends AppCompatActivity {
                 final int estado = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 switch (estado) {
                     case BluetoothAdapter.STATE_OFF:
-                        log += logAdapter(uriData,"BluetoothAdapter.STATE_OFF");
+                        evento = "BluetoothAdapter.STATE_OFF";
+                        log += logAdapter(uriData,evento);
                         break;
                     case BluetoothAdapter.STATE_ON:
-                        log += logAdapter(uriData,"BluetoothAdapter.STATE_ON");
+                        evento = "BluetoothAdapter.STATE_ON";
+                        log += logAdapter(uriData,evento);
                         break;
                     case BluetoothAdapter.STATE_TURNING_OFF:
-                        log += logAdapter(uriData,"BluetoothAdapter.STATE_TURNING_OFF");
+                        evento = "BluetoothAdapter.STATE_TURNING_OFF";
+                        log += logAdapter(uriData,evento);
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON:
-                        log += logAdapter(uriData,"BluetoothAdapter.STATE_TURNING_ON");
+                        evento = "BluetoothAdapter.STATE_TURNING_ON";
+                        log += logAdapter(uriData,evento);
                         break;
                     case BluetoothAdapter.STATE_CONNECTING:
-                        log += logAdapter(uriData,"BluetoothAdapter.STATE_CONNECTING");
+                        evento = "BluetoothAdapter.STATE_CONNECTING";
+                        log += logAdapter(uriData,evento);
                         break;
                     case BluetoothAdapter.STATE_CONNECTED:
-                        log += logAdapter(uriData,"BluetoothAdapter.STATE_CONNECTED");
+                        evento = "BluetoothAdapter.STATE_CONNECTED";
+                        log += logAdapter(uriData,evento);
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTING:
-                        log += logAdapter(uriData,"BluetoothAdapter.STATE_DISCONNECTING");
+                        evento = "BluetoothAdapter.STATE_DISCONNECTING";
+                        log += logAdapter(uriData,evento);
                         break;
                     case BluetoothAdapter.STATE_DISCONNECTED:
-                        log += logAdapter(uriData,"BluetoothAdapter.STATE_DISCONNECTED");
+                        evento = "BluetoothAdapter.STATE_DISCONNECTED";
+                        log += logAdapter(uriData,evento);
                         break;
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE:
-                        log += logAdapter(uriData,"BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE");
+                        evento = "BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE";
+                        log += logAdapter(uriData,evento);
                         break;
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE:
-                        log += logAdapter(uriData,"BluetoothAdapter.SCAN_MODE_CONNECTABLE");
+                        evento = "BluetoothAdapter.SCAN_MODE_CONNECTABLE";
+                        log += logAdapter(uriData,evento);
                         break;
                     case BluetoothAdapter.SCAN_MODE_NONE:
-                        log += logAdapter(uriData,"BluetoothAdapter.SCAN_MODE_NONE");
+                        evento = "BluetoothAdapter.SCAN_MODE_NONE";
+                        log += logAdapter(uriData,evento);
                         break;
                     default:
                         break;
                 };
                 logger = writeLog(log, "BluetoothAdapter.txt");
+                evt.setEventLog(evento);
+                dbHelper.saveEvent(evt);
             }
             if(action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
                 final int estado = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE, BluetoothAdapter.ERROR);
-                log += logAdapter(uriData, "BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED :" + estado);
+                evento = "BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED :" + estado;
+                log += logAdapter(uriData, evento);
+                evt.setEventLog(evento);
+                dbHelper.saveEvent(evt);
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToast(showToastLog);
             }
             if(action.equals(BluetoothAdapter.ERROR)){
                 log += String.valueOf(BluetoothAdapter.ERROR);
-                log += logAdapter(uriData,"BluetoothAdapter.ERROR");
+                evento = "BluetoothAdapter.ERROR";
+                log += logAdapter(uriData,evento);
+                evt.setEventLog(evento);
+                dbHelper.saveEvent(evt);
                 showToastLog = "BluetoothAdapter.ERROR";
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToast(showToastLog);
@@ -344,12 +378,19 @@ public class MainActivity extends AppCompatActivity {
                 int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
                 BTArrayAdapter.add(device.getName()+"\n"+device.getAddress()+"\n"+String.valueOf(rssi));
                 BTArrayAdapter.notifyDataSetChanged();
+                evento = "BluetoothDevice.ACTION_FOUND";
+                log += logAdapter(uriData,evento);
+                evt.setEventLog(evento);
+                dbHelper.saveEvent(evt);
+                showToastLog = "BluetoothAdapter.ACTION_FOUND";
             }
             if(action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)
                     || action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
                 log += logAdapter(uriData,"BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED);
+                evento = "BluetoothDevice.ACTION_FOUND";
+                evt.setEventLog(evento);
+                dbHelper.saveEvent(evt);
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED+":"+BluetoothDevice.ACTION_ACL_DISCONNECTED;
-                logger = writeLog(log, "BluetoothAdapter.txt");
             }
         }
     };
@@ -398,6 +439,31 @@ public class MainActivity extends AppCompatActivity {
         String[] columnas = null, selectionArgs = null;
         devicesDBHelper dbHelper = new devicesDBHelper(getApplicationContext());
         Cursor d = dbHelper.getDevice(tabla,columnas,selection,selectionArgs,groupBy,having,orderBy);
+        while(d.moveToNext()){
+            device dev = new device();
+            dev.setId(d.getInt(d.getColumnIndex(devicesContract.deviceEntry.ID)));
+            dev.setName(d.getString(d.getColumnIndex(devicesContract.deviceEntry.name)));
+            dev.setAddress(d.getString(d.getColumnIndex(devicesContract.deviceEntry.address)));
+            dev.setTime(d.getString(d.getColumnIndex(devicesContract.deviceEntry.time)));
+            dev.setContentDesc(d.getString(d.getColumnIndex(devicesContract.deviceEntry.contentDesc)));
+            dev.setBonded(d.getString(d.getColumnIndex(devicesContract.deviceEntry.bonded)));
+            dev.setUUIDs(d.getString(d.getColumnIndex(devicesContract.deviceEntry.UUIDs)));
+            dev.setHashCode(d.getString(d.getColumnIndex(devicesContract.deviceEntry.hashCode)));
+            devicesBT.add(dev);
+        }
+        return devicesBT;
+    }
+
+    public ArrayList getEvents(){
+        ArrayList<event> eventBT = new ArrayList();
+        String tabla = eventsContract.eventEntry.tableName,
+                selection = null,
+                groupBy = null,
+                having = null,
+                orderBy = null;
+        String[] columnas = null, selectionArgs = null;
+        eventsDBHelper dbHelper = new eventsDBHelper(getApplicationContext());
+        Cursor d = dbHelper.getEvent(tabla,columnas,selection,selectionArgs,groupBy,having,orderBy);
         while(d.moveToNext()){
             device dev = new device();
             dev.setId(d.getInt(d.getColumnIndex(devicesContract.deviceEntry.ID)));
