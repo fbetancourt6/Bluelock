@@ -455,7 +455,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public ArrayList getEvents(){
-        ArrayList<event> eventBT = new ArrayList();
+        ArrayList<event> eventsBT = new ArrayList();
         String tabla = eventsContract.eventEntry.tableName,
                 selection = null,
                 groupBy = null,
@@ -465,17 +465,31 @@ public class MainActivity extends AppCompatActivity {
         eventsDBHelper dbHelper = new eventsDBHelper(getApplicationContext());
         Cursor d = dbHelper.getEvent(tabla,columnas,selection,selectionArgs,groupBy,having,orderBy);
         while(d.moveToNext()){
-            device dev = new device();
-            dev.setId(d.getInt(d.getColumnIndex(devicesContract.deviceEntry.ID)));
-            dev.setName(d.getString(d.getColumnIndex(devicesContract.deviceEntry.name)));
-            dev.setAddress(d.getString(d.getColumnIndex(devicesContract.deviceEntry.address)));
-            dev.setTime(d.getString(d.getColumnIndex(devicesContract.deviceEntry.time)));
-            dev.setContentDesc(d.getString(d.getColumnIndex(devicesContract.deviceEntry.contentDesc)));
-            dev.setBonded(d.getString(d.getColumnIndex(devicesContract.deviceEntry.bonded)));
-            dev.setUUIDs(d.getString(d.getColumnIndex(devicesContract.deviceEntry.UUIDs)));
-            dev.setHashCode(d.getString(d.getColumnIndex(devicesContract.deviceEntry.hashCode)));
-            devicesBT.add(dev);
+            event evt = new event();
+            /* + eventsContract.eventEntry.id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + eventsContract.eventEntry.eventLog + " TEXT ,"
+                + eventsContract.eventEntry.Time + " TEXT ,"
+                + eventsContract.eventEntry.uriData + " TEXT ,"
+                + eventsContract.eventEntry.Host + " TEXT ,"
+                + eventsContract.eventEntry.Path + " TEXT ,"
+                + eventsContract.eventEntry.Query + " TEXT ,"
+                + eventsContract.eventEntry.Scheme + " TEXT ,"
+                + eventsContract.eventEntry.Port + " TEXT ,"
+                + eventsContract.eventEntry.userInfo + " TEXT ,"
+                + eventsContract.eventEntry.hashCode + " TEXT ,"*/
+            evt.setId(d.getInt(d.getColumnIndex(eventsContract.eventEntry.id)));
+            evt.setEventLog(d.getString(d.getColumnIndex(eventsContract.eventEntry.eventLog)));
+            evt.setTime(d.getString(d.getColumnIndex(eventsContract.eventEntry.Time)));
+            evt.setUriData(d.getString(d.getColumnIndex(eventsContract.eventEntry.uriData)));
+            evt.setHost(d.getString(d.getColumnIndex(eventsContract.eventEntry.Host)));
+            evt.setPath(d.getString(d.getColumnIndex(eventsContract.eventEntry.Path)));
+            evt.setQuery(d.getString(d.getColumnIndex(eventsContract.eventEntry.Query)));
+            evt.setScheme(d.getString(d.getColumnIndex(eventsContract.eventEntry.Scheme)));
+            evt.setPort(d.getString(d.getColumnIndex(eventsContract.eventEntry.Port)));
+            evt.setUserInfo(d.getString(d.getColumnIndex(eventsContract.eventEntry.userInfo)));
+            evt.setHashCode(d.getString(d.getColumnIndex(eventsContract.eventEntry.hashCode)));
+            eventsBT.add(evt);
         }
-        return devicesBT;
+        return eventsBT;
     }
 }
