@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BDPrototypeBT.iml" filepath="$PROJECT_DIR$/BDPrototypeBT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PrototypeBTSec.iml" filepath="$PROJECT_DIR$/PrototypeBTSec.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

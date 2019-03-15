@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,21 +19,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Set;
 
-import bdprototypebt.darkbalrock.com.bdprototypebt.Retrofit.IMyService;
-import bdprototypebt.darkbalrock.com.bdprototypebt.Retrofit.RetrofitClient;
-import io.reactivex.disposables.CompositeDisposable;
-import retrofit2.Retrofit;
+import bdprototypebt.darkbalrock.com.bdprototypebt.devices.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,12 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView mBlueIv;
 
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-    IMyService iMyService;
-
     @Override
     protected void onStop(){
-        compositeDisposable.clear();
         super.onStop();
     }
 
@@ -63,10 +56,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Init noSQL service
-        Retrofit retrofitClient = RetrofitClient.getInstance();
-        iMyService = retrofitClient.create(IMyService.class);
 
         //Instanciamos el intent y el BroadcastReceiver
         IntentFilter filtroBT = new IntentFilter();
@@ -171,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                 devicesFile = "BT paired Devices";
                 showToast("Obteniendo dispositivos emparejados...");
                 mPairedTv.setMovementMethod(new ScrollingMovementMethod());
+                int contador = 1;
                 if(mBlueAdapter.isEnabled()){
                     mPairedTv.setText("Dispositivos Emparejados");
                     Set<BluetoothDevice> devices = mBlueAdapter.getBondedDevices();
@@ -195,17 +185,21 @@ public class MainActivity extends AppCompatActivity {
                         devicesFile += "\n--------------------";
                         mPairedTv.append("\n");
                         devicesFile += "\n";
-                        /*GATT connectGatt(Context context, boolean autoConnect, BluetoothGattCallback callback)*/
 
-                        /*compositeDisposable.add(iMyService.saveDevices(device.getName(),device.getAddress())
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Consumer<String>() {
-                                    @Override
-                                    public void accept(String response) throws Exception {
-                                        Toast.makeText(MainActivity.this,""+response, Toast.LENGTH_SHORT).show();
-                                    }
-                                }));*/
+                        //Seteamos los devices para almacenar en la base de datos
+                        device dev = new device();
+                        dev.setId(contador);contador++;
+                        dev.setTime(device.getName());
+                        dev.setAddress(device.getAddress());
+                        dev.setUUIDs(device.getUuids().toString());
+                        dev.setContentDesc(String.valueOf(device.describeContents()));
+                        dev.setTime(String.valueOf(Calendar.getInstance().getTime()));
+                        dev.setBonded(String.valueOf(device.getBondState()));
+                        dev.setHashCode(String.valueOf(device.hashCode()));
+
+                        //Almacenamos la info del dispositivo en la BD
+                        devicesDBHelper dbHelper = new devicesDBHelper(getApplicationContext());
+                        Long result = dbHelper.saveDevice(dev);
                     }
                     boolean logger = writeLog(devicesFile, "devices.txt");
                 }
@@ -392,5 +386,30 @@ public class MainActivity extends AppCompatActivity {
             log += "\n ---------------------------- \n";
         }
         return log;
+    }
+
+    public ArrayList getDevices(){
+        ArrayList<device> devicesBT = new ArrayList();
+        String tabla = devicesContract.deviceEntry.tableName,
+                selection = null,
+                groupBy = null,
+                having = null,
+                orderBy = null;
+        String[] columnas = null, selectionArgs = null;
+        devicesDBHelper dbHelper = new devicesDBHelper(getApplicationContext());
+        Cursor d = dbHelper.getDevice(tabla,columnas,selection,selectionArgs,groupBy,having,orderBy);
+        while(d.moveToNext()){
+            device dev = new device();
+            dev.setId(d.getInt(d.getColumnIndex(devicesContract.deviceEntry.ID)));
+            dev.setName(d.getString(d.getColumnIndex(devicesContract.deviceEntry.name)));
+            dev.setAddress(d.getString(d.getColumnIndex(devicesContract.deviceEntry.address)));
+            dev.setTime(d.getString(d.getColumnIndex(devicesContract.deviceEntry.time)));
+            dev.setContentDesc(d.getString(d.getColumnIndex(devicesContract.deviceEntry.contentDesc)));
+            dev.setBonded(d.getString(d.getColumnIndex(devicesContract.deviceEntry.bonded)));
+            dev.setUUIDs(d.getString(d.getColumnIndex(devicesContract.deviceEntry.UUIDs)));
+            dev.setHashCode(d.getString(d.getColumnIndex(devicesContract.deviceEntry.hashCode)));
+            devicesBT.add(dev);
+        }
+        return devicesBT;
     }
 }
