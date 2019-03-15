@@ -466,17 +466,6 @@ public class MainActivity extends AppCompatActivity {
         Cursor d = dbHelper.getEvent(tabla,columnas,selection,selectionArgs,groupBy,having,orderBy);
         while(d.moveToNext()){
             event evt = new event();
-            /* + eventsContract.eventEntry.id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + eventsContract.eventEntry.eventLog + " TEXT ,"
-                + eventsContract.eventEntry.Time + " TEXT ,"
-                + eventsContract.eventEntry.uriData + " TEXT ,"
-                + eventsContract.eventEntry.Host + " TEXT ,"
-                + eventsContract.eventEntry.Path + " TEXT ,"
-                + eventsContract.eventEntry.Query + " TEXT ,"
-                + eventsContract.eventEntry.Scheme + " TEXT ,"
-                + eventsContract.eventEntry.Port + " TEXT ,"
-                + eventsContract.eventEntry.userInfo + " TEXT ,"
-                + eventsContract.eventEntry.hashCode + " TEXT ,"*/
             evt.setId(d.getInt(d.getColumnIndex(eventsContract.eventEntry.id)));
             evt.setEventLog(d.getString(d.getColumnIndex(eventsContract.eventEntry.eventLog)));
             evt.setTime(d.getString(d.getColumnIndex(eventsContract.eventEntry.Time)));
