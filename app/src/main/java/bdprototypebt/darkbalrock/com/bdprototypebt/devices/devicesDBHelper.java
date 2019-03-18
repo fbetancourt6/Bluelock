@@ -19,7 +19,7 @@ public class devicesDBHelper extends SQLiteOpenHelper {
         //Create Table
         sqLiteDatabase.execSQL("CREATE TABLE "+ devicesContract.deviceEntry.tableName+ "("
                 + devicesContract.deviceEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + devicesContract.deviceEntry.ID + " INT, "
+                + devicesContract.deviceEntry.ID + " INTEGER, "
                 + devicesContract.deviceEntry.name + " TEXT, "
                 + devicesContract.deviceEntry.address + " TEXT, "
                 + devicesContract.deviceEntry.UUIDs + " TEXT, "
@@ -27,7 +27,7 @@ public class devicesDBHelper extends SQLiteOpenHelper {
                 + devicesContract.deviceEntry.time + " TEXT, "
                 + devicesContract.deviceEntry.bonded + " TEXT, "
                 + devicesContract.deviceEntry.hashCode + " TEXT, "
-                + " UNIQUE ("+devicesContract.deviceEntry.address+")"
+                + " UNIQUE ("+devicesContract.deviceEntry._ID+")"
                 + ")");
     }
 

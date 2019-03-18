@@ -283,20 +283,57 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
             String evento = "";
+
             final Uri uriData = intent.getData();
             event evt = new event();
+
             evt.setTime(String.valueOf(Calendar.getInstance().getTime()));
-            evt.setUriData(uriData.toString());
-            evt.setHost(uriData.getHost());
-            evt.setPath(uriData.getPath());
-            evt.setQuery(uriData.getQuery());
-            evt.setScheme(uriData.getScheme());
-            evt.setPort(String.valueOf(uriData.getPort()));
-            evt.setUserInfo(uriData.getUserInfo());
-            evt.setHashCode(String.valueOf(uriData.hashCode()));
+
+             try{
+                 evt.setUriData(uriData.toString());
+             }catch(Exception e){
+                 evt.setUriData(action);
+             }
+             try{
+                 evt.setHost(uriData.getHost());
+             }catch(Exception e){
+                 evt.setHost(null);
+             }
+            try{
+                evt.setPath(uriData.getPath());
+            }catch(Exception e){
+                evt.setPath(null);
+            }
+            try{
+                evt.setQuery(uriData.getQuery());
+            }catch(Exception e){
+                evt.setQuery(null);
+            }
+            try{
+                evt.setScheme(uriData.getScheme());
+            }catch(Exception e){
+                evt.setScheme(null);
+            }
+            try{
+                evt.setPort(String.valueOf(uriData.getPort()));
+            }catch(Exception e){
+                evt.setPort(null);
+            }
+            try{
+                evt.setUserInfo(uriData.getUserInfo());
+            }catch(Exception e){
+                evt.setUserInfo(null);
+            }
+            try{
+                evt.setHashCode(String.valueOf(uriData.hashCode()));
+            }catch(Exception e){
+                evt.setHashCode(null);
+            }
+
             eventsDBHelper dbHelper = new eventsDBHelper(getApplicationContext());
             String log = "", showToastLog = "";
             boolean logger;
+
             if(action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)
                     ||action.equals(BluetoothAdapter.ACTION_DISCOVERY_STARTED)
                         ||action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)

@@ -17,7 +17,8 @@ public class eventsDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE " + eventsContract.eventEntry.tableName+ " ("
-                + eventsContract.eventEntry.id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + eventsContract.eventEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + eventsContract.eventEntry.id + " INTEGER ,"
                 + eventsContract.eventEntry.eventLog + " TEXT ,"
                 + eventsContract.eventEntry.Time + " TEXT ,"
                 + eventsContract.eventEntry.uriData + " TEXT ,"
@@ -28,7 +29,7 @@ public class eventsDBHelper extends SQLiteOpenHelper {
                 + eventsContract.eventEntry.Port + " TEXT ,"
                 + eventsContract.eventEntry.userInfo + " TEXT ,"
                 + eventsContract.eventEntry.hashCode + " TEXT ,"
-                + "UNIQUE (" + eventsContract.eventEntry.id + "))");
+                + "UNIQUE (" + eventsContract.eventEntry._ID + "))");
     }
 
     @Override
