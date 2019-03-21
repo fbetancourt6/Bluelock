@@ -5,4 +5,8 @@
         <item>BluetoothAdapter</item>
         <item>BluetoothDevice</item>
     </string-array>
+    <string name="title_activity_dispositivos">dispositivos</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

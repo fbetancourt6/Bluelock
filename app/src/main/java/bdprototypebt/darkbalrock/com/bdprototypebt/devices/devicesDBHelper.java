@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 public class devicesDBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "devices.db";
@@ -69,6 +71,18 @@ public class devicesDBHelper extends SQLiteOpenHelper {
                 orderBy
         );
         return c;
+    }
+
+    public Cursor getDevices(){
+        ArrayList<device> devicesBT = new ArrayList();
+        String tabla = devicesContract.deviceEntry.tableName,
+                selection = null,
+                groupBy = null,
+                having = null,
+                orderBy = null;
+        String[] columnas = null, selectionArgs = null;
+        Cursor d = getDevice(tabla,columnas,selection,selectionArgs,groupBy,having,orderBy);
+        return d;
     }
 
 }

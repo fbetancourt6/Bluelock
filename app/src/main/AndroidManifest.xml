@@ -2,37 +2,43 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="bdprototypebt.darkbalrock.com.bdprototypebt">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
-
-    <!--uses-sdk
-        android:minSdkVersion="18"
-        android:targetSdkVersion="18" /-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".devices.dispositivos"
+            android:label="@string/title_activity_dispositivos"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.bluetooth.device.action.ACL_CONNECTED"></action>
-                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED"></action>
-                <action android:name="android.bluetooth.device.action"></action>
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+                <action android:name="android.bluetooth.device.action" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LogsActivity"
-            android:label="@string/app_name">
-        </activity>
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

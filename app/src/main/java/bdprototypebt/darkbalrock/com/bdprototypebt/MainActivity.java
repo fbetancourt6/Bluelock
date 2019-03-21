@@ -219,7 +219,9 @@ public class MainActivity extends AppCompatActivity {
         BlockBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showToast("Acción en desarrollo!");
+                Intent intentDev = new Intent(MainActivity.this, dispositivos.class);
+                startActivity(intentDev);
+                setContentView(R.layout.activity_dispositivos);
             }
         });
 
@@ -286,50 +288,7 @@ public class MainActivity extends AppCompatActivity {
             String evento = "";
 
             final Uri uriData = intent.getData();
-            event evt = new event();
-
-            evt.setTime(String.valueOf(Calendar.getInstance().getTime()));
-
-             try{
-                 evt.setUriData(uriData.toString());
-             }catch(Exception e){
-                 evt.setUriData(action);
-             }
-             try{
-                 evt.setHost(uriData.getHost());
-             }catch(Exception e){
-                 evt.setHost(null);
-             }
-            try{
-                evt.setPath(uriData.getPath());
-            }catch(Exception e){
-                evt.setPath(null);
-            }
-            try{
-                evt.setQuery(uriData.getQuery());
-            }catch(Exception e){
-                evt.setQuery(null);
-            }
-            try{
-                evt.setScheme(uriData.getScheme());
-            }catch(Exception e){
-                evt.setScheme(null);
-            }
-            try{
-                evt.setPort(String.valueOf(uriData.getPort()));
-            }catch(Exception e){
-                evt.setPort(null);
-            }
-            try{
-                evt.setUserInfo(uriData.getUserInfo());
-            }catch(Exception e){
-                evt.setUserInfo(null);
-            }
-            try{
-                evt.setHashCode(String.valueOf(uriData.hashCode()));
-            }catch(Exception e){
-                evt.setHashCode(null);
-            }
+            event evt = validaUri(uriData, action);
 
             eventsDBHelper dbHelper = new eventsDBHelper(getApplicationContext());
             String log = "", showToastLog = "";
@@ -438,6 +397,54 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    public event validaUri(Uri uriData, String action){
+        event evt = new event();
+
+        evt.setTime(String.valueOf(Calendar.getInstance().getTime()));
+
+        try{
+            evt.setUriData(uriData.toString());
+        }catch(Exception e){
+            evt.setUriData(action);
+        }
+        try{
+            evt.setHost(uriData.getHost());
+        }catch(Exception e){
+            evt.setHost(null);
+        }
+        try{
+            evt.setPath(uriData.getPath());
+        }catch(Exception e){
+            evt.setPath(null);
+        }
+        try{
+            evt.setQuery(uriData.getQuery());
+        }catch(Exception e){
+            evt.setQuery(null);
+        }
+        try{
+            evt.setScheme(uriData.getScheme());
+        }catch(Exception e){
+            evt.setScheme(null);
+        }
+        try{
+            evt.setPort(String.valueOf(uriData.getPort()));
+        }catch(Exception e){
+            evt.setPort(null);
+        }
+        try{
+            evt.setUserInfo(uriData.getUserInfo());
+        }catch(Exception e){
+            evt.setUserInfo(null);
+        }
+        try{
+            evt.setHashCode(String.valueOf(uriData.hashCode()));
+        }catch(Exception e){
+            evt.setHashCode(null);
+        }
+        return evt;
+    }
 
     public String logAdapter(Uri uriData, String state){
         String log = "";
