@@ -211,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
                     //BT is off so can't get paired devices
                     showToast("Inicia Bluetooth para obtener los dispositivos emparejados.");
                 }
-
             }
         });
 

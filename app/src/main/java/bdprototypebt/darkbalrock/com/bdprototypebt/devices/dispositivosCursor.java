@@ -26,12 +26,14 @@ public class dispositivosCursor extends CursorAdapter {
     public void bindView(View view,  final Context context, Cursor cursor){
         //Referencias de UI
         TextView nameText = (TextView) view.findViewById(R.id.tv_deviceName);
+        TextView addressText = (TextView) view.findViewById(R.id.tv_deviceAddress);
 
         //Get valores
         String name = cursor.getString(cursor.getColumnIndex(devicesContract.deviceEntry.name));
+        String address = cursor.getString(cursor.getColumnIndex(devicesContract.deviceEntry.address));
 
         //Setup
         nameText.setText(name);
-
+        addressText.setText(address);
     }
 }
