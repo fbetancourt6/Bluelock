@@ -2,8 +2,11 @@ package bdprototypebt.darkbalrock.com.bdprototypebt;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -39,22 +42,24 @@ public class LogsActivity extends AppCompatActivity {
 
         //ver Log DEVICES
         verLogDEVBtn.setOnClickListener(new View.OnClickListener(){
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v){
                 mLogBT.setText("");
                 mLogBT.append("\n---Log Devices Paired---");
-                mLogBT.append(readLog("devices.txt"));
+                mLogBT.setText(Html.fromHtml(readLog("devices.txt"),Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
                 mLogBT.setMovementMethod(new ScrollingMovementMethod());
             }
         });
 
         //ver Log BLUETOOTH ADAPTER
         verLogBTABtn.setOnClickListener(new View.OnClickListener(){
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v){
-                mLogBT. setText("");
+                mLogBT.setText("");
                 mLogBT.append("\n---Log Bluetooth Adapter---");
-                mLogBT.append(readLog("BluetoothAdapter.txt"));
+                mLogBT.setText(Html.fromHtml(readLog("BluetoothAdapter.txt"),Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
                 mLogBT.setMovementMethod(new ScrollingMovementMethod());
             }
         });
@@ -105,7 +110,7 @@ public class LogsActivity extends AppCompatActivity {
     }
 
     //Escribe en el Log de app
-    public StringBuilder readLog(String fileName){
+    public String readLog(String fileName){
         Context context = getBaseContext();
         File path = context.getExternalFilesDir(null);
         File file = new File(path, fileName);
@@ -127,7 +132,7 @@ public class LogsActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e("read log activity", "Can not read file: " + e.toString());
         }
-        return textLog;
+        return String.valueOf(textLog);
     }
 
 }
