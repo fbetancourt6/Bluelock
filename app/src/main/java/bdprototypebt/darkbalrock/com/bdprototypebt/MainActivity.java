@@ -232,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intentLog = new Intent(MainActivity.this, LogsActivity.class);
                 startActivity(intentLog);
                 setContentView(R.layout.consulta_logs);
+
             }
         });
 
@@ -329,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     default:
                         break;
-                };
+                }
                 logger = writeLog(log, "BluetoothAdapter.txt");
             }
             if(action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
