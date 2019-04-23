@@ -50,7 +50,7 @@ public class dispositivosFragment extends Fragment {
         //Referencias al UI
         mDevicesList = (ListView) root.findViewById(R.id.dispositivos_list);
         mDevicesAdapter = new dispositivosCursor(getActivity(), null);
-        mAddButton = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        //mAddButton = (FloatingActionButton) getActivity().findViewById(R.id.volverBtn);
 
         //Setup
         mDevicesList.setAdapter(mDevicesAdapter);

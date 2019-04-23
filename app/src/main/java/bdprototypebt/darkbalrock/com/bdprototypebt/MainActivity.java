@@ -224,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intentDev = new Intent(MainActivity.this, dispositivos.class);
                 startActivity(intentDev);
                 setContentView(R.layout.activity_dispositivos);
+
             }
         });
 
