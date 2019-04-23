@@ -7,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-import bdprototypebt.darkbalrock.com.bdprototypebt.LogsActivity;
 import bdprototypebt.darkbalrock.com.bdprototypebt.MainActivity;
 import bdprototypebt.darkbalrock.com.bdprototypebt.R;
 
@@ -21,6 +20,7 @@ public class dispositivos extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         dispositivosFragment  fragment = (dispositivosFragment) getSupportFragmentManager().findFragmentById(R.id.content_dispositivos);
+
         if (fragment == null){
             fragment = dispositivosFragment.newInstance();
             getSupportFragmentManager().beginTransaction().add(R.id.content_dispositivos, fragment).commit();

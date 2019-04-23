@@ -29,7 +29,7 @@ public class devicesDBHelper extends SQLiteOpenHelper {
                 + devicesContract.deviceEntry.time + " TEXT, "
                 + devicesContract.deviceEntry.bonded + " TEXT, "
                 + devicesContract.deviceEntry.hashCode + " TEXT, "
-                + " UNIQUE ("+devicesContract.deviceEntry._ID+")"
+                + " UNIQUE ("+devicesContract.deviceEntry.address+")"
                 + ")");
     }
 

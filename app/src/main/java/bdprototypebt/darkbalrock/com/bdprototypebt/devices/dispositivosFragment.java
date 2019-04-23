@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ListView;
 
 import bdprototypebt.darkbalrock.com.bdprototypebt.R;
@@ -50,7 +51,6 @@ public class dispositivosFragment extends Fragment {
         //Referencias al UI
         mDevicesList = (ListView) root.findViewById(R.id.dispositivos_list);
         mDevicesAdapter = new dispositivosCursor(getActivity(), null);
-        //mAddButton = (FloatingActionButton) getActivity().findViewById(R.id.volverBtn);
 
         //Setup
         mDevicesList.setAdapter(mDevicesAdapter);
