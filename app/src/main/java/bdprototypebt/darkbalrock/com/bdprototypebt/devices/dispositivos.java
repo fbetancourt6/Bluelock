@@ -35,23 +35,28 @@ public class dispositivos extends AppCompatActivity {
         volverBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                limpiaDispositivos();
-                Intent intentMain = new Intent(dispositivos.this, MainActivity.class);
-                startActivity(intentMain);
-                setContentView(R.layout.activity_main);
-                dispositivos.this.finish();
+                if(limpiaDispositivos()){
+                    Intent intentMain = new Intent(dispositivos.this, MainActivity.class);
+                    startActivity(intentMain);
+                    setContentView(R.layout.activity_main);
+                    dispositivos.this.finish();
+                }
             }
         });
     }
 
-    public void limpiaDispositivos(){
-        //limpiamos el fragment
-        dispositivosFragment  fragment = (dispositivosFragment) getSupportFragmentManager().findFragmentById(R.id.content_dispositivos);
-        if (fragment == null){
-            fragment = dispositivosFragment.newInstance();
-            getSupportFragmentManager().beginTransaction().remove(fragment);
-            Log.i("Delete Fragment. ",fragment.toString());
+    public boolean limpiaDispositivos(){
+        //limpiamos la BD de dispositivos
+        boolean result = false;
+        try {
+            devicesDBHelper dbHelper;
+            dbHelper = new devicesDBHelper(getApplicationContext());
+            dbHelper.deleteDevices();
+            result = true;
+        }catch(Exception e){
+            Log.e("dispositivos activity", "Limpiamos la BD de dispositivos: " + e.toString());
         }
+        return result;
     }
 
 }

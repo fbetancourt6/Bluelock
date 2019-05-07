@@ -29,7 +29,7 @@ public class devicesDBHelper extends SQLiteOpenHelper {
                 + devicesContract.deviceEntry.time + " TEXT, "
                 + devicesContract.deviceEntry.bonded + " TEXT, "
                 + devicesContract.deviceEntry.hashCode + " TEXT, "
-                + " UNIQUE ("+devicesContract.deviceEntry.address+")"
+                + " UNIQUE ("+devicesContract.deviceEntry._ID+")"
                 + ")");
     }
 
@@ -74,7 +74,6 @@ public class devicesDBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getDevices(){
-        ArrayList<device> devicesBT = new ArrayList();
         String tabla = devicesContract.deviceEntry.tableName,
                 selection = null,
                 groupBy = null,
@@ -83,6 +82,12 @@ public class devicesDBHelper extends SQLiteOpenHelper {
         String[] columnas = null, selectionArgs = null;
         Cursor d = getDevice(tabla,columnas,selection,selectionArgs,groupBy,having,orderBy);
         return d;
+    }
+
+    public void deleteDevices(){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("delete from "+devicesContract.deviceEntry.tableName);
+        db.close();
     }
 
 }

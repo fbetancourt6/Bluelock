@@ -192,21 +192,6 @@ public class MainActivity extends AppCompatActivity {
                         devicesFile += "\n<font color='purple'>--------------------</font>";
                         mPairedTv.append("\n");
                         devicesFile += "\n";
-
-                        //Seteamos los devices para almacenar en la base de datos
-                        device dev = new device();
-                        dev.setId(contador);contador++;
-                        dev.setTime(device.getName());
-                        dev.setAddress(device.getAddress());
-                        dev.setUUIDs(device.getUuids().toString());
-                        dev.setContentDesc(String.valueOf(device.describeContents()));
-                        dev.setTime(String.valueOf(Calendar.getInstance().getTime()));
-                        dev.setBonded(String.valueOf(device.getBondState()));
-                        dev.setHashCode(String.valueOf(device.hashCode()));
-
-                        //Almacenamos la info del dispositivo en la BD
-                        devicesDBHelper dbHelper = new devicesDBHelper(getApplicationContext());
-                        Long result = dbHelper.saveDevice(dev);
                     }
                     boolean logger = writeLog(devicesFile, "devices.txt");
                 }
@@ -221,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
         BlockBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getDevicesForBlock();
                 Intent intentDev = new Intent(MainActivity.this, dispositivos.class);
                 startActivity(intentDev);
                 setContentView(R.layout.activity_dispositivos);
@@ -539,5 +525,35 @@ public class MainActivity extends AppCompatActivity {
             eventsBT.add(evt);
         }
         return eventsBT;
+    }
+
+    public void getDevicesForBlock(){
+        devicesFile = "BT paired Devices";
+        int contador = 1;
+        if(mBlueAdapter.isEnabled()){
+             Set<BluetoothDevice> devices = mBlueAdapter.getBondedDevices();
+            for(BluetoothDevice device: devices){
+
+                //Seteamos los devices para almacenar en la base de datos
+                device dev = new device();
+                dev.setId(contador);contador++;
+                dev.setTime(device.getName());
+                dev.setAddress(device.getAddress());
+                dev.setUUIDs(device.getUuids().toString());
+                dev.setContentDesc(String.valueOf(device.describeContents()));
+                dev.setTime(String.valueOf(Calendar.getInstance().getTime()));
+                dev.setBonded(String.valueOf(device.getBondState()));
+                dev.setHashCode(String.valueOf(device.hashCode()));
+
+                //Almacenamos la info del dispositivo en la BD
+                devicesDBHelper dbHelper = new devicesDBHelper(getApplicationContext());
+                Long result = dbHelper.saveDevice(dev);
+            }
+            boolean logger = writeLog(devicesFile, "devices.txt");
+        }
+        else{
+            //BT is off so can't get paired devices
+            showToast("Inicia Bluetooth para obtener los dispositivos emparejados.");
+        }
     }
 }
