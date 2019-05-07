@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.javiersantos:MaterialStyledDialogs:2.1@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/MaterialStyledDialogs-2.1.aar/b8783baf6005a7fc6bab93de8df7c5ce/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/MaterialStyledDialogs-2.1.aar/b8783baf6005a7fc6bab93de8df7c5ce/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8c3eff764c132b9f21388e8d205a6f2f/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8c3eff764c132b9f21388e8d205a6f2f/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

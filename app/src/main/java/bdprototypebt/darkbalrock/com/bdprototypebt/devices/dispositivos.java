@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -34,12 +35,23 @@ public class dispositivos extends AppCompatActivity {
         volverBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                limpiaDispositivos();
                 Intent intentMain = new Intent(dispositivos.this, MainActivity.class);
                 startActivity(intentMain);
                 setContentView(R.layout.activity_main);
                 dispositivos.this.finish();
             }
         });
+    }
+
+    public void limpiaDispositivos(){
+        //limpiamos el fragment
+        dispositivosFragment  fragment = (dispositivosFragment) getSupportFragmentManager().findFragmentById(R.id.content_dispositivos);
+        if (fragment == null){
+            fragment = dispositivosFragment.newInstance();
+            getSupportFragmentManager().beginTransaction().remove(fragment);
+            Log.i("Delete Fragment. ",fragment.toString());
+        }
     }
 
 }

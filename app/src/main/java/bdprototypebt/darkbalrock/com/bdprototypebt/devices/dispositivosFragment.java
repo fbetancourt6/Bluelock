@@ -84,7 +84,7 @@ public class dispositivosFragment extends Fragment {
             if (cursor != null && cursor.getCount() > 0) {
                 mDevicesAdapter.swapCursor(cursor);
             } else {
-                // Mostrar empty state
+                cursor.close();
             }
         }
     }
