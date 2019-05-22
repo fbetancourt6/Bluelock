@@ -29,7 +29,7 @@ public class dispositivosCursor extends CursorAdapter {
         TextView addressText = (TextView) view.findViewById(R.id.tv_deviceAddress);
 
         //Get valores
-        String name = cursor.getString(cursor.getColumnIndex(devicesContract.deviceEntry.name));
+        String name = cursor.getString(cursor.getColumnIndex(devicesContract.deviceEntry._ID))+" : "+cursor.getString(cursor.getColumnIndex(devicesContract.deviceEntry.name));
         String address = cursor.getString(cursor.getColumnIndex(devicesContract.deviceEntry.address));
 
         //Setup

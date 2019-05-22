@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
@@ -89,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
         BlockBtn = findViewById(R.id.blockBtn);
         VerLogsBtn = findViewById(R.id.verLogsBtn);
         verLogBTABtn = findViewById(R.id.verLogBTABtn);
-        verLogDEVBtn = findViewById(R.id.verLogDEVBtn);
 
         //adapter
         mBlueAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             mStatusBlueTv.setText("Bluetooth no está disponible en este dispositivo.");
         }
         else{
-            mStatusBlueTv.setText("Bluetooth está disponible.");
+            mStatusBlueTv.setText("Bluetooth disponible.");
         }
 
         //set image according to the bluetooth status on/off
@@ -120,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
                     //intent to on Bluetooth
                     Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(intent, REQUEST_ENABLE_BT);
+                    mBlueIv.setImageResource(R.drawable.ic_action_on);
+                    mStatusBlueTv.setText("Bluetooth iniciado.");
                 }
                 else{
                     showToast("Bluetooth ya está iniciado!");
@@ -140,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                     registerReceiver(mBR, new IntentFilter(BluetoothDevice.ACTION_FOUND));
                     Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                     startActivityForResult(intent, REQUEST_DISCOVER_BT);
-
+                    mStatusBlueTv.setText("Bluetooth detectable.");
                 }
             }
         });
@@ -153,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
                     mBlueAdapter.disable();
                     showToast("Apagando Bluetooth...");
                     mBlueIv.setImageResource(R.drawable.ic_action_off);
+                    mStatusBlueTv.setText("Bluetooth Apagado.");
                 }
                 else{
                     showToast("Bluetooth ya está apagado.");
@@ -162,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
         //get paired devices btn click
         PairedBtn.setOnClickListener(new View.OnClickListener(){
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 devicesFile = "BT paired Devices";
@@ -172,24 +177,24 @@ public class MainActivity extends AppCompatActivity {
                     mPairedTv.setText(Html.fromHtml("Dispositivos Emparejados", Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
                     Set<BluetoothDevice> devices = mBlueAdapter.getBondedDevices();
                     for(BluetoothDevice device: devices){
-                        mPairedTv.append("\n<font color='purple'>--- Device:</font><font color='green'>" + device.getName()+ "---</font>");
-                        devicesFile += "\n<font color='purple'>--- Device:</font><font color='green'>" + device.getName()+ "---</font>";
-                        mPairedTv.append("\n<font color='blue'>Address :</font><font color='green'>" + device.getAddress()+ "---</font>");
-                        devicesFile += "\n<font color='blue'>Address :</font><font color='green'>" + device.getAddress()+ "---</font>";
-                        mPairedTv.append("\n<font color='blue'>String :</font><font color='green'>" + device.toString()+ "---</font>");
-                        devicesFile += "\n<font color='blue'>String :</font><font color='green'>" + device.toString()+ "---</font>";
-                        mPairedTv.append("\n<font color='blue'>Uuids :</font><font color='green'>" + device.getUuids()+ "---</font>");
-                        devicesFile += "\n<font color='blue'>Uuids :</font><font color='green'>" + device.getUuids()+ "---</font>";
-                        mPairedTv.append("\n<font color='blue'>Contents :</font><font color='green'>" + device.describeContents()+ "---</font>");
-                        devicesFile += "\n<font color='blue'>Contents :</font><font color='green'>" + device.describeContents()+ "---</font>";
-                        mPairedTv.append("\n<font color='blue'>Time :</font><font color='green'>" + Calendar.getInstance().getTime()+ "---</font>");
-                        devicesFile += "\n<font color='blue'>Time :</font><font color='green'>" + Calendar.getInstance().getTime()+ "---</font>";
-                        mPairedTv.append("\n<font color='blue'>BondState :</font><font color='green'>" + device.getBondState()+ "---</font>");
-                        devicesFile += "\n<font color='blue'>BondState :</font><font color='green'>" + device.getBondState()+ "---</font>";
-                        mPairedTv.append("\n<font color='blue'>hashCode :</font><font color='green'>" + device.hashCode()+ "---</font>");
-                        devicesFile += "\n<font color='blue'>hashCode :</font><font color='green'>" + device.hashCode()+ "---</font>";
-                        mPairedTv.append("\n<font color='purple'>--------------------</font>");
-                        devicesFile += "\n<font color='purple'>--------------------</font>";
+                        mPairedTv.append("\n--- Device: " + device.getName()+ " ---");
+                        devicesFile += "\n--- Device: " + device.getName()+ " ---";
+                        mPairedTv.append("\nAddress : " + device.getAddress()+ " ---");
+                        devicesFile += "\nAddress : " + device.getAddress()+ " ---";
+                        mPairedTv.append("\nString : " + device.toString()+ " ---");
+                        devicesFile += "\nString : " + device.toString()+ " ---";
+                        mPairedTv.append("\nUuids : " + device.getUuids()+ " ---");
+                        devicesFile += "\nUuids : " + device.getUuids()+ " ---";
+                        mPairedTv.append("\nContents : " + device.describeContents()+ " ---");
+                        devicesFile += "\nContents : " + device.describeContents()+ " ---";
+                        mPairedTv.append("\nTime : " + Calendar.getInstance().getTime()+ " ---");
+                        devicesFile += "\nTime : " + Calendar.getInstance().getTime()+ " ---";
+                        mPairedTv.append("\nBondState : " + device.getBondState()+ " ---");
+                        devicesFile += "\nBondState : " + device.getBondState()+ " ---";
+                        mPairedTv.append("\nhashCode : " + device.hashCode()+ " ---");
+                        devicesFile += "\nhashCode : " + device.hashCode()+ " ---";
+                        mPairedTv.append("\n--------------------");
+                        devicesFile += "\n--------------------";
                         mPairedTv.append("\n");
                         devicesFile += "\n";
                     }
@@ -398,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
         }catch(Exception e){
             evt.setUriData(action);
         }
-        try{
+            try{
             evt.setHost(uriData.getHost());
         }catch(Exception e){
             evt.setHost(null);
@@ -537,7 +542,7 @@ public class MainActivity extends AppCompatActivity {
                 //Seteamos los devices para almacenar en la base de datos
                 device dev = new device();
                 dev.setId(contador);contador++;
-                dev.setTime(device.getName());
+                dev.setName(device.getName());
                 dev.setAddress(device.getAddress());
                 dev.setUUIDs(device.getUuids().toString());
                 dev.setContentDesc(String.valueOf(device.describeContents()));
@@ -545,9 +550,19 @@ public class MainActivity extends AppCompatActivity {
                 dev.setBonded(String.valueOf(device.getBondState()));
                 dev.setHashCode(String.valueOf(device.hashCode()));
 
-                //Almacenamos la info del dispositivo en la BD
+                //Instanciamos el dbHelper
                 devicesDBHelper dbHelper = new devicesDBHelper(getApplicationContext());
-                Long result = dbHelper.saveDevice(dev);
+                //Validamos que el dispositivo ya está en la BD
+                String args [] = new String[1];
+                args[0] = dev.getAddress();
+                Cursor c = dbHelper.getDevice(devicesContract.deviceEntry.tableName,null,devicesContract.deviceEntry.address+"=?",args,null,null,null);
+                if(c.getCount()<1){
+                    //Almacenamos la info del dispositivo en la BD
+                    Long result = dbHelper.saveDevice(dev);
+                }else{
+                    //Actualizamos el registro
+                    c = null;
+                }
             }
             boolean logger = writeLog(devicesFile, "devices.txt");
         }

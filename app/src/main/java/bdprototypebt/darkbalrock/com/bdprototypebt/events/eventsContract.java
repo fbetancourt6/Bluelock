@@ -3,7 +3,6 @@ package bdprototypebt.darkbalrock.com.bdprototypebt.events;
 import android.provider.BaseColumns;
 
 public class eventsContract {
-
     public static abstract class eventEntry implements BaseColumns{
         public static final String tableName = "events";
         public static final String id = "id";

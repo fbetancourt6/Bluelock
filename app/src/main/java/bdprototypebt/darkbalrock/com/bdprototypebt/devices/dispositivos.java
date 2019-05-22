@@ -35,12 +35,13 @@ public class dispositivos extends AppCompatActivity {
         volverBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if(limpiaDispositivos()){
-                    Intent intentMain = new Intent(dispositivos.this, MainActivity.class);
-                    startActivity(intentMain);
-                    setContentView(R.layout.activity_main);
-                    dispositivos.this.finish();
-                }
+                dispositivosFragment  fragment = (dispositivosFragment) getSupportFragmentManager().findFragmentById(R.id.content_dispositivos);
+                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+
+                Intent intentMain = new Intent(dispositivos.this, MainActivity.class);
+                startActivity(intentMain);
+                setContentView(R.layout.activity_main);
+                dispositivos.this.finish();
             }
         });
     }

@@ -5,72 +5,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollbars="vertical"
     android:orientation="vertical"
     android:weightSum="0"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_weight="4"
-        android:layout_width="match_parent"
-        android:layout_height="35px">
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="50dp">
 
             <!--Display whether bluetooth is available or not-->
             <TextView
                 android:id="@+id/statusBluetoothTv"
-                android:layout_width="300dp"
-                android:layout_height="80dp"
+                android:layout_width="245dp"
+                android:layout_height="43dp"
+                android:layout_marginTop="10dp"
                 android:text=""
                 android:textAlignment="center"
-                android:textSize="20sp"
-                android:textColor="#000"/>
+                android:textColor="#000"
+                android:textSize="18sp" />
 
             <!--Bluetooth icon (on/off)-->
             <ImageView
                 android:id="@+id/bluetoothIv"
-                android:layout_gravity="right"
-                android:layout_width="100dp"
-                android:layout_height="100dp"/>
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right" />
 
         </FrameLayout>
-    </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:background="@android:color/white"
-        android:layout_margin="0dp"
-        android:padding="0dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:padding="0dp">
 
         <!--On button-->
         <Button
             android:id="@+id/onBtn"
+            style="@style/Base.Widget.AppCompat.Button.Colored"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:background="#431F63"
-            android:textSize="20sp"
+            android:minWidth="135dp"
+            android:text="Encender"
             android:textColor="@android:color/white"
-            android:minWidth="150dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Turn On"
-            style="@style/Base.Widget.AppCompat.Button.Colored"/>
+            android:textSize="15sp" />
 
         <!--Off button-->
         <Button
             android:id="@+id/offBtn"
             style="@style/Base.Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
+            android:layout_width="101dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:background="#431F63"
-            android:minWidth="150dp"
-            android:text="Turn Off"
+            android:minWidth="135dp"
+            android:text="Apagar"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
+
+        <!--Discoverable button-->
+        <Button
+            android:id="@+id/discoverableBtn"
+            style="@style/Base.Widget.AppCompat.Button.Colored"
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="#431F63"
+            android:minWidth="135dp"
+            android:text="Buscar"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+
     </LinearLayout>
 
 
@@ -81,19 +91,6 @@
         android:padding="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <!--Discoverable button-->
-        <Button
-            android:id="@+id/discoverableBtn"
-            style="@style/Base.Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="#431F63"
-            android:minWidth="150dp"
-            android:text="Discoverable"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
 
         <!--Get list of paired devices button-->
         <Button
@@ -104,7 +101,7 @@
             android:layout_margin="16dp"
             android:background="#431F63"
             android:minWidth="150dp"
-            android:text="Get Paired Devices"
+            android:text="Dispositivos"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
@@ -118,45 +115,45 @@
             android:minWidth="200dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ver Logs"
+            android:text="Registro"
+            style="@style/Base.Widget.AppCompat.Button.Colored"/>
+
+        <!--Bloquear algún dispositivo-->
+        <Button
+            android:id="@+id/blockBtn"
+            android:layout_margin="16dp"
+            android:background="@android:color/holo_orange_dark"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:minWidth="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bloquear dispositivo"
             style="@style/Base.Widget.AppCompat.Button.Colored"/>
 
     </LinearLayout>
 
-    <!--Bloquear algún dispositivo-->
-    <Button
-        android:id="@+id/blockBtn"
-        android:layout_margin="16dp"
-        android:background="@android:color/holo_orange_dark"
-        android:textSize="20sp"
-        android:textColor="@android:color/white"
-        android:minWidth="200dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Block Some Device"
-        style="@style/Base.Widget.AppCompat.Button.Colored"/>
-
-
     <LinearLayout
-        android:orientation="vertical"
-        android:background="@android:color/white"
-        android:layout_margin="16dp"
-        android:padding="16dp"
-        android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="301dp"
+        android:layout_margin="16dp"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:scrollbars="vertical">
 
         <!--Show Paired Devices Here-->
 
         <TextView
             android:id="@+id/pairedTv"
+            android:layout_width="349dp"
+            android:layout_height="272dp"
             android:minWidth="200dp"
-            android:minHeight="200dp"
+            android:minHeight="80dp"
             android:scrollbars="vertical"
             android:text=""
             android:textColor="#000"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:gravity="bottom" />
     </LinearLayout>
 
 </LinearLayout>

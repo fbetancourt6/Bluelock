@@ -36,21 +36,8 @@ public class LogsActivity extends AppCompatActivity {
         mLogBT = findViewById(R.id.logTv);
         VerLogsBtn = findViewById(R.id.verLogsBtn);
         verLogBTABtn = findViewById(R.id.verLogBTABtn);
-        verLogDEVBtn = findViewById(R.id.verLogDEVBtn);
         volverBtn = findViewById(R.id.volverBtn);
         borrarLogsBtn = findViewById(R.id.borrarLogsBtn);
-
-        //ver Log DEVICES
-        verLogDEVBtn.setOnClickListener(new View.OnClickListener(){
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View v){
-                mLogBT.setText("");
-                mLogBT.append("\n---Log Devices Paired---");
-                mLogBT.setText(Html.fromHtml(readLog("devices.txt"),Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
-                mLogBT.setMovementMethod(new ScrollingMovementMethod());
-            }
-        });
 
         //ver Log BLUETOOTH ADAPTER
         verLogBTABtn.setOnClickListener(new View.OnClickListener(){
