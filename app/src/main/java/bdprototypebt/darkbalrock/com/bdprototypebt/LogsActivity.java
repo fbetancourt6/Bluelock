@@ -1,5 +1,6 @@
 package bdprototypebt.darkbalrock.com.bdprototypebt;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -21,12 +22,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Calendar;
+import java.util.Set;
 
 public class LogsActivity extends AppCompatActivity {
 
     public static final Object[] DATA_LOCK = new Object[0];
     TextView mLogBT;
-    Button VerLogsBtn, verLogBTABtn, verLogDEVBtn, volverBtn, borrarLogsBtn;
+    Button VerLogsBtn, verLogBTABtn,  volverBtn, borrarLogsBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,22 +42,24 @@ public class LogsActivity extends AppCompatActivity {
         volverBtn = findViewById(R.id.volverBtn);
         borrarLogsBtn = findViewById(R.id.borrarLogsBtn);
 
+        String devicesFile;
+
         //ver Log BLUETOOTH ADAPTER
-        verLogBTABtn.setOnClickListener(new View.OnClickListener(){
+        verLogBTABtn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 mLogBT.setText("");
                 mLogBT.append("\n---Log Bluetooth Adapter---");
-                mLogBT.setText(Html.fromHtml(readLog("BluetoothAdapter.txt"),Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
+                mLogBT.setText(Html.fromHtml(readLog("BluetoothAdapter.txt"), Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
                 mLogBT.setMovementMethod(new ScrollingMovementMethod());
             }
         });
 
         //borrar Logs BLUETOOTH
-        borrarLogsBtn.setOnClickListener(new View.OnClickListener(){
+        borrarLogsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Context context = getBaseContext();
                 boolean result = false;
                 File path = context.getExternalFilesDir(null);
@@ -62,8 +67,8 @@ public class LogsActivity extends AppCompatActivity {
                 File fileBluetoothAdapter = new File(path, "BluetoothAdapter.txt");
                 Writer out1 = null, out2 = null;
                 try {
-                    synchronized (DATA_LOCK){
-                        if(filedevices != null || fileBluetoothAdapter != null){
+                    synchronized (DATA_LOCK) {
+                        if (filedevices != null || fileBluetoothAdapter != null) {
                             filedevices.createNewFile();
                             fileBluetoothAdapter.createNewFile();
                             out1 = new BufferedWriter(new FileWriter(filedevices, false), 1024);
@@ -75,8 +80,7 @@ public class LogsActivity extends AppCompatActivity {
                             result = true;
                         }
                     }
-                }
-                catch (FileNotFoundException e) {
+                } catch (FileNotFoundException e) {
                     Log.e("logs activity", "File not found: " + e.toString());
                 } catch (IOException e) {
                     Log.e("logs activity", "Can not read file: " + e.toString());
@@ -85,9 +89,9 @@ public class LogsActivity extends AppCompatActivity {
         });
 
         //volver
-        volverBtn.setOnClickListener(new View.OnClickListener(){
+        volverBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent intentMain = new Intent(LogsActivity.this, MainActivity.class);
                 startActivity(intentMain);
                 setContentView(R.layout.activity_main);
@@ -96,7 +100,8 @@ public class LogsActivity extends AppCompatActivity {
         });
     }
 
-    //Escribe en el Log de app
+
+    //lee el Log de app
     public String readLog(String fileName){
         Context context = getBaseContext();
         File path = context.getExternalFilesDir(null);

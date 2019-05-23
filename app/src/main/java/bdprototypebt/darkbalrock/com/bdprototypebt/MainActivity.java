@@ -3,6 +3,7 @@ package bdprototypebt.darkbalrock.com.bdprototypebt;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -226,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intentLog = new Intent(MainActivity.this, LogsActivity.class);
                 startActivity(intentLog);
                 setContentView(R.layout.consulta_logs);
-
             }
         });
 
@@ -560,8 +560,7 @@ public class MainActivity extends AppCompatActivity {
                     //Almacenamos la info del dispositivo en la BD
                     Long result = dbHelper.saveDevice(dev);
                 }else{
-                    //Actualizamos el registro
-                    c = null;
+                    boolean update = dbHelper.updateDevice(dev);
                 }
             }
             boolean logger = writeLog(devicesFile, "devices.txt");

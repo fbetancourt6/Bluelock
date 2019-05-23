@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -88,6 +89,26 @@ public class devicesDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("delete from "+devicesContract.deviceEntry.tableName);
         db.close();
+    }
+
+    public boolean updateDevice(device device){
+        boolean result = false;
+        try {
+            ContentValues cv = new ContentValues();
+            cv.put(devicesContract.deviceEntry.name, device.getName());
+            cv.put(devicesContract.deviceEntry.UUIDs, device.getUUIDs());
+            cv.put(devicesContract.deviceEntry.contentDesc, device.getContentDesc());
+            cv.put(devicesContract.deviceEntry.name, device.getName());
+            cv.put(devicesContract.deviceEntry.time, device.getTime());
+            cv.put(devicesContract.deviceEntry.hashCode, device.getHashCode());
+
+            SQLiteDatabase db = getWritableDatabase();
+            db.update(devicesContract.deviceEntry.tableName, cv, devicesContract.deviceEntry.address + "=" + device.getAddress(), null);
+            result = true;
+        }catch (Exception e){
+            Log.e("deviceDBHelper", "Error actualizando Dispositivo: " + e.toString());
+        }
+        return result;
     }
 
 }
