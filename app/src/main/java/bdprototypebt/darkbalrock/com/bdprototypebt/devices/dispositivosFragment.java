@@ -32,12 +32,10 @@ public class dispositivosFragment extends Fragment {
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * Usamos este metodo factory para crear una nueva instancia de este fragmento.
      *
-     * @return A new instance of fragment dispositivosFragment.
+     * @return una nueva instancia de dispositivosFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static dispositivosFragment newInstance() {
         return new dispositivosFragment();
     }

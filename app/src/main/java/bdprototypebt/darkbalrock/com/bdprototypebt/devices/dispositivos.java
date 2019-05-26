@@ -1,5 +1,8 @@
 package bdprototypebt.darkbalrock.com.bdprototypebt.devices;
-
+/**
+ * Actividad de listado de dispositivos
+ *
+ * */
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -55,7 +58,7 @@ public class dispositivos extends AppCompatActivity {
             dbHelper.deleteDevices();
             result = true;
         }catch(Exception e){
-            Log.e("dispositivos activity", "Limpiamos la BD de dispositivos: " + e.toString());
+            Log.e("dispositivos activity", "Limpiando la BD de dispositivos: " + e.toString());
         }
         return result;
     }

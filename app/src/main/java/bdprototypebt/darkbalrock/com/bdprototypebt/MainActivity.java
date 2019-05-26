@@ -374,6 +374,7 @@ public class MainActivity extends AppCompatActivity {
                 log += logAdapter(uriData,evento);
                 evt.setEventLog(evento);
                 dbHelper.saveEvent(evt);
+                logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothAdapter.ACTION_FOUND";
             }
             if(action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
@@ -381,6 +382,7 @@ public class MainActivity extends AppCompatActivity {
                 evento = "<font color='green'>BluetoothDevice.ACTION_ACL_CONNECTED";
                 evt.setEventLog(evento);
                 dbHelper.saveEvent(evt);
+                logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED;
             }
             if(action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
@@ -388,6 +390,7 @@ public class MainActivity extends AppCompatActivity {
                 evento = "<font color='green'>BluetoothDevice.ACTION_ACL_DISCONNECTED";
                 evt.setEventLog(evento);
                 dbHelper.saveEvent(evt);
+                logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_DISCONNECTED;
             }
         }
@@ -499,6 +502,7 @@ public class MainActivity extends AppCompatActivity {
             dev.setBonded(d.getString(d.getColumnIndex(devicesContract.deviceEntry.bonded)));
             dev.setUUIDs(d.getString(d.getColumnIndex(devicesContract.deviceEntry.UUIDs)));
             dev.setHashCode(d.getString(d.getColumnIndex(devicesContract.deviceEntry.hashCode)));
+            dev.setBloqueado(d.getString(d.getColumnIndex(devicesContract.deviceEntry.bloqueado)));
             devicesBT.add(dev);
         }
         return devicesBT;

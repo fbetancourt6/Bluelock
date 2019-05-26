@@ -1,4 +1,8 @@
 package bdprototypebt.darkbalrock.com.bdprototypebt.devices;
+/*
+* Clase devicesDBHelper
+* Artefacto de acceso y manipulacion de la BD dispositivos
+* */
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,16 +11,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.util.ArrayList;
-
 public class devicesDBHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "devices.db";
+    public static final int DATABASE_VERSION = 2;
+    public static final String DATABASE_NAME = "devices3.db";
 
+    //Instanciamos la clase SQLiteOpenHelper
     public devicesDBHelper (Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /*
+    * Creamos la tabla de dispositivos
+    * */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase){
         //Create Table
@@ -30,6 +36,7 @@ public class devicesDBHelper extends SQLiteOpenHelper {
                 + devicesContract.deviceEntry.time + " TEXT, "
                 + devicesContract.deviceEntry.bonded + " TEXT, "
                 + devicesContract.deviceEntry.hashCode + " TEXT, "
+                + devicesContract.deviceEntry.bloqueado + " TEXT, "
                 + " UNIQUE ("+devicesContract.deviceEntry.address+")"
                 + ")");
     }
@@ -39,6 +46,9 @@ public class devicesDBHelper extends SQLiteOpenHelper {
 
     }
 
+    /*
+    * Genera un artefacto ContentValues para manipular la BD
+    * */
     public ContentValues toContentValues(device device){
         ContentValues values = new ContentValues();
         values.put(devicesContract.deviceEntry.ID, device.getId());
@@ -49,9 +59,13 @@ public class devicesDBHelper extends SQLiteOpenHelper {
         values.put(devicesContract.deviceEntry.time, device.getTime());
         values.put(devicesContract.deviceEntry.bonded, device.getBonded());
         values.put(devicesContract.deviceEntry.hashCode, device.getHashCode());
+        values.put(devicesContract.deviceEntry.bloqueado, device.getBloqueado());
         return values;
     }
 
+    /*
+    * Guarda un dispositivo en la BD
+    * */
     public long saveDevice(device device){
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
@@ -60,6 +74,9 @@ public class devicesDBHelper extends SQLiteOpenHelper {
                                             toContentValues(device));
     }
 
+    /*
+    * Consulta un dispositivo y retorna un Cursor
+    * */
     public Cursor getDevice(String tabla, String[] columnas, String selection, String[] selectionArgs, String groupBy, String having, String orderBy){
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         Cursor c = sqLiteDatabase.query(
@@ -74,6 +91,9 @@ public class devicesDBHelper extends SQLiteOpenHelper {
         return c;
     }
 
+    /*
+     * Consulta todos los dispositivos y retorna un Cursor
+     * */
     public Cursor getDevices(){
         String tabla = devicesContract.deviceEntry.tableName,
                 selection = null,
@@ -85,12 +105,20 @@ public class devicesDBHelper extends SQLiteOpenHelper {
         return d;
     }
 
+
+    /*
+     * Elimina todos los dispositivos
+     * */
     public void deleteDevices(){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("delete from "+devicesContract.deviceEntry.tableName);
         db.close();
     }
 
+
+    /*
+     * Actualiza un dispositivo y retorna un boleano
+     * */
     public boolean updateDevice(device device){
         boolean result = false;
         try {
@@ -103,12 +131,54 @@ public class devicesDBHelper extends SQLiteOpenHelper {
             cv.put(devicesContract.deviceEntry.hashCode, device.getHashCode());
 
             SQLiteDatabase db = getWritableDatabase();
-            db.update(devicesContract.deviceEntry.tableName, cv, devicesContract.deviceEntry.address + "=" + device.getAddress(), null);
+            db.update(devicesContract.deviceEntry.tableName, cv, devicesContract.deviceEntry.address + "= '" + device.getAddress()+"'", null);
             result = true;
         }catch (Exception e){
             Log.e("deviceDBHelper", "Error actualizando Dispositivo: " + e.toString());
         }
         return result;
+    }
+
+    /*
+     * Valida el estado del dispositivo y actualiza la columna bloqueado
+     * */
+    public boolean blockDevice(device dev){
+        boolean result = false;
+        String estado = "bloqueado";
+        try {
+            String args [] = new String[1];
+            args[0] = dev.getAddress();
+            Cursor cursor = this.getDevice(devicesContract.deviceEntry.tableName,null,devicesContract.deviceEntry.address+"=?",args,null,null,null);
+            if (cursor.getCount() > 0){
+                cursor.moveToFirst();
+                String bloqueado = cursor.getString(cursor.getColumnIndex(devicesContract.deviceEntry.bloqueado));
+                if(bloqueado == null){
+                    estado = "bloqueado";
+                }
+                else if(bloqueado.equals("bloqueado")) {
+                    estado = "desbloqueado";
+                }
+            }else{
+                Log.e("deviceDBHelper", "Error bloqueando Dispositivo no emparejado:"+dev.getAddress() );
+            }
+            ContentValues cv = new ContentValues();
+            cv.put(devicesContract.deviceEntry.bloqueado, estado);
+            SQLiteDatabase db = getWritableDatabase();
+            db.update(devicesContract.deviceEntry.tableName, cv, devicesContract.deviceEntry.address + "='" + dev.getAddress()+"'", null);
+            result = true;
+        }catch (Exception e){
+            Log.e("deviceDBHelper", "Error bloqueando Dispositivo: " + e.toString());
+        }
+        return result;
+    }
+
+    /*
+    * Generar una consulta rapida retornando un cursor
+    * */
+    public Cursor raw(String query){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = db.rawQuery(query, null);
+        return c;
     }
 
 }

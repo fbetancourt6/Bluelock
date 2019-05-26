@@ -42,8 +42,6 @@ public class LogsActivity extends AppCompatActivity {
         volverBtn = findViewById(R.id.volverBtn);
         borrarLogsBtn = findViewById(R.id.borrarLogsBtn);
 
-        String devicesFile;
-
         //ver Log BLUETOOTH ADAPTER
         verLogBTABtn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -99,7 +97,6 @@ public class LogsActivity extends AppCompatActivity {
             }
         });
     }
-
 
     //lee el Log de app
     public String readLog(String fileName){
