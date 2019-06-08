@@ -15,11 +15,6 @@ import android.widget.ListView;
 
 import bdprototypebt.darkbalrock.com.bdprototypebt.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link dispositivosFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class dispositivosFragment extends Fragment {
 
     private devicesDBHelper mDevDbHelper;

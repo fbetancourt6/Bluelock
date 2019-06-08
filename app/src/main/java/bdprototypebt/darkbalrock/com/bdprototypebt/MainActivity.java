@@ -2,6 +2,7 @@ package bdprototypebt.darkbalrock.com.bdprototypebt;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -29,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Set;
@@ -281,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
             String evento = "";
-
+            boolean bloqueo = false;
             final Uri uriData = intent.getData();
             event evt = validaUri(uriData, action);
 
@@ -314,6 +316,22 @@ public class MainActivity extends AppCompatActivity {
                     case BluetoothAdapter.STATE_CONNECTING:
                         evento = "<font color='purple'>BluetoothAdapter.STATE_CONNECTING";
                         log += logAdapter(uriData,evento);
+                        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                        bloqueo = validaBloqueo(device.getAddress());
+                        if(bloqueo){
+                            BluetoothSocket socket  = null;
+                            Method m;
+                            try {
+                                m = device.getClass().getMethod("createRfcommSocket", new Class[]{int.class});
+                                socket = (BluetoothSocket)m.invoke(device, Integer.valueOf(1));
+                                socket.close();
+                                evento = "<font color='red'>Dispositivo Bloqueado: "+device.getAddress()+"; "+device.getName();
+                                log += logAdapter(uriData,evento);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                break;
+                            }
+                        }
                         break;
                     case BluetoothAdapter.STATE_CONNECTED:
                         evento = "<font color='green'>BluetoothAdapter.STATE_CONNECTED";
@@ -376,6 +394,7 @@ public class MainActivity extends AppCompatActivity {
                 dbHelper.saveEvent(evt);
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothAdapter.ACTION_FOUND";
+                showToast(showToastLog);
             }
             if(action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
                 log += logAdapter(uriData,"BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED);
@@ -384,6 +403,7 @@ public class MainActivity extends AppCompatActivity {
                 dbHelper.saveEvent(evt);
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED;
+                showToast(showToastLog);
             }
             if(action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
                 log += logAdapter(uriData,"BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_DISCONNECTED);
@@ -392,6 +412,7 @@ public class MainActivity extends AppCompatActivity {
                 dbHelper.saveEvent(evt);
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_DISCONNECTED;
+                showToast(showToastLog);
             }
         }
     };
@@ -573,5 +594,19 @@ public class MainActivity extends AppCompatActivity {
             //BT is off so can't get paired devices
             showToast("Inicia Bluetooth para obtener los dispositivos emparejados.");
         }
+    }
+
+    public boolean validaBloqueo(String val){
+        boolean result = false;
+        devicesDBHelper dbHelper = new devicesDBHelper(getApplicationContext());
+        Cursor c = dbHelper.raw("SELECT "+devicesContract.deviceEntry.bloqueado+" FROM "+devicesContract.deviceEntry.tableName+" WHERE "+devicesContract.deviceEntry.address+" = "+val+" OR "+devicesContract.deviceEntry.name+" = "+val);
+        if(c!=null && c.getCount()>0){
+            c.moveToFirst();
+            String bloqueado = c.getString(c.getColumnIndex(devicesContract.deviceEntry.bloqueado));
+            if(bloqueado.equals("bloqueado")) {
+                result = true;
+            }
+        }
+        return result;
     }
 }

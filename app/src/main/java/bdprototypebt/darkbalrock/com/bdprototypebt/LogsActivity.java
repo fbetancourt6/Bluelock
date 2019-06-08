@@ -1,6 +1,5 @@
 package bdprototypebt.darkbalrock.com.bdprototypebt;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -22,8 +21,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Calendar;
-import java.util.Set;
 
 public class LogsActivity extends AppCompatActivity {
 
