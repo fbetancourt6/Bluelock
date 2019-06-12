@@ -3,11 +3,13 @@ package bdprototypebt.darkbalrock.com.bdprototypebt.GattServer;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattServer;
 import android.bluetooth.BluetoothGattServerCallback;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseData;
 import android.bluetooth.le.AdvertiseSettings;
@@ -26,6 +28,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import android.text.format.DateFormat;
+
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -202,7 +206,7 @@ public class BTGattServer extends Activity {
                 .addServiceUuid(new ParcelUuid(TimeProfile.TIME_SERVICE))
                 .build();
         btLeAdvertiser.startAdvertising(settings,data,btLeAdvertiserCallBack);
- 
+
     }
 
     /*
@@ -293,7 +297,7 @@ public class BTGattServer extends Activity {
     }
 
     /*
-    * Retorno de llamada para manejar las solicitudes entrantes al servidor GATT.
+    * Retorno de llamada para manejo de las solicitudes entrantes al servidor GATT.
     * Todas las solicitudes de lectura / escritura de características y descriptores se manejan aquí.
     * */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2|Build.VERSION_CODES.LOLLIPOP)
@@ -301,11 +305,42 @@ public class BTGattServer extends Activity {
         @Override
         public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
             super.onConnectionStateChange(device, status, newState);
+            if(newState == BluetoothProfile.STATE_CONNECTED){
+                Log.i(TAG,"BluetoothDevice CONNECTED: "+device);
+            }else if(newState == BluetoothProfile.STATE_DISCONNECTED){
+                Log.i(TAG, "BluetoothDevice DISCONNECTED: "+device);
+                //Quitamos el dispositivo de las subscripciones activas
+                registerDevices.remove(device);
+            }
         }
 
         @Override
         public void onCharacteristicReadRequest(BluetoothDevice device, int requestId, int offset, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicReadRequest(device, requestId, offset, characteristic);
+            long now = System.currentTimeMillis();
+            if(TimeProfile.CURRENT_TIME.equals(characteristic.getUuid())){
+                Log.i(TAG,"Lee CurrentTime");
+                btGattServer.sendResponse(device,
+                        requestId,
+                        BluetoothGatt.GATT_SUCCESS,
+                        0,
+                        TimeProfile.getExactTime(now, TimeProfile.ADJUST_NONE));
+            }else if(TimeProfile.LOCAL_TIME_INFO.equals(characteristic.getUuid())){
+                Log.i(TAG, "Lee LocalTimeInfo");
+                btGattServer.sendResponse(device,
+                        requestId,
+                        BluetoothGatt.GATT_SUCCESS,
+                        0,
+                        TimeProfile.getLocalTimeInfo(now));
+            }else{
+                //Caracteristica no validada
+                Log.w(TAG,"Invalid Characteristic Read: "+characteristic.getUuid());
+                btGattServer.sendResponse(device,
+                        requestId,
+                        BluetoothGatt.GATT_FAILURE,
+                        0,
+                        null);
+            }
         }
 
         @Override
@@ -316,11 +351,60 @@ public class BTGattServer extends Activity {
         @Override
         public void onDescriptorReadRequest(BluetoothDevice device, int requestId, int offset, BluetoothGattDescriptor descriptor) {
             super.onDescriptorReadRequest(device, requestId, offset, descriptor);
+            if(TimeProfile.CLIENT_CONFIG.equals(descriptor.getUuid())){
+                Log.d(TAG,"lectura de congif descriptor");
+                byte[] returnValue;
+                if(registerDevices.contains(device)){
+                    returnValue = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE;
+                }else{
+                    returnValue = BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE;
+                }
+                btGattServer.sendResponse(device,
+                        requestId,
+                        BluetoothGatt.GATT_FAILURE,
+                        0,
+                        returnValue);
+            }else{
+                Log.w(TAG,"Lectura de descriptor desconocida");
+                btGattServer.sendResponse(device,
+                        requestId,
+                        BluetoothGatt.GATT_FAILURE,
+                        0,
+                        null);
+            }
         }
 
         @Override
         public void onDescriptorWriteRequest(BluetoothDevice device, int requestId, BluetoothGattDescriptor descriptor, boolean preparedWrite, boolean responseNeeded, int offset, byte[] value) {
             super.onDescriptorWriteRequest(device, requestId, descriptor, preparedWrite, responseNeeded, offset, value);
+            if(TimeProfile.CLIENT_CONFIG.equals(descriptor.getUuid())){
+                if(Arrays.equals(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE,value)){
+                    Log.d(TAG,"Suscribe el dispositivo: "+device);
+                    registerDevices.add(device);
+                }else if(Arrays.equals(BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE,value)){
+                    Log.d(TAG,"DesSuscribe el dispositivo: "+device);
+                    registerDevices.remove(device);
+                }
+
+                if(responseNeeded){
+                    btGattServer.sendResponse(device,
+                            requestId,
+                            BluetoothGatt.GATT_FAILURE,
+                            0,
+                            null);
+
+                }
+            }else{
+                Log.w(TAG,"Solicitud de escritura desconocida ");
+                if(responseNeeded){
+                    btGattServer.sendResponse(device,
+                            requestId,
+                            BluetoothGatt.GATT_FAILURE,
+                            0,
+                            null);
+
+                }
+            }
         }
     };
 }
