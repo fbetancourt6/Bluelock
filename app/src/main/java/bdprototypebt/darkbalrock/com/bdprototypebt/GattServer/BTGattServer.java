@@ -24,7 +24,9 @@ import android.os.Bundle;
 import android.os.ParcelUuid;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import android.text.format.DateFormat;
@@ -34,6 +36,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import bdprototypebt.darkbalrock.com.bdprototypebt.LogsActivity;
+import bdprototypebt.darkbalrock.com.bdprototypebt.MainActivity;
 import bdprototypebt.darkbalrock.com.bdprototypebt.R;
 
 public class BTGattServer extends Activity {
@@ -42,6 +46,7 @@ public class BTGattServer extends Activity {
 
     /*Local UI*/
     private TextView localTimeView;
+    Button volverBtn;
     /*BT API*/
     private BluetoothManager btManager;
     private BluetoothGattServer btGattServer;
@@ -53,8 +58,9 @@ public class BTGattServer extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); //activity server
-        localTimeView = (TextView) findViewById(R.id.blockBtn); // Text Time
+        setContentView(R.layout.gatt_server); //activity server
+        localTimeView = (TextView) findViewById(R.id.text_time); // Text Time
+        volverBtn = findViewById(R.id.volverBtn);
 
         //Los dispositivos con pantalla no deben irse a dormir.
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -78,6 +84,17 @@ public class BTGattServer extends Activity {
             startAdvertising();
             startServer();
         }
+
+        //volver
+        volverBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentMain = new Intent(BTGattServer.this, MainActivity.class);
+                startActivity(intentMain);
+                setContentView(R.layout.activity_main);
+                BTGattServer.this.finish();
+            }
+        });
     }
 
     @Override
