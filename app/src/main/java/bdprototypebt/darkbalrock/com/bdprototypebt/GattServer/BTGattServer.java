@@ -167,18 +167,17 @@ public class BTGattServer extends Activity {
             switch(intent.getAction()){
                 case Intent.ACTION_TIME_CHANGED:
                     adjustReason = TimeProfile.ADJUST_MANUAL;
-                    log = "ACTION_TIME_CHANGED: ADJUST_MANUAL";
+                    log = "<font color='blue'>ACTION_TIME_CHANGED: ADJUST_MANUAL</font>";
                     logger = ma.writeLog(log, "BluetoothAdapter.txt");
                     break;
                 case Intent.ACTION_TIMEZONE_CHANGED:
                     adjustReason = TimeProfile.ADJUST_TIMEZONE;
-                    log = "BluetoothAdapter.STATE_ON";
-                    log = "ACTION_TIME_CHANGED: ADJUST_TIMEZONE";
+                    log = "<font color='blue'>ACTION_TIME_CHANGED: ADJUST_TIMEZONE</font>";
                     logger = ma.writeLog(log, "BluetoothAdapter.txt");
                     break;
                 case Intent.ACTION_TIME_TICK:
                     adjustReason = TimeProfile.ADJUST_NONE;
-                    log = "ACTION_TIME_CHANGED: ADJUST_NONE";
+                    log = "<font color='blue'>ACTION_TIME_CHANGED: ADJUST_NONE</font>";
                     logger = ma.writeLog(log, "BluetoothAdapter.txt");
                     break;
             }
@@ -228,7 +227,7 @@ public class BTGattServer extends Activity {
         btLeAdvertiser = btAdapter.getBluetoothLeAdvertiser();
         if(btLeAdvertiser == null){
             Log.w(TAG, "Fallo al crear Advertiser");
-            String log = "Fallo al crear Advertiser";
+            String log = "<font color='red'>Fallo al crear Advertiser</font>";
             boolean logger = ma.writeLog(log, "BluetoothAdapter.txt");
             return;
         }
@@ -265,7 +264,7 @@ public class BTGattServer extends Activity {
         btGattServer = btManager.openGattServer(this,btGattServerCallBack);
         if(btGattServer==null){
             Log.w(TAG,"No se ha podido crear el GATT Server");
-            String log = "No se ha podido crear el GATT Server";
+            String log = "<font color='red'>No se ha podido crear el GATT Server</font>";
             boolean logger = ma.writeLog(log, "BluetoothAdapter.txt");
             return;
         }
@@ -283,7 +282,7 @@ public class BTGattServer extends Activity {
         if(btGattServer == null) return;
 
         btGattServer.close();
-        String log = "stop GATT Server.";
+        String log = "<font color='purple'>stop GATT Server.</font>";
         boolean logger = ma.writeLog(log, "BluetoothAdapter.txt");
     }
 
@@ -296,7 +295,7 @@ public class BTGattServer extends Activity {
         public void onStartSuccess(AdvertiseSettings settingsInEffect) {
             super.onStartSuccess(settingsInEffect);
             Log.i(TAG, "LE Advertise Started.");
-            String log = "LE Advertise Started.";
+            String log = "<font color='blue'>LE Advertise Started.</font>";
             boolean logger = ma.writeLog(log, "BluetoothAdapter.txt");
         }
 
@@ -304,7 +303,7 @@ public class BTGattServer extends Activity {
         public void onStartFailure(int errorCode) {
             super.onStartFailure(errorCode);
             Log.w(TAG, "LE Advertise Failed: "+errorCode);
-            String log = "LE Advertise Failed: "+errorCode;
+            String log = "<font color='red'>LE Advertise Failed: "+errorCode+"</font>";
             boolean logger = ma.writeLog(log, "BluetoothAdapter.txt");
         }
     };
@@ -317,13 +316,13 @@ public class BTGattServer extends Activity {
     private void notifyRegisteredDevices(long timestamp, byte adjustReason){
         if(registerDevices.isEmpty()){
             Log.i(TAG, "No hay dispositivos suscritos");
-            String log = "No hay dispositivos suscritos";
+            String log = "<font color='purple'>No hay dispositivos suscritos</font>";
             boolean logger = ma.writeLog(log, "BluetoothAdapter.txt");
             return;
         }
         byte[] exactTime = TimeProfile.getExactTime(timestamp, adjustReason);
         Log.i(TAG, "Enviando actualizacion a "+registerDevices.size()+" suscritpos");
-        String log = "Enviando actualizacion a "+registerDevices.size()+" suscritpos";
+        String log = "<font color='purple'>Enviando actualizacion a "+registerDevices.size()+" suscritpos</font>";
         boolean logger = ma.writeLog(log, "BluetoothAdapter.txt");
         for(BluetoothDevice device : registerDevices){
             BluetoothGattCharacteristic timeCharacteristic = btGattServer
@@ -371,8 +370,7 @@ public class BTGattServer extends Activity {
                         m = device.getClass().getMethod("createRfcommSocket", new Class[]{int.class});
                         socket = (BluetoothSocket)m.invoke(device, Integer.valueOf(1));
                         socket.close();
-                        String evento = "<font color='red'>Dispositivo Bloqueado: "+device.getAddress()+"; "+device.getName();
-                        log = "Dispositivo Bloqueado: "+device.getAddress()+"-"+device.getName();
+                        log = "<font color='red'>Dispositivo Bloqueado: "+device.getAddress()+"-"+device.getName()+"</font>";
                         logger = ma.writeLog(log, "BluetoothAdapter.txt");
                         showToast("Dispositivo bloqueado! "+device.getAddress()+" : "+ device.getName());
                     } catch (Exception e) {
@@ -384,7 +382,7 @@ public class BTGattServer extends Activity {
                 logger = ma.writeLog(log, "BluetoothAdapter.txt");
             }else if(newState == BluetoothProfile.STATE_DISCONNECTED){
                 Log.i(TAG, "BluetoothDevice DISCONNECTED: "+device);
-                log = "BluetoothDevice DISCONNECTED: "+device;
+                log = "<font color='red'>BluetoothDevice DISCONNECTED: "+device+"</font>";
                 logger = ma.writeLog(log, "BluetoothAdapter.txt");
                 //Quitamos el dispositivo de las subscripciones activas
                 registerDevices.remove(device);
@@ -398,7 +396,7 @@ public class BTGattServer extends Activity {
             String log = ""; boolean logger = false;
             if(TimeProfile.CURRENT_TIME.equals(characteristic.getUuid())){
                 Log.i(TAG,"Lee CurrentTime");
-                log = "TimeProfile.CURRENT_TIME: "+device;
+                log = "<font color='blue'>TimeProfile.CURRENT_TIME: "+device+"</font>";
                 logger = ma.writeLog(log, "BluetoothAdapter.txt");
                 btGattServer.sendResponse(device,
                         requestId,
@@ -407,7 +405,7 @@ public class BTGattServer extends Activity {
                         TimeProfile.getExactTime(now, TimeProfile.ADJUST_NONE));
             }else if(TimeProfile.LOCAL_TIME_INFO.equals(characteristic.getUuid())){
                 Log.i(TAG, "Lee LocalTimeInfo");
-                log = "TimeProfile.LOCAL_TIME_INFO: "+device;
+                log = "<font color='blue'>TimeProfile.LOCAL_TIME_INFO: "+device+"</font>";
                 logger = ma.writeLog(log, "BluetoothAdapter.txt");
                 btGattServer.sendResponse(device,
                         requestId,
@@ -417,7 +415,7 @@ public class BTGattServer extends Activity {
             }else{
                 //Caracteristica no validada
                 Log.w(TAG,"Invalid Characteristic Read: "+characteristic.getUuid());
-                log = "Invalid Characteristic Read: "+characteristic.getUuid();
+                log = "<font color='red'>Invalid Characteristic Read: "+characteristic.getUuid()+"</font>";
                 logger = ma.writeLog(log, "BluetoothAdapter.txt");
                 btGattServer.sendResponse(device,
                         requestId,
@@ -439,7 +437,7 @@ public class BTGattServer extends Activity {
             boolean logger = false;
             if(TimeProfile.CLIENT_CONFIG.equals(descriptor.getUuid())){
                 Log.d(TAG,"lectura de congif descriptor");
-                log = "TimeProfile.CLIENT_CONFIG.: "+descriptor.getUuid();
+                log = "<font color='blue'>TimeProfile.CLIENT_CONFIG.: "+descriptor.getUuid()+"</font>";
                 logger = ma.writeLog(log, "BluetoothAdapter.txt");
                 byte[] returnValue;
                 if(registerDevices.contains(device)){
@@ -454,7 +452,7 @@ public class BTGattServer extends Activity {
                         returnValue);
             }else{
                 Log.w(TAG,"Lectura de descriptor desconocida");
-                log = "Lectura de descriptor desconocida"+descriptor.getUuid();
+                log = "<font color='red'>Lectura de descriptor desconocida"+descriptor.getUuid()+"</font>";
                 logger = ma.writeLog(log, "BluetoothAdapter.txt");
                 btGattServer.sendResponse(device,
                         requestId,
@@ -472,12 +470,12 @@ public class BTGattServer extends Activity {
             if(TimeProfile.CLIENT_CONFIG.equals(descriptor.getUuid())){
                 if(Arrays.equals(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE,value)){
                     Log.d(TAG,"Suscribe el dispositivo: "+device);
-                    log = "TimeProfile.CLIENT_CONFIG: "+descriptor.getUuid();
+                    log = "<font color='blue'>TimeProfile.CLIENT_CONFIG: "+descriptor.getUuid()+"</font>";
                     logger = ma.writeLog(log, "BluetoothAdapter.txt");
                     registerDevices.add(device);
                 }else if(Arrays.equals(BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE,value)){
                     Log.d(TAG,"DesSuscribe el dispositivo: "+device);
-                    log = "DISABLE_NOTIFICATION_VALUE: "+descriptor.getUuid();
+                    log = "<font color='purple'>DISABLE_NOTIFICATION_VALUE: "+descriptor.getUuid()+"</font>";
                     logger = ma.writeLog(log, "BluetoothAdapter.txt");
                     registerDevices.remove(device);
                 }
@@ -492,7 +490,7 @@ public class BTGattServer extends Activity {
                 }
             }else{
                 Log.w(TAG,"Solicitud de escritura desconocida ");
-                log = "\"Solicitud de escritura desconocida : "+descriptor.getUuid();
+                log = "<font color='red'>Solicitud de escritura desconocida : "+descriptor.getUuid()+"</font>";
                 logger = ma.writeLog(log, "BluetoothAdapter.txt");
                 if(responseNeeded){
                     btGattServer.sendResponse(device,
