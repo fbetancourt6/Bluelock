@@ -327,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
                                 socket.close();
                                 evento = "<font color='red'>Dispositivo Bloqueado: "+device.getAddress()+"; "+device.getName();
                                 log += logAdapter(uriData,evento);
+                                showToast("Dispositivo bloqueado! "+device.getAddress()+" : "+ device.getName());
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 break;
