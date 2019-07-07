@@ -34,7 +34,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Set;
+import java.util.UUID;
 
+import bdprototypebt.darkbalrock.com.bdprototypebt.GattServer.BTGattServer;
+import bdprototypebt.darkbalrock.com.bdprototypebt.GattServer.ManageConnectThread;
+import bdprototypebt.darkbalrock.com.bdprototypebt.GattServer.ServerConnectThread;
 import bdprototypebt.darkbalrock.com.bdprototypebt.devices.device;
 import bdprototypebt.darkbalrock.com.bdprototypebt.devices.devicesContract;
 import bdprototypebt.darkbalrock.com.bdprototypebt.devices.devicesDBHelper;
@@ -52,12 +56,13 @@ public class MainActivity extends AppCompatActivity {
     String devicesFile;
 
     TextView mStatusBlueTv, mPairedTv, mLogBT;
-    Button OnBtn, OffBtn, DiscoverBtn, PairedBtn, BlockBtn, VerLogsBtn, verLogBTABtn, verLogDEVBtn;
+    Button OnBtn, OffBtn, DiscoverBtn, PairedBtn, BlockBtn, VerLogsBtn, verLogBTABtn, gattBtn;
 
     BluetoothAdapter mBlueAdapter;
     final ArrayAdapter<String> BTArrayAdapter = null;
 
     ImageView mBlueIv;
+    private BluetoothSocket bTSocket;
 
     @Override
     protected void onStop(){
@@ -94,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         BlockBtn = findViewById(R.id.blockBtn);
         VerLogsBtn = findViewById(R.id.verLogsBtn);
         verLogBTABtn = findViewById(R.id.verLogBTABtn);
+        gattBtn = findViewById(R.id.gattBtn);
 
         //adapter
         mBlueAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -232,6 +238,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //GattServer
+        gattBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentGatt = new Intent(MainActivity.this, BTGattServer.class);
+                startActivity(intentGatt);
+                setContentView(R.layout.gatt_server);
+            }
+        });
+
     }
 
     //Eliminamos el BroadcastReceiver al finalizar
@@ -250,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean writeLog(String toWrite, String fileName){
         Context context = getBaseContext();
         boolean result = false;
+        toWrite += toWrite+"\n";
         File path = context.getExternalFilesDir(null);
         File file = new File(path, fileName);
         Writer out = null;
@@ -270,9 +287,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         catch (FileNotFoundException e) {
-            Log.e("Main activity", "File not found: " + e.toString());
+            Log.e("Main activity", "Archivo no encontrado: " + e.toString());
         } catch (IOException e) {
-            Log.e("Main activity", "Can not read file: " + e.toString());
+            Log.e("Main activity", "No se ha podido leer el archivo: " + e.toString());
         }
         return result;
     }
@@ -318,21 +335,31 @@ public class MainActivity extends AppCompatActivity {
                         log += logAdapter(uriData,evento);
                         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                         bloqueo = validaBloqueo(device.getAddress());
+                        UUID uuid = UUID.randomUUID();
                         if(bloqueo){
-                            BluetoothSocket socket  = null;
-                            Method m;
                             try {
-                                m = device.getClass().getMethod("createRfcommSocket", new Class[]{int.class});
-                                socket = (BluetoothSocket)m.invoke(device, Integer.valueOf(1));
-                                socket.close();
-                                evento = "<font color='red'>Dispositivo Bloqueado: "+device.getAddress()+"; "+device.getName();
+                                connectarBTDev(device, uuid);
+                                cancelarBTConn();
+                                evento = "<font color='red'>Dispositivo Bloqueado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
                                 log += logAdapter(uriData,evento);
-                                showToast("Dispositivo bloqueado! "+device.getAddress()+" : "+ device.getName());
+                                showToast("Dispositivo bloqueado ("+uuid+") : "+device.getAddress()+" : "+ device.getName());
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 break;
                             }
+                        }else{
+                            ServerConnectThread sct = new ServerConnectThread();
+                            ManageConnectThread mct = new ManageConnectThread();
+                            sct.acceptConnect(mBlueAdapter,uuid);
+                            try {
+                                int i = mct.receiveData(bTSocket);
+                                evento = "<font color='green'>Dispositivo Conectado ("+uuid+"): "+device.getAddress()+"; "+device.getName() +" Data: "+i;
+                            }catch(Exception e){
+                                e.printStackTrace();
+                                evento = "<font color='red'>Error de lectura ("+uuid+"): "+device.getAddress()+"; "+device.getName();
+                            }
                         }
+                        log += logAdapter(uriData,evento);
                         break;
                     case BluetoothAdapter.STATE_CONNECTED:
                         evento = "<font color='green'>BluetoothAdapter.STATE_CONNECTED";
@@ -609,5 +636,37 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return result;
+    }
+
+    public boolean connectarBTDev(BluetoothDevice bTDevice, UUID mUUID) {
+        BluetoothSocket temp = null;
+        try {
+            temp = bTDevice.createRfcommSocketToServiceRecord(mUUID);
+        } catch (IOException e) {
+            Log.d("connectarBTDev","No se ha podido crear el RFCOMM socket:" + e.toString());
+            return false;
+        }
+        try {
+            bTSocket.connect();
+        } catch(IOException e) {
+            Log.d("connectarBTDev","No se ha podido conectar: " + e.toString());
+            try {
+                bTSocket.close();
+            } catch(IOException close) {
+                Log.d("connectarBTDev", "No se ha cerrado la conexión:" + e.toString());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean cancelarBTConn() {
+        try {
+            bTSocket.close();
+        } catch(IOException e) {
+            Log.d("cancelarBTConn","No se pudo cerrar la conexión:" + e.toString());
+            return false;
+        }
+        return true;
     }
 }

@@ -31,8 +31,10 @@
         <activity
             android:name=".devices.dispositivos"
             android:label="@string/title_activity_dispositivos"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".GattServer.BTGattServer"
+            android:label="GattServer" />
     </application>
 
 </manifest>

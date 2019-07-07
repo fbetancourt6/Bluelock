@@ -30,4 +30,12 @@
         android:gravity="center"
         android:textSize="56dp"
         tools:text="01/01/1970\n12:00" />
+
+    <TextView
+        android:id="@+id/text_Gatt_Rec"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="left"
+        android:textSize="18dp" />
 </LinearLayout>
