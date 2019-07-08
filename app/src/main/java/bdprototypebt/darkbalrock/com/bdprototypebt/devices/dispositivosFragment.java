@@ -10,15 +10,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ListView;
 
 import bdprototypebt.darkbalrock.com.bdprototypebt.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link dispositivosFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class dispositivosFragment extends Fragment {
 
     private devicesDBHelper mDevDbHelper;
@@ -31,12 +27,10 @@ public class dispositivosFragment extends Fragment {
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * Usamos este metodo factory para crear una nueva instancia de este fragmento.
      *
-     * @return A new instance of fragment dispositivosFragment.
+     * @return una nueva instancia de dispositivosFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static dispositivosFragment newInstance() {
         return new dispositivosFragment();
     }
@@ -50,7 +44,6 @@ public class dispositivosFragment extends Fragment {
         //Referencias al UI
         mDevicesList = (ListView) root.findViewById(R.id.dispositivos_list);
         mDevicesAdapter = new dispositivosCursor(getActivity(), null);
-        mAddButton = (FloatingActionButton) getActivity().findViewById(R.id.fab);
 
         //Setup
         mDevicesList.setAdapter(mDevicesAdapter);
@@ -84,7 +77,7 @@ public class dispositivosFragment extends Fragment {
             if (cursor != null && cursor.getCount() > 0) {
                 mDevicesAdapter.swapCursor(cursor);
             } else {
-                // Mostrar empty state
+                cursor.close();
             }
         }
     }

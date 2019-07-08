@@ -16,8 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="72dp"
+        android:textSize="12sp"
         android:text="Name text" />
-
 
     <TextView
         android:id="@+id/tv_deviceAddress"
@@ -28,11 +28,10 @@
         android:text="Address text" />
 
     <ImageView
-        android:id="@+id/iv_deviceImg"
+        android:id="@+id/iv_btnBlock"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_centerVertical="true"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/ic_lock" />
+        app:srcCompat="@drawable/ic_unlock" />
 
 </RelativeLayout>

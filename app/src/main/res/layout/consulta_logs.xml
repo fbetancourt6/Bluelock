@@ -9,6 +9,7 @@
     android:weightSum="0"
     tools:context=".LogsActivity">
 
+    <!--Volver mainActivity-->
     <Button
         android:id="@+id/volverBtn"
         android:layout_margin="16dp"
@@ -20,10 +21,12 @@
         android:layout_height="wrap_content"
         android:text="Volver"
         style="@style/Base.Widget.AppCompat.Button.Colored"/>
+
+    <!--ver Log-->
     <Button
         android:id="@+id/verLogBTABtn"
         android:layout_margin="16dp"
-        android:background="@android:color/holo_green_dark"
+        android:background="#1C5169"
         android:textSize="20sp"
         android:textColor="@android:color/white"
         android:minWidth="200dp"
@@ -32,18 +35,7 @@
         android:text="Bluetooth Adapter"
         style="@style/Base.Widget.AppCompat.Button.Colored"/>
 
-    <Button
-        android:id="@+id/verLogDEVBtn"
-        android:layout_margin="16dp"
-        android:background="@android:color/holo_green_dark"
-        android:textSize="20sp"
-        android:textColor="@android:color/white"
-        android:minWidth="200dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="BLuetooth Devices"
-        style="@style/Base.Widget.AppCompat.Button.Colored"/>
-
+    <!--borrar Logs-->
     <Button
         android:id="@+id/borrarLogsBtn"
         android:layout_margin="16dp"
@@ -65,8 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--Show Paired Devices Here-->
-
+        <!--vista de log-->
         <TextView
             android:id="@+id/logTv"
             android:minWidth="200dp"
