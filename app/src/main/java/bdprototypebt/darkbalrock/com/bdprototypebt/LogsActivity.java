@@ -89,7 +89,7 @@ public class LogsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intentMain = new Intent(LogsActivity.this, MainActivity.class);
                 startActivity(intentMain);
-                setContentView(R.layout.activity_main);
+                //setContentView(R.layout.activity_main);
                 LogsActivity.this.finish();
             }
         });
@@ -121,4 +121,18 @@ public class LogsActivity extends AppCompatActivity {
         return String.valueOf(textLog);
     }
 
+    @Override
+    protected void onStop(){
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        volverBtn.callOnClick();
+    }
 }
