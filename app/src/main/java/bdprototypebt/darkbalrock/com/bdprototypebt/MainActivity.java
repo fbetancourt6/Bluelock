@@ -2,13 +2,17 @@ package bdprototypebt.darkbalrock.com.bdprototypebt;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
@@ -26,10 +30,15 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Set;
+import java.util.UUID;
 
+import bdprototypebt.darkbalrock.com.bdprototypebt.GattServer.BTGattServer;
+import bdprototypebt.darkbalrock.com.bdprototypebt.GattServer.ManageConnectThread;
+import bdprototypebt.darkbalrock.com.bdprototypebt.GattServer.ServerConnectThread;
 import bdprototypebt.darkbalrock.com.bdprototypebt.devices.device;
 import bdprototypebt.darkbalrock.com.bdprototypebt.devices.devicesContract;
 import bdprototypebt.darkbalrock.com.bdprototypebt.devices.devicesDBHelper;
@@ -47,12 +56,13 @@ public class MainActivity extends AppCompatActivity {
     String devicesFile;
 
     TextView mStatusBlueTv, mPairedTv, mLogBT;
-    Button OnBtn, OffBtn, DiscoverBtn, PairedBtn, BlockBtn, VerLogsBtn, verLogBTABtn, verLogDEVBtn;
+    Button OnBtn, OffBtn, DiscoverBtn, PairedBtn, BlockBtn, VerLogsBtn, verLogBTABtn, gattBtn;
 
     BluetoothAdapter mBlueAdapter;
     final ArrayAdapter<String> BTArrayAdapter = null;
 
     ImageView mBlueIv;
+    private BluetoothSocket bTSocket;
 
     @Override
     protected void onStop(){
@@ -89,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         BlockBtn = findViewById(R.id.blockBtn);
         VerLogsBtn = findViewById(R.id.verLogsBtn);
         verLogBTABtn = findViewById(R.id.verLogBTABtn);
-        verLogDEVBtn = findViewById(R.id.verLogDEVBtn);
+        gattBtn = findViewById(R.id.gattBtn);
 
         //adapter
         mBlueAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -100,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             mStatusBlueTv.setText("Bluetooth no está disponible en este dispositivo.");
         }
         else{
-            mStatusBlueTv.setText("Bluetooth está disponible.");
+            mStatusBlueTv.setText("Bluetooth disponible.");
         }
 
         //set image according to the bluetooth status on/off
@@ -120,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
                     //intent to on Bluetooth
                     Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(intent, REQUEST_ENABLE_BT);
+                    mBlueIv.setImageResource(R.drawable.ic_action_on);
+                    mStatusBlueTv.setText("Bluetooth iniciado.");
                 }
                 else{
                     showToast("Bluetooth ya está iniciado!");
@@ -140,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     registerReceiver(mBR, new IntentFilter(BluetoothDevice.ACTION_FOUND));
                     Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                     startActivityForResult(intent, REQUEST_DISCOVER_BT);
-
+                    mStatusBlueTv.setText("Bluetooth detectable.");
                 }
             }
         });
@@ -153,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
                     mBlueAdapter.disable();
                     showToast("Apagando Bluetooth...");
                     mBlueIv.setImageResource(R.drawable.ic_action_off);
+                    mStatusBlueTv.setText("Bluetooth Apagado.");
                 }
                 else{
                     showToast("Bluetooth ya está apagado.");
@@ -162,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
         //get paired devices btn click
         PairedBtn.setOnClickListener(new View.OnClickListener(){
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 devicesFile = "BT paired Devices";
@@ -172,41 +186,26 @@ public class MainActivity extends AppCompatActivity {
                     mPairedTv.setText(Html.fromHtml("Dispositivos Emparejados", Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
                     Set<BluetoothDevice> devices = mBlueAdapter.getBondedDevices();
                     for(BluetoothDevice device: devices){
-                        mPairedTv.append("\n<font color='purple'>--- Device:</font><font color='green'>" + device.getName()+ "---</font>");
-                        devicesFile += "\n<font color='purple'>--- Device:</font><font color='green'>" + device.getName()+ "---</font>";
-                        mPairedTv.append("\n<font color='blue'>Address :</font><font color='green'>" + device.getAddress()+ "---</font>");
-                        devicesFile += "\n<font color='blue'>Address :</font><font color='green'>" + device.getAddress()+ "---</font>";
-                        mPairedTv.append("\n<font color='blue'>String :</font><font color='green'>" + device.toString()+ "---</font>");
-                        devicesFile += "\n<font color='blue'>String :</font><font color='green'>" + device.toString()+ "---</font>";
-                        mPairedTv.append("\n<font color='blue'>Uuids :</font><font color='green'>" + device.getUuids()+ "---</font>");
-                        devicesFile += "\n<font color='blue'>Uuids :</font><font color='green'>" + device.getUuids()+ "---</font>";
-                        mPairedTv.append("\n<font color='blue'>Contents :</font><font color='green'>" + device.describeContents()+ "---</font>");
-                        devicesFile += "\n<font color='blue'>Contents :</font><font color='green'>" + device.describeContents()+ "---</font>";
-                        mPairedTv.append("\n<font color='blue'>Time :</font><font color='green'>" + Calendar.getInstance().getTime()+ "---</font>");
-                        devicesFile += "\n<font color='blue'>Time :</font><font color='green'>" + Calendar.getInstance().getTime()+ "---</font>";
-                        mPairedTv.append("\n<font color='blue'>BondState :</font><font color='green'>" + device.getBondState()+ "---</font>");
-                        devicesFile += "\n<font color='blue'>BondState :</font><font color='green'>" + device.getBondState()+ "---</font>";
-                        mPairedTv.append("\n<font color='blue'>hashCode :</font><font color='green'>" + device.hashCode()+ "---</font>");
-                        devicesFile += "\n<font color='blue'>hashCode :</font><font color='green'>" + device.hashCode()+ "---</font>";
-                        mPairedTv.append("\n<font color='purple'>--------------------</font>");
-                        devicesFile += "\n<font color='purple'>--------------------</font>";
+                        mPairedTv.append("\n--- Device: " + device.getName()+ " ---");
+                        devicesFile += "\n--- Device: " + device.getName()+ " ---";
+                        mPairedTv.append("\nAddress : " + device.getAddress()+ " ---");
+                        devicesFile += "\nAddress : " + device.getAddress()+ " ---";
+                        mPairedTv.append("\nString : " + device.toString()+ " ---");
+                        devicesFile += "\nString : " + device.toString()+ " ---";
+                        mPairedTv.append("\nUuids : " + device.getUuids()+ " ---");
+                        devicesFile += "\nUuids : " + device.getUuids()+ " ---";
+                        mPairedTv.append("\nContents : " + device.describeContents()+ " ---");
+                        devicesFile += "\nContents : " + device.describeContents()+ " ---";
+                        mPairedTv.append("\nTime : " + Calendar.getInstance().getTime()+ " ---");
+                        devicesFile += "\nTime : " + Calendar.getInstance().getTime()+ " ---";
+                        mPairedTv.append("\nBondState : " + device.getBondState()+ " ---");
+                        devicesFile += "\nBondState : " + device.getBondState()+ " ---";
+                        mPairedTv.append("\nhashCode : " + device.hashCode()+ " ---");
+                        devicesFile += "\nhashCode : " + device.hashCode()+ " ---";
+                        mPairedTv.append("\n--------------------");
+                        devicesFile += "\n--------------------";
                         mPairedTv.append("\n");
                         devicesFile += "\n";
-
-                        //Seteamos los devices para almacenar en la base de datos
-                        device dev = new device();
-                        dev.setId(contador);contador++;
-                        dev.setTime(device.getName());
-                        dev.setAddress(device.getAddress());
-                        dev.setUUIDs(device.getUuids().toString());
-                        dev.setContentDesc(String.valueOf(device.describeContents()));
-                        dev.setTime(String.valueOf(Calendar.getInstance().getTime()));
-                        dev.setBonded(String.valueOf(device.getBondState()));
-                        dev.setHashCode(String.valueOf(device.hashCode()));
-
-                        //Almacenamos la info del dispositivo en la BD
-                        devicesDBHelper dbHelper = new devicesDBHelper(getApplicationContext());
-                        Long result = dbHelper.saveDevice(dev);
                     }
                     boolean logger = writeLog(devicesFile, "devices.txt");
                 }
@@ -221,9 +220,11 @@ public class MainActivity extends AppCompatActivity {
         BlockBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getDevicesForBlock();
                 Intent intentDev = new Intent(MainActivity.this, dispositivos.class);
                 startActivity(intentDev);
-                setContentView(R.layout.activity_dispositivos);
+                //setContentView(R.layout.activity_dispositivos);
+
             }
         });
 
@@ -233,8 +234,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 Intent intentLog = new Intent(MainActivity.this, LogsActivity.class);
                 startActivity(intentLog);
-                setContentView(R.layout.consulta_logs);
+                //setContentView(R.layout.consulta_logs);
+            }
+        });
 
+        //GattServer
+        gattBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentGatt = new Intent(MainActivity.this, BTGattServer.class);
+                startActivity(intentGatt);
+                //setContentView(R.layout.gatt_server);
             }
         });
 
@@ -247,6 +257,8 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(mBR);
     }
 
+    @Override
+    public void onBackPressed() {}
     //toast message function
     private void showToast(String msg){
         Toast.makeText( this, msg, Toast.LENGTH_SHORT).show();
@@ -256,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean writeLog(String toWrite, String fileName){
         Context context = getBaseContext();
         boolean result = false;
+        toWrite += toWrite+"\n";
         File path = context.getExternalFilesDir(null);
         File file = new File(path, fileName);
         Writer out = null;
@@ -276,9 +289,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         catch (FileNotFoundException e) {
-            Log.e("Main activity", "File not found: " + e.toString());
+            Log.e("Main activity", "Archivo no encontrado: " + e.toString());
         } catch (IOException e) {
-            Log.e("Main activity", "Can not read file: " + e.toString());
+            Log.e("Main activity", "No se ha podido leer el archivo: " + e.toString());
         }
         return result;
     }
@@ -289,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
             String evento = "";
-
+            boolean bloqueo = false;
             final Uri uriData = intent.getData();
             event evt = validaUri(uriData, action);
 
@@ -321,6 +334,33 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case BluetoothAdapter.STATE_CONNECTING:
                         evento = "<font color='purple'>BluetoothAdapter.STATE_CONNECTING";
+                        log += logAdapter(uriData,evento);
+                        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                        bloqueo = validaBloqueo(device.getAddress());
+                        UUID uuid = UUID.randomUUID();
+                        if(bloqueo){
+                            try {
+                                connectarBTDev(device, uuid);
+                                cancelarBTConn();
+                                evento = "<font color='red'>Dispositivo Bloqueado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
+                                log += logAdapter(uriData,evento);
+                                showToast("Dispositivo bloqueado ("+uuid+") : "+device.getAddress()+" : "+ device.getName());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                break;
+                            }
+                        }else{
+                            ServerConnectThread sct = new ServerConnectThread();
+                            ManageConnectThread mct = new ManageConnectThread();
+                            sct.acceptConnect(mBlueAdapter,uuid);
+                            try {
+                                int i = mct.receiveData(bTSocket);
+                                evento = "<font color='green'>Dispositivo Conectado ("+uuid+"): "+device.getAddress()+"; "+device.getName() +" Data: "+i;
+                            }catch(Exception e){
+                                e.printStackTrace();
+                                evento = "<font color='red'>Error de lectura ("+uuid+"): "+device.getAddress()+"; "+device.getName();
+                            }
+                        }
                         log += logAdapter(uriData,evento);
                         break;
                     case BluetoothAdapter.STATE_CONNECTED:
@@ -382,21 +422,27 @@ public class MainActivity extends AppCompatActivity {
                 log += logAdapter(uriData,evento);
                 evt.setEventLog(evento);
                 dbHelper.saveEvent(evt);
+                logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothAdapter.ACTION_FOUND";
+                showToast(showToastLog);
             }
             if(action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
                 log += logAdapter(uriData,"BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED);
                 evento = "<font color='green'>BluetoothDevice.ACTION_ACL_CONNECTED";
                 evt.setEventLog(evento);
                 dbHelper.saveEvent(evt);
+                logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED;
+                showToast(showToastLog);
             }
             if(action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
                 log += logAdapter(uriData,"BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_DISCONNECTED);
                 evento = "<font color='green'>BluetoothDevice.ACTION_ACL_DISCONNECTED";
                 evt.setEventLog(evento);
                 dbHelper.saveEvent(evt);
+                logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_DISCONNECTED;
+                showToast(showToastLog);
             }
         }
     };
@@ -411,7 +457,7 @@ public class MainActivity extends AppCompatActivity {
         }catch(Exception e){
             evt.setUriData(action);
         }
-        try{
+            try{
             evt.setHost(uriData.getHost());
         }catch(Exception e){
             evt.setHost(null);
@@ -507,6 +553,7 @@ public class MainActivity extends AppCompatActivity {
             dev.setBonded(d.getString(d.getColumnIndex(devicesContract.deviceEntry.bonded)));
             dev.setUUIDs(d.getString(d.getColumnIndex(devicesContract.deviceEntry.UUIDs)));
             dev.setHashCode(d.getString(d.getColumnIndex(devicesContract.deviceEntry.hashCode)));
+            dev.setBloqueado(d.getString(d.getColumnIndex(devicesContract.deviceEntry.bloqueado)));
             devicesBT.add(dev);
         }
         return devicesBT;
@@ -538,5 +585,90 @@ public class MainActivity extends AppCompatActivity {
             eventsBT.add(evt);
         }
         return eventsBT;
+    }
+
+    public void getDevicesForBlock(){
+        devicesFile = "BT paired Devices";
+        int contador = 1;
+        if(mBlueAdapter.isEnabled()){
+             Set<BluetoothDevice> devices = mBlueAdapter.getBondedDevices();
+            for(BluetoothDevice device: devices){
+
+                //Seteamos los devices para almacenar en la base de datos
+                device dev = new device();
+                dev.setId(contador);contador++;
+                dev.setName(device.getName());
+                dev.setAddress(device.getAddress());
+                dev.setUUIDs(device.getUuids().toString());
+                dev.setContentDesc(String.valueOf(device.describeContents()));
+                dev.setTime(String.valueOf(Calendar.getInstance().getTime()));
+                dev.setBonded(String.valueOf(device.getBondState()));
+                dev.setHashCode(String.valueOf(device.hashCode()));
+
+                //Instanciamos el dbHelper
+                devicesDBHelper dbHelper = new devicesDBHelper(getApplicationContext());
+                //Validamos que el dispositivo ya está en la BD
+                String args [] = new String[1];
+                args[0] = dev.getAddress();
+                Cursor c = dbHelper.getDevice(devicesContract.deviceEntry.tableName,null,devicesContract.deviceEntry.address+"=?",args,null,null,null);
+                if(c.getCount()<1){
+                    //Almacenamos la info del dispositivo en la BD
+                    Long result = dbHelper.saveDevice(dev);
+                }else{
+                    boolean update = dbHelper.updateDevice(dev);
+                }
+            }
+            boolean logger = writeLog(devicesFile, "devices.txt");
+        }
+        else{
+            //BT is off so can't get paired devices
+            showToast("Inicia Bluetooth para obtener los dispositivos emparejados.");
+        }
+    }
+
+    public boolean validaBloqueo(String val){
+        boolean result = false;
+        devicesDBHelper dbHelper = new devicesDBHelper(getApplicationContext());
+        Cursor c = dbHelper.raw("SELECT "+devicesContract.deviceEntry.bloqueado+" FROM "+devicesContract.deviceEntry.tableName+" WHERE "+devicesContract.deviceEntry.address+" = "+val+" OR "+devicesContract.deviceEntry.name+" = "+val);
+        if(c!=null && c.getCount()>0){
+            c.moveToFirst();
+            String bloqueado = c.getString(c.getColumnIndex(devicesContract.deviceEntry.bloqueado));
+            if(bloqueado.equals("bloqueado")) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public boolean connectarBTDev(BluetoothDevice bTDevice, UUID mUUID) {
+        BluetoothSocket temp = null;
+        try {
+            temp = bTDevice.createRfcommSocketToServiceRecord(mUUID);
+        } catch (IOException e) {
+            Log.d("connectarBTDev","No se ha podido crear el RFCOMM socket:" + e.toString());
+            return false;
+        }
+        try {
+            bTSocket.connect();
+        } catch(IOException e) {
+            Log.d("connectarBTDev","No se ha podido conectar: " + e.toString());
+            try {
+                bTSocket.close();
+            } catch(IOException close) {
+                Log.d("connectarBTDev", "No se ha cerrado la conexión:" + e.toString());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean cancelarBTConn() {
+        try {
+            bTSocket.close();
+        } catch(IOException e) {
+            Log.d("cancelarBTConn","No se pudo cerrar la conexión:" + e.toString());
+            return false;
+        }
+        return true;
     }
 }
