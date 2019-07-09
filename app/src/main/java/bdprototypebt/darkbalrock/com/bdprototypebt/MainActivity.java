@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
                 getDevicesForBlock();
                 Intent intentDev = new Intent(MainActivity.this, dispositivos.class);
                 startActivity(intentDev);
-                setContentView(R.layout.activity_dispositivos);
+                //setContentView(R.layout.activity_dispositivos);
 
             }
         });
@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 Intent intentLog = new Intent(MainActivity.this, LogsActivity.class);
                 startActivity(intentLog);
-                setContentView(R.layout.consulta_logs);
+                //setContentView(R.layout.consulta_logs);
             }
         });
 
@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intentGatt = new Intent(MainActivity.this, BTGattServer.class);
                 startActivity(intentGatt);
-                setContentView(R.layout.gatt_server);
+                //setContentView(R.layout.gatt_server);
             }
         });
 
@@ -257,6 +257,8 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(mBR);
     }
 
+    @Override
+    public void onBackPressed() {}
     //toast message function
     private void showToast(String msg){
         Toast.makeText( this, msg, Toast.LENGTH_SHORT).show();

@@ -15,6 +15,7 @@ import bdprototypebt.darkbalrock.com.bdprototypebt.MainActivity;
 import bdprototypebt.darkbalrock.com.bdprototypebt.R;
 
 public class dispositivos extends AppCompatActivity {
+    Button volverBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,6 @@ public class dispositivos extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.content_dispositivos, fragment).commit();
         }
 
-        Button volverBtn;
-
         volverBtn = findViewById(R.id.volverBtn2);
 
         //volver
@@ -43,10 +42,16 @@ public class dispositivos extends AppCompatActivity {
 
                 Intent intentMain = new Intent(dispositivos.this, MainActivity.class);
                 startActivity(intentMain);
-                setContentView(R.layout.activity_main);
+                //setContentView(R.layout.activity_main);
                 dispositivos.this.finish();
             }
         });
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        volverBtn.callOnClick();
     }
 
     public boolean limpiaDispositivos(){

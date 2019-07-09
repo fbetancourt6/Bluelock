@@ -107,7 +107,7 @@ public class BTGattServer extends Activity {
             public void onClick(View v) {
                 Intent intentMain = new Intent(BTGattServer.this, MainActivity.class);
                 startActivity(intentMain);
-                setContentView(R.layout.activity_main);
+                //setContentView(R.layout.activity_main);
                 BTGattServer.this.finish();
             }
         });
@@ -143,6 +143,11 @@ public class BTGattServer extends Activity {
             stopAdvertising();
         }
         unregisterReceiver(btBroadCastRec);
+    }
+
+    @Override
+    public void onBackPressed() {
+        volverBtn.callOnClick();
     }
 
     /*
@@ -525,7 +530,6 @@ public class BTGattServer extends Activity {
                             BluetoothGatt.GATT_FAILURE,
                             0,
                             null);
-
                 }
             }else{
                 Log.w(TAG,"Solicitud de escritura desconocida ");
