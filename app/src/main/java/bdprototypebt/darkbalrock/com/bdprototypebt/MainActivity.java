@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     Button OnBtn, OffBtn, DiscoverBtn, PairedBtn, BlockBtn, VerLogsBtn, verLogBTABtn, gattBtn;
 
     BluetoothAdapter mBlueAdapter;
-    final ArrayAdapter<String> BTArrayAdapter = null;
+    ArrayAdapter<String> BTArrayAdapter = null;
 
     ImageView mBlueIv;
     private BluetoothSocket bTSocket;
@@ -101,8 +101,13 @@ public class MainActivity extends AppCompatActivity {
         verLogBTABtn = findViewById(R.id.verLogBTABtn);
         gattBtn = findViewById(R.id.gattBtn);
 
+        String[] mDevices = {
+                "Zero"
+        };
+
         //adapter
         mBlueAdapter = BluetoothAdapter.getDefaultAdapter();
+        //BTArrayAdapter = new ArrayAdapter<String>(this, R.layout.activity_main, mDevices);
 
         //check if bt is available or not
         if(mBlueAdapter == null){
@@ -183,7 +188,12 @@ public class MainActivity extends AppCompatActivity {
                 mPairedTv.setMovementMethod(new ScrollingMovementMethod());
                 int contador = 1;
                 if(mBlueAdapter.isEnabled()){
-                    mPairedTv.setText(Html.fromHtml("Dispositivos Emparejados", Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
+                    if (((int)Build.VERSION.SDK_INT) >= 24) {
+                        mPairedTv.setText(Html.fromHtml("Dispositivos Emparejados", Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
+                    } else {
+                        mPairedTv.setText(Html.fromHtml("Dispositivos Emparejados"));
+                    }
+                    //mPairedTv.setText(Html.fromHtml("Dispositivos Emparejados", Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
                     Set<BluetoothDevice> devices = mBlueAdapter.getBondedDevices();
                     for(BluetoothDevice device: devices){
                         mPairedTv.append("\n--- Device: " + device.getName()+ " ---");
@@ -340,8 +350,7 @@ public class MainActivity extends AppCompatActivity {
                         UUID uuid = UUID.randomUUID();
                         if(bloqueo){
                             try {
-                                connectarBTDev(device, uuid);
-                                cancelarBTConn();
+                                cancelarBTDev(device, uuid, context);
                                 evento = "<font color='red'>Dispositivo Bloqueado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
                                 log += logAdapter(uriData,evento);
                                 showToast("Dispositivo bloqueado ("+uuid+") : "+device.getAddress()+" : "+ device.getName());
@@ -416,7 +425,7 @@ public class MainActivity extends AppCompatActivity {
             if(action.equals(BluetoothDevice.ACTION_FOUND)){
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                BTArrayAdapter.add(device.getName()+"\n"+device.getAddress()+"\n"+String.valueOf(rssi));
+                BTArrayAdapter.add(device.getName()+"\n"+device.getAddress()+"\n"+rssi);
                 BTArrayAdapter.notifyDataSetChanged();
                 evento = "<font color='green'>BluetoothDevice.ACTION_FOUND";
                 log += logAdapter(uriData,evento);
@@ -427,9 +436,53 @@ public class MainActivity extends AppCompatActivity {
                 showToast(showToastLog);
             }
             if(action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
+                Log.d("ACTION_ACL_CONNECTED","Entró a ACTION_ACL_CONNECTED");
                 log += logAdapter(uriData,"BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED);
                 evento = "<font color='green'>BluetoothDevice.ACTION_ACL_CONNECTED";
                 evt.setEventLog(evento);
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                bloqueo = validaBloqueo(device.getAddress());
+                UUID uuid = UUID.randomUUID();
+                if(bloqueo){
+                    try {
+                        //cancelarBTDev(device, uuid, context);
+                        try {
+                            Log.d("ACTION_ACL_CONNECTED","Entró a removeBond");
+                            Method m = device.getClass()
+                                    .getMethod("removeBond", (Class[]) null);
+                            m.invoke(device, (Object[]) null);
+                        } catch (Exception e) {
+                            Log.e("ACTION_ACL_CONNECTED", e.getMessage());
+                            evento = "<font color='red'>Error de Dispositivo Bloqueado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
+                        }
+                        evento = "<font color='red'>Dispositivo Bloqueado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
+                        log += logAdapter(uriData,evento);
+                        showToast("Dispositivo bloqueado ("+uuid+") : "+device.getAddress()+" : "+ device.getName());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    try {
+                        Log.d("ACTION_ACL_CONNECTED", "Start Pairing...");
+                        Method m = device.getClass()
+                                .getMethod("createBond", (Class[]) null);
+                        m.invoke(device, (Object[]) null);
+
+                            Log.d("ACTION_ACL_CONNECTED", "Pairing finished.");
+                    } catch (Exception e) {
+                        Log.e("ACTION_ACL_CONNECTED", e.getMessage());
+                    }
+                    ServerConnectThread sct = new ServerConnectThread();
+                    ManageConnectThread mct = new ManageConnectThread();
+                    sct.acceptConnect(mBlueAdapter,uuid);
+                    try {
+                        int i = mct.receiveData(bTSocket);
+                        evento = "<font color='green'>Dispositivo Conectado ("+uuid+"): "+device.getAddress()+"; "+device.getName() +" Data: "+i;
+                    }catch(Exception e){
+                        e.printStackTrace();
+                        evento = "<font color='red'>Error de lectura ("+uuid+"): "+device.getAddress()+"; "+device.getName();
+                    }
+                }
                 dbHelper.saveEvent(evt);
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED;
@@ -442,6 +495,50 @@ public class MainActivity extends AppCompatActivity {
                 dbHelper.saveEvent(evt);
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_DISCONNECTED;
+                showToast(showToastLog);
+            }
+            if(action.equals(BluetoothDevice.ACTION_PAIRING_REQUEST)) {
+                Log.d("ACTION_ACL_CONNECTED","Entró a ACTION_PAIRING_REQUEST");
+                log += logAdapter(uriData,"BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_PAIRING_REQUEST);
+                evento = "<font color='green'>BluetoothDevice.ACTION_PAIRING_REQUEST";
+                evt.setEventLog(evento);
+                dbHelper.saveEvent(evt);
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                bloqueo = validaBloqueo(device.getAddress());
+                UUID uuid = UUID.randomUUID();
+                if(bloqueo){
+                    try {
+                        device.getClass().getMethod("setPairingConfirmation", boolean.class).invoke(device, false);
+                        //cancelarBTDev(device, uuid, context);
+                        try {
+                            Log.d("ACTION_ACL_CONNECTED","Entró a removeBond");
+                            Method m = device.getClass()
+                                    .getMethod("removeBond", (Class[]) null);
+                            m.invoke(device, (Object[]) null);
+                        } catch (Exception e) {
+                            Log.e("ACTION_ACL_CONNECTED", e.getMessage());
+                        }
+                        evento = "<font color='red'>Dispositivo Bloqueado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
+                        log += logAdapter(uriData,evento);
+                        showToast("Dispositivo bloqueado ("+uuid+") : "+device.getAddress()+" : "+ device.getName());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    try {
+                        Log.d("ACTION_ACL_CONNECTED", "Start Pairing...");
+                        Method m = device.getClass()
+                                .getMethod("createBond", (Class[]) null);
+                        m.invoke(device, (Object[]) null);
+                        evento = "<font color='green'>Comenzando Emparejamiento ("+uuid+"): "+device.getAddress()+"; "+device.getName();
+                        Log.d("ACTION_ACL_CONNECTED", "Pairing finished.");
+                    } catch (Exception e) {
+                        Log.e("ACTION_ACL_CONNECTED", e.getMessage());
+                        evento = "<font color='red'>Error de Emparejamiento "+uuid+"): "+device.getAddress()+"; "+device.getName();
+                    }
+                }
+                logger = writeLog(log, "BluetoothAdapter.txt");
+                showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_PAIRING_REQUEST;
                 showToast(showToastLog);
             }
         }
@@ -627,9 +724,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean validaBloqueo(String val){
+        Log.d("validaBloqueo","Entró a validaBloqueo");
         boolean result = false;
         devicesDBHelper dbHelper = new devicesDBHelper(getApplicationContext());
-        Cursor c = dbHelper.raw("SELECT "+devicesContract.deviceEntry.bloqueado+" FROM "+devicesContract.deviceEntry.tableName+" WHERE "+devicesContract.deviceEntry.address+" = "+val+" OR "+devicesContract.deviceEntry.name+" = "+val);
+        Cursor c = dbHelper.raw("SELECT "+devicesContract.deviceEntry.bloqueado+" FROM "+devicesContract.deviceEntry.tableName+" WHERE "+devicesContract.deviceEntry.address+" = '"+val+"' OR "+devicesContract.deviceEntry.name+" = '"+val+"'");
         if(c!=null && c.getCount()>0){
             c.moveToFirst();
             String bloqueado = c.getString(c.getColumnIndex(devicesContract.deviceEntry.bloqueado));
@@ -640,35 +738,16 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    public boolean connectarBTDev(BluetoothDevice bTDevice, UUID mUUID) {
-        BluetoothSocket temp = null;
+    public boolean cancelarBTDev(BluetoothDevice bTDevice, UUID mUUID, Context context) {
+        Log.d("connectarBTDev","Entró a cancelarBTDev: "+mUUID);
         try {
-            temp = bTDevice.createRfcommSocketToServiceRecord(mUUID);
-        } catch (IOException e) {
-            Log.d("connectarBTDev","No se ha podido crear el RFCOMM socket:" + e.toString());
-            return false;
-        }
-        try {
-            bTSocket.connect();
-        } catch(IOException e) {
-            Log.d("connectarBTDev","No se ha podido conectar: " + e.toString());
-            try {
-                bTSocket.close();
+            bTSocket = bTDevice.createRfcommSocketToServiceRecord(mUUID);
+            bTSocket.close();
             } catch(IOException close) {
-                Log.d("connectarBTDev", "No se ha cerrado la conexión:" + e.toString());
+                Log.d("connectarBTDev", "No se ha cerrado la conexión:" + close.toString());
                 return false;
-            }
         }
         return true;
     }
 
-    public boolean cancelarBTConn() {
-        try {
-            bTSocket.close();
-        } catch(IOException e) {
-            Log.d("cancelarBTConn","No se pudo cerrar la conexión:" + e.toString());
-            return false;
-        }
-        return true;
-    }
 }

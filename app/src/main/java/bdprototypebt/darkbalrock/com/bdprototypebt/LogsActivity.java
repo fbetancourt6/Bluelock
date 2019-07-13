@@ -46,7 +46,11 @@ public class LogsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mLogBT.setText("");
                 mLogBT.append("\n---Log Bluetooth Adapter---");
-                mLogBT.setText(Html.fromHtml(readLog("BluetoothAdapter.txt"), Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
+                if (((int)Build.VERSION.SDK_INT) >= 24) {
+                    mLogBT.setText(Html.fromHtml(readLog("BluetoothAdapter.txt"), Html.FROM_HTML_MODE_LEGACY), TextView.BufferType.SPANNABLE);
+                } else {
+                    mLogBT.setText(Html.fromHtml(readLog("BluetoothAdapter.txt")));
+                }
                 mLogBT.setMovementMethod(new ScrollingMovementMethod());
             }
         });
