@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BDPrototypeBT</string>
+    <string name="app_name">BlueLock</string>
     <string-array name="logs">
         <item>Devices</item>
         <item>BluetoothAdapter</item>
