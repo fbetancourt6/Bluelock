@@ -91,11 +91,11 @@ public class BTGattServer extends Activity {
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(btBroadCastRec, filter);//Broadcast Receiver
         if(!btAdapter.isEnabled()){
-            Log.d(TAG, "Bluetooth is currently disabled...enabling");
+            Log.w(TAG, "Bluetooth is currently disabled...enabling");
             displayEvent("Bluetooth is currently disabled...enabling");
             btAdapter.enable();
         }else{
-            Log.d(TAG, "Bluetooth enabled...starting services");
+            Log.w(TAG, "Bluetooth enabled...starting services");
             displayEvent("Bluetooth enabled...starting services");
             startAdvertising();
             startServer();
