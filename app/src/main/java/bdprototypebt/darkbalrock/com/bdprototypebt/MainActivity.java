@@ -346,16 +346,20 @@ public class MainActivity extends AppCompatActivity {
                         UUID uuid = UUID.randomUUID();
                         if(bloqueo){
                             try {
-                                //cancelarBTDev(device, uuid, context);
+                                Log.w("ACTION_ACL_CONNECTED","Entró a removeBond");
+                                Method m = device.getClass()
+                                        .getMethod("removeBond", (Class[]) null);
+                                m.invoke(device, (Object[]) null);
+
                                 evento = "<font color='red'>Dispositivo Bloqueado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
                                 log += logAdapter(uriData,evento);
                                 showToast("Dispositivo bloqueado ("+uuid+") : "+device.getAddress()+" : "+ device.getName());
                             } catch (Exception e) {
-                                e.printStackTrace();
-                                break;
+                                Log.w("ACTION_ACL_CONNECTED", e.getMessage());
+                                evento = "<font color='red'>Error de Dispositivo Bloqueado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
                             }
+                            log += logAdapter(uriData,evento);
                         }
-                        log += logAdapter(uriData,evento);
                         break;
                     case BluetoothAdapter.STATE_CONNECTED:
                         evento = "<font color='green'>BluetoothAdapter.STATE_CONNECTED";
@@ -439,20 +443,17 @@ public class MainActivity extends AppCompatActivity {
                 UUID uuid = UUID.randomUUID();
                 if(bloqueo){
                     try {
-                        try {
-                            Log.w("ACTION_ACL_CONNECTED","Entró a removeBond");
-                            Method m = device.getClass()
+                        Log.w("ACTION_ACL_CONNECTED","Entró a removeBond");
+                        Method m = device.getClass()
                                     .getMethod("removeBond", (Class[]) null);
-                            m.invoke(device, (Object[]) null);
-                        } catch (Exception e) {
-                            Log.e("ACTION_ACL_CONNECTED", e.getMessage());
-                            evento = "<font color='red'>Error de Dispositivo Bloqueado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
-                        }
+                        m.invoke(device, (Object[]) null);
+
                         evento = "<font color='red'>Dispositivo Bloqueado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
                         log += logAdapter(uriData,evento);
                         showToast("Dispositivo bloqueado ("+uuid+") : "+device.getAddress()+" : "+ device.getName());
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.e("ACTION_ACL_CONNECTED", e.getMessage());
+                        evento = "<font color='red'>Error de Dispositivo Bloqueado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
                     }
                 }else{
                     try {
@@ -461,12 +462,12 @@ public class MainActivity extends AppCompatActivity {
                                 .getMethod("createBond", (Class[]) null);
                         m.invoke(device, (Object[]) null);
                         Log.w("ACTION_ACL_CONNECTED", "Pairing finished.");
+                        evento = "<font color='green'>Dispositivo Conectado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
+                        log += logAdapter(uriData,evento);
                     } catch (Exception e) {
                         Log.w("ACTION_ACL_CONNECTED", e.getMessage());
                         evento = "<font color='red'>Error Dispositivo Conectado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
                     }
-                    evento = "<font color='green'>Dispositivo Conectado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
-                    log += logAdapter(uriData,evento);
                 }
                 dbHelper.saveEvent(evt);
                 logger = writeLog(log, "BluetoothAdapter.txt");
@@ -494,33 +495,30 @@ public class MainActivity extends AppCompatActivity {
                 if(bloqueo){
                     try {
                         device.getClass().getMethod("setPairingConfirmation", boolean.class).invoke(device, false);
-                        try {
-                            Log.d("ACTION_ACL_CONNECTED","Entró a removeBond");
-                            Method m = device.getClass()
-                                    .getMethod("removeBond", (Class[]) null);
-                            m.invoke(device, (Object[]) null);
-                        } catch (Exception e) {
-                            Log.e("ACTION_ACL_CONNECTED", e.getMessage());
-                        }
+                        Log.d("ACTION_PAIRING_REQUEST","Entró a removeBond");
+                        Method m = device.getClass()
+                                .getMethod("removeBond", (Class[]) null);
+                        m.invoke(device, (Object[]) null);
                         evento = "<font color='red'>Dispositivo Bloqueado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
                         log += logAdapter(uriData,evento);
                         showToast("Dispositivo bloqueado ("+uuid+") : "+device.getAddress()+" : "+ device.getName());
                     } catch (Exception e) {
-                        Log.w("ACTION_PAIRING_REQUEST","Exception: "+e.toString());
-                        evento = "<font color='red'>Error ACTION_PAIRING_REQUEST ("+uuid+"): "+device.getAddress()+"; "+device.getName();
+                        Log.e("ACTION_PAIRING_REQUEST", e.getMessage());
+                        evento = "<font color='red'> Error de ACTION_PAIRING_REQUEST ("+uuid+"): "+device.getAddress()+"; "+e.getMessage();
                         log += logAdapter(uriData,evento);
                     }
                 }else{
                     try {
-                        Log.d("ACTION_ACL_CONNECTED", "Start Pairing...");
+                        Log.w("ACTION_ACL_CONNECTED", "Start Pairing...");
                         Method m = device.getClass()
                                 .getMethod("createBond", (Class[]) null);
                         m.invoke(device, (Object[]) null);
                         evento = "<font color='green'>Comenzando Emparejamiento ("+uuid+"): "+device.getAddress()+"; "+device.getName();
-                        Log.d("ACTION_ACL_CONNECTED", "Pairing finished.");
+                        Log.w("ACTION_ACL_CONNECTED", "Pairing finished.");
+                        showToast("Dispositivo Emparejado ("+uuid+") : "+device.getAddress()+" : "+ device.getName());
                     } catch (Exception e) {
                         Log.e("ACTION_ACL_CONNECTED", e.getMessage());
-                        evento = "<font color='red'>Error de Emparejamiento "+uuid+"): "+device.getAddress()+"; "+device.getName();
+                        evento = "<font color='red'>Error de Emparejamiento "+uuid+"): "+device.getAddress()+"; "+e.getMessage();
                         log += logAdapter(uriData,evento);
                     }
                 }
