@@ -25,11 +25,9 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/GattServer/BTGattServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/GattServer/BTGattServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/LogsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/LogsActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/GattServer/ManageConnectThread.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivos.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivos.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -58,36 +56,49 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/GattServer/BTGattServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="109" column="18" selection-start-line="109" selection-start-column="18" selection-end-line="109" selection-end-column="18" />
+            <state relative-caret-position="-2906">
+              <caret line="93" column="69" lean-forward="true" selection-start-line="93" selection-start-column="69" selection-end-line="93" selection-end-column="69" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5458#5459#0" expanded="true" />
-                <element signature="e#5482#5483#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="271" column="47" selection-start-line="271" selection-start-column="28" selection-end-line="271" selection-end-column="47" />
+            <state relative-caret-position="1702">
+              <caret line="715" selection-start-line="715" selection-end-line="715" />
               <folding>
                 <element signature="e#2487#2488#0" expanded="true" />
                 <element signature="e#2517#2518#0" expanded="true" />
+                <element signature="e#5568#6325#0" expanded="true" />
+                <element signature="e#6324#6325#0" expanded="true" />
+                <element signature="e#6397#6915#0" expanded="true" />
+                <element signature="e#6914#6915#0" expanded="true" />
+                <element signature="e#6995#10012#0" expanded="true" />
+                <element signature="e#10011#10012#0" expanded="true" />
+                <element signature="e#10095#10444#0" expanded="true" />
+                <element signature="e#10443#10444#0" expanded="true" />
+                <element signature="e#10505#10805#0" expanded="true" />
+                <element signature="e#10804#10805#0" expanded="true" />
+                <element signature="e#10865#11167#0" expanded="true" />
+                <element signature="e#11166#11167#0" expanded="true" />
+                <element signature="e#11454#11455#0" expanded="true" />
+                <element signature="e#11523#11524#0" expanded="true" />
+                <element signature="e#12854#27155#0" expanded="true" />
+                <element signature="e#27154#27155#0" expanded="true" />
                 <element signature="method#validaUri#0;class#MainActivity#0" />
                 <element signature="method#logAdapter#0;class#MainActivity#0" />
                 <element signature="method#getDevices#0;class#MainActivity#0" />
                 <element signature="method#getEvents#0;class#MainActivity#0" />
                 <element signature="method#getDevicesForBlock#0;class#MainActivity#0" />
                 <element signature="method#validaBloqueo#0;class#MainActivity#0" />
-                <element signature="method#connectarBTDev#0;class#MainActivity#0" />
-                <element signature="method#cancelarBTConn#0;class#MainActivity#0" />
+                <element signature="method#guardaDispositivo#0;class#MainActivity#0" />
               </folding>
             </state>
           </provider>
@@ -96,29 +107,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/LogsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="145">
-              <caret line="91" column="18" selection-start-line="91" selection-start-column="18" selection-end-line="91" selection-end-column="18" />
+            <state relative-caret-position="408">
+              <caret line="47" column="48" selection-start-line="47" selection-start-column="48" selection-end-line="47" selection-end-column="48" />
               <folding>
                 <element signature="method#readLog#0;class#LogsActivity#0" />
-                <element signature="e#4824#4825#0" expanded="true" />
-                <element signature="e#4854#4855#0" expanded="true" />
-                <element signature="e#4827#4828#0" expanded="true" />
-                <element signature="e#4861#4862#0" expanded="true" />
-                <element signature="e#4983#4984#0" expanded="true" />
-                <element signature="e#5021#5022#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivos.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="44" column="18" selection-start-line="44" selection-start-column="18" selection-end-line="44" selection-end-column="18" />
-              <folding>
-                <element signature="e#1912#1913#0" expanded="true" />
-                <element signature="e#1959#1960#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -128,8 +120,8 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
           <provider editor-type-id="android-manifest" />
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="76" selection-start-line="7" selection-start-column="76" selection-end-line="7" selection-end-column="76" />
+            <state relative-caret-position="102">
+              <caret line="6" column="73" selection-start-line="6" selection-start-column="73" selection-end-line="7" selection-end-column="78" />
             </state>
           </provider>
         </entry>
@@ -150,6 +142,7 @@
       <find>localTimeView</find>
       <find>validaBloqueo</find>
       <find>text_Gatt_Rec</find>
+      <find>BTArrayAdapter</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -174,11 +167,12 @@
         <option value="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/GattServer/ServerConnectThread.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/GattServer/TimeProfile.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivos.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/LogsActivity.java" />
+        <option value="$USER_HOME$/AppData/Local/Android/Sdk/sources/android-28/android/bluetooth/BluetoothSocket.java" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/GattServer/BTGattServer.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/LogsActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivos.java" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
       </list>
     </option>
   </component>
@@ -193,18 +187,12 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
             <path>
               <item name="PrototypeBTSec" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
-            </path>
-            <path>
-              <item name="PrototypeBTSec" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="manifests" type="f94875db:AndroidManifestsGroupNode" />
             </path>
             <path>
               <item name="PrototypeBTSec" type="1abcf292:AndroidViewProjectNode" />
@@ -243,6 +231,7 @@
         </subPane>
       </pane>
       <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -250,7 +239,7 @@
     <property name="DEBUGGABLE_PROCESS" value="bdprototypebt.darkbalrock.com.bdprototypebt" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
-    <property name="device.picker.selection" value="ZY323SV7QR" />
+    <property name="device.picker.selection" value="S7M0215928003207" />
     <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
   </component>
   <component name="RunDashboard">
@@ -403,7 +392,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" sideWeight="0.5011236" side_tool="true" weight="0.4230423" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.25022504" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.24662466" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Build Variants" order="4" side_tool="true" />
@@ -412,16 +401,16 @@
       <window_info id="Capture Tool" order="7" />
       <window_info id="DB Browser" order="8" sideWeight="0.4988764" weight="0.25022504" />
       <window_info id="Resources Explorer" order="9" />
-      <window_info anchor="bottom" id="Run" order="0" weight="0.3283582" />
-      <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.7506751" weight="0.25207296" />
+      <window_info anchor="bottom" id="Run" order="0" weight="0.26533997" />
+      <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.7146715" weight="0.35655057" />
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" />
       <window_info anchor="bottom" id="Terminal" order="4" sideWeight="0.49864987" weight="0.3283582" />
-      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.37623763" side_tool="true" visible="true" weight="0.28524047" />
+      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.28532854" side_tool="true" weight="0.60033166" />
       <window_info anchor="bottom" id="Version Control" order="6" weight="0.3283582" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.62376237" visible="true" weight="0.28524047" />
-      <window_info anchor="bottom" id="Android Profiler" order="8" />
-      <window_info anchor="bottom" id="DB Execution Console" order="9" />
+      <window_info anchor="bottom" id="Android Profiler" order="7" />
+      <window_info anchor="bottom" id="DB Execution Console" order="8" />
+      <window_info anchor="bottom" id="Build" order="9" sideWeight="0.70207024" visible="true" weight="0.3084577" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
       <window_info anchor="right" id="Gradle" order="2" />
@@ -432,7 +421,7 @@
     </layout>
     <layout-to-restore>
       <window_info id="Captures" order="0" sideWeight="0.5011236" side_tool="true" weight="0.4230423" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.25202522" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24662466" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Build Variants" order="4" side_tool="true" />
@@ -442,13 +431,13 @@
       <window_info id="DB Browser" order="8" sideWeight="0.4988764" weight="0.25022504" />
       <window_info id="Resources Explorer" order="9" />
       <window_info anchor="bottom" id="Run" order="0" weight="0.3283582" />
-      <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.8739874" weight="0.37645108" />
+      <window_info active="true" anchor="bottom" id="Logcat" order="1" sideWeight="0.7146715" visible="true" weight="0.41625208" />
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" />
       <window_info anchor="bottom" id="Terminal" order="4" sideWeight="0.49864987" weight="0.3283582" />
-      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.12601261" side_tool="true" weight="0.33001658" />
+      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.28532854" side_tool="true" weight="0.60033166" />
       <window_info anchor="bottom" id="Version Control" order="6" weight="0.3283582" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.49864987" visible="true" weight="0.3432836" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.70207024" weight="0.1973466" />
       <window_info anchor="bottom" id="Android Profiler" order="8" />
       <window_info anchor="bottom" id="DB Execution Console" order="9" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
@@ -457,7 +446,7 @@
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info anchor="right" id="Preview" order="4" weight="0.28262827" />
       <window_info anchor="right" id="Palette&#9;" order="5" />
-      <window_info anchor="right" id="Assistant" order="6" weight="0.32943293" />
+      <window_info anchor="right" id="Assistant" order="6" weight="0.39963996" />
     </layout-to-restore>
   </component>
   <component name="editorHistoryManager">
@@ -507,44 +496,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/GattServer/logger.java" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/device.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="5" selection-start-line="2" selection-end-line="20" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/devicesContract.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" selection-start-line="1" selection-end-line="21" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/devicesDBHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="181" column="5" selection-start-line="174" selection-start-column="3" selection-end-line="181" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivosCursor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="93" column="5" selection-start-line="63" selection-start-column="6" selection-end-line="93" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivosFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="84" selection-start-line="16" selection-end-line="84" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/GattServer/TimeProfile.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2958">
@@ -652,68 +603,123 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/GattServer/BTGattServer.java">
+    <entry file="file://$USER_HOME$/AppData/Local/Android/Sdk/sources/android-28/android/bluetooth/BluetoothSocket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="109" column="18" selection-start-line="109" selection-start-column="18" selection-end-line="109" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5458#5459#0" expanded="true" />
-            <element signature="e#5482#5483#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="80">
+          <caret line="79" column="31" lean-forward="true" selection-start-line="79" selection-start-column="31" selection-end-line="79" selection-end-column="31" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/LogsActivity.java">
+    <entry file="file://$USER_HOME$/AppData/Local/Android/Sdk/sources/android-28/android/bluetooth/BluetoothDevice.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="91" column="18" selection-start-line="91" selection-start-column="18" selection-end-line="91" selection-end-column="18" />
-          <folding>
-            <element signature="method#readLog#0;class#LogsActivity#0" />
-            <element signature="e#4824#4825#0" expanded="true" />
-            <element signature="e#4854#4855#0" expanded="true" />
-            <element signature="e#4827#4828#0" expanded="true" />
-            <element signature="e#4861#4862#0" expanded="true" />
-            <element signature="e#4983#4984#0" expanded="true" />
-            <element signature="e#5021#5022#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivos.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="44" column="18" selection-start-line="44" selection-start-column="18" selection-end-line="44" selection-end-column="18" />
-          <folding>
-            <element signature="e#1912#1913#0" expanded="true" />
-            <element signature="e#1959#1960#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="120">
+          <caret line="1372" column="19" selection-start-line="1372" selection-start-column="19" selection-end-line="1372" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider editor-type-id="android-manifest" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="76" selection-start-line="7" selection-start-column="76" selection-end-line="7" selection-end-column="76" />
+        <state relative-caret-position="102">
+          <caret line="6" column="73" selection-start-line="6" selection-start-column="73" selection-end-line="7" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivosFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-680">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivos.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="507">
+          <caret line="44" column="18" selection-start-line="44" selection-start-column="18" selection-end-line="44" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivosCursor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="80" column="34" lean-forward="true" selection-start-line="80" selection-start-column="34" selection-end-line="80" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/device.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="11" column="55" lean-forward="true" selection-start-line="11" selection-start-column="55" selection-end-line="11" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/devicesContract.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/devicesDBHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="811">
+          <caret line="68" column="21" selection-start-line="68" selection-start-column="21" selection-end-line="68" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="271" column="47" selection-start-line="271" selection-start-column="28" selection-end-line="271" selection-end-column="47" />
+        <state relative-caret-position="1702">
+          <caret line="715" selection-start-line="715" selection-end-line="715" />
           <folding>
             <element signature="e#2487#2488#0" expanded="true" />
             <element signature="e#2517#2518#0" expanded="true" />
+            <element signature="e#5568#6325#0" expanded="true" />
+            <element signature="e#6324#6325#0" expanded="true" />
+            <element signature="e#6397#6915#0" expanded="true" />
+            <element signature="e#6914#6915#0" expanded="true" />
+            <element signature="e#6995#10012#0" expanded="true" />
+            <element signature="e#10011#10012#0" expanded="true" />
+            <element signature="e#10095#10444#0" expanded="true" />
+            <element signature="e#10443#10444#0" expanded="true" />
+            <element signature="e#10505#10805#0" expanded="true" />
+            <element signature="e#10804#10805#0" expanded="true" />
+            <element signature="e#10865#11167#0" expanded="true" />
+            <element signature="e#11166#11167#0" expanded="true" />
+            <element signature="e#11454#11455#0" expanded="true" />
+            <element signature="e#11523#11524#0" expanded="true" />
+            <element signature="e#12854#27155#0" expanded="true" />
+            <element signature="e#27154#27155#0" expanded="true" />
             <element signature="method#validaUri#0;class#MainActivity#0" />
             <element signature="method#logAdapter#0;class#MainActivity#0" />
             <element signature="method#getDevices#0;class#MainActivity#0" />
             <element signature="method#getEvents#0;class#MainActivity#0" />
             <element signature="method#getDevicesForBlock#0;class#MainActivity#0" />
             <element signature="method#validaBloqueo#0;class#MainActivity#0" />
-            <element signature="method#connectarBTDev#0;class#MainActivity#0" />
-            <element signature="method#cancelarBTConn#0;class#MainActivity#0" />
+            <element signature="method#guardaDispositivo#0;class#MainActivity#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/LogsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="47" column="48" selection-start-line="47" selection-start-column="48" selection-end-line="47" selection-end-column="48" />
+          <folding>
+            <element signature="method#readLog#0;class#LogsActivity#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/GattServer/BTGattServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2906">
+          <caret line="93" column="69" lean-forward="true" selection-start-line="93" selection-start-column="69" selection-end-line="93" selection-end-column="69" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
