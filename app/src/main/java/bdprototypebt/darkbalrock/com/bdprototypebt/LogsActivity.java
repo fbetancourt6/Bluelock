@@ -22,6 +22,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+import bdprototypebt.darkbalrock.com.bdprototypebt.events.eventsDBHelper;
+
 public class LogsActivity extends AppCompatActivity {
 
     public static final Object[] DATA_LOCK = new Object[0];
@@ -84,6 +86,8 @@ public class LogsActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     Log.e("logs activity", "Can not read file: " + e.toString());
                 }
+                eliminaEventos();
+                verLogBTABtn.callOnClick();
             }
         });
 
@@ -123,6 +127,19 @@ public class LogsActivity extends AppCompatActivity {
             Log.e("read log activity", "Can not read file: " + e.toString());
         }
         return String.valueOf(textLog);
+    }
+
+    //Borra la tabla de eventos
+    public boolean eliminaEventos(){
+        boolean result = false;
+        try {
+            eventsDBHelper e = new eventsDBHelper(this);
+            e.deleteEvents();
+            result = true;
+        }catch(Exception e){
+            Log.w("eliminaEventos",e.getMessage());
+        }
+        return result;
     }
 
     @Override

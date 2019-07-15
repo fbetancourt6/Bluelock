@@ -48,7 +48,6 @@ public class dispositivos extends AppCompatActivity {
         });
     }
 
-
     @Override
     public void onBackPressed() {
         volverBtn.callOnClick();
@@ -61,6 +60,7 @@ public class dispositivos extends AppCompatActivity {
             devicesDBHelper dbHelper;
             dbHelper = new devicesDBHelper(getApplicationContext());
             dbHelper.deleteDevices();
+            dbHelper.close();
             result = true;
         }catch(Exception e){
             Log.e("dispositivos activity", "Limpiando la BD de dispositivos: " + e.toString());

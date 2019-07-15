@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class eventsDBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "events.db";
+    public static final String DATABASE_NAME = "events2.db";
 
     public eventsDBHelper (Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -73,5 +73,14 @@ public class eventsDBHelper extends SQLiteOpenHelper {
                 orderBy
         );
         return c;
+    }
+
+    /*
+     * Elimina todos los eventos
+     * */
+    public void deleteEvents(){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("delete from "+eventsContract.eventEntry.tableName);
+        db.close();
     }
 }

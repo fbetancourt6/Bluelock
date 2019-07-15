@@ -132,6 +132,7 @@ public class devicesDBHelper extends SQLiteOpenHelper {
 
             SQLiteDatabase db = getWritableDatabase();
             db.update(devicesContract.deviceEntry.tableName, cv, devicesContract.deviceEntry.address + "= '" + device.getAddress()+"'", null);
+            db.close();
             result = true;
         }catch (Exception e){
             Log.e("deviceDBHelper", "Error actualizando Dispositivo: " + e.toString());
@@ -154,9 +155,14 @@ public class devicesDBHelper extends SQLiteOpenHelper {
                 String bloqueado = cursor.getString(cursor.getColumnIndex(devicesContract.deviceEntry.bloqueado));
                 if(bloqueado == null){
                     estado = "bloqueado";
+                    result = true;
                 }
                 else if(bloqueado.equals("bloqueado")) {
                     estado = "desbloqueado";
+                }
+                else{
+                    estado = "bloqueado";
+                    result = true;
                 }
             }else{
                 Log.e("deviceDBHelper", "Error bloqueando Dispositivo no emparejado:"+dev.getAddress() );
@@ -165,7 +171,7 @@ public class devicesDBHelper extends SQLiteOpenHelper {
             cv.put(devicesContract.deviceEntry.bloqueado, estado);
             SQLiteDatabase db = getWritableDatabase();
             db.update(devicesContract.deviceEntry.tableName, cv, devicesContract.deviceEntry.address + "='" + dev.getAddress()+"'", null);
-            result = true;
+            db.close();
         }catch (Exception e){
             Log.e("deviceDBHelper", "Error bloqueando Dispositivo: " + e.toString());
         }
