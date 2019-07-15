@@ -398,22 +398,20 @@ public class BTGattServer extends Activity {
             if(newState == BluetoothProfile.STATE_CONNECTED){
                 boolean bloqueo = validaBloqueo(device.getAddress());
                 if(bloqueo){
-                    BluetoothSocket socket  = null;
-                    Method m;
                     try {
-                        m = device.getClass().getMethod("createRfcommSocket", new Class[]{int.class});
-                        socket = (BluetoothSocket)m.invoke(device, Integer.valueOf(1));
-                        socket.close();
-                        log = "<font color='red'>Dispositivo Bloqueado: "+device.getAddress()+"-"+device.getName()+"</font>";
-                        logger = writeLog(log, "BluetoothAdapter.txt");
-                        displayEvent("Dispositivo Bloqueado: "+device.getAddress()+"-"+device.getName());
-                        showToast("Dispositivo bloqueado! "+device.getAddress()+" : "+ device.getName());
+                        Log.w("ACTION_ACL_CONNECTED","Entró a removeBond");
+                        Method m = device.getClass()
+                                .getMethod("removeBond", (Class[]) null);
+                        m.invoke(device, (Object[]) null);
+                        log = "<font color='red'>Dispositivo Bloqueado: "+device.getAddress()+"; "+device.getName()+"</font>";
+                        showToast("Dispositivo bloqueado: "+device.getAddress()+" : "+ device.getName());
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.w("ACTION_ACL_CONNECTED", e.getMessage());
+                        log = "<font color='red'>Error de Dispositivo Bloqueado: "+device.getAddress()+"; "+device.getName()+"</font>";
                     }
                 }
                 Log.i(TAG,"BluetoothDevice CONNECTED: "+device);
-                log = "BluetoothDevice CONNECTED: "+device;
+                log = "<font color='green'>BluetoothDevice CONNECTED: "+device+"</font>";
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 displayEvent("BluetoothDevice CONNECTED: "+device);
             }else if(newState == BluetoothProfile.STATE_DISCONNECTED){
@@ -552,7 +550,7 @@ public class BTGattServer extends Activity {
     public boolean writeLog(String toWrite, String fileName){
         Context context = getBaseContext();
         boolean result = false;
-        toWrite += toWrite+"\n";
+        toWrite += toWrite+"<b>";
         File path = context.getExternalFilesDir(null);
         File file = new File(path, fileName);
         Writer out = null;
@@ -591,6 +589,7 @@ public class BTGattServer extends Activity {
                 result = true;
             }
         }
+        c.close();
         return result;
     }
 

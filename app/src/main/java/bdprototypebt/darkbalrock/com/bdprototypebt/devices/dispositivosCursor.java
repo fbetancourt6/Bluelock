@@ -3,6 +3,7 @@ package bdprototypebt.darkbalrock.com.bdprototypebt.devices;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,14 +61,17 @@ public class dispositivosCursor extends CursorAdapter {
             // All the logic of retrieving data from cursor
             lock = c.getString(c.getColumnIndex(devicesContract.deviceEntry.bloqueado));
         }
-
+        Log.w("Valida Internal Lock","Validando Bloqueo!"+lock);
         if(lock == null){
             btnBlock.setImageResource(R.drawable.ic_unlock);
+            Log.w("Valida Internal Lock","empty");
          }
         else if(lock.equals("bloqueado")) {
+            Log.w("Valida Internal Lock","bloqueado");
             btnBlock.setImageResource(R.drawable.ic_lock);
         }
         else{
+            Log.w("Valida Internal Lock","else");
             btnBlock.setImageResource(R.drawable.ic_unlock);
         }
 
@@ -82,7 +86,7 @@ public class dispositivosCursor extends CursorAdapter {
                 devicesDBHelper devHelper = new devicesDBHelper(context);
                 boolean result = devHelper.blockDevice(dev);
                 ImageView btnBlock = (ImageView) v.findViewById(R.id.iv_btnBlock);
-                if(btnBlock.getDrawable().getConstantState() == ContextCompat.getDrawable(context,R.drawable.ic_unlock).getConstantState()){
+                if(result){
                     btnBlock.setImageResource(R.drawable.ic_lock);
                     Toast.makeText( context, "Dispositivo: "+dev.getName()+" Bloqueado.", Toast.LENGTH_SHORT).show();
                 }else{

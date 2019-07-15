@@ -146,14 +146,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!mBlueAdapter.isDiscovering()){
                     showToast("Haciendo tu dispositivo detectable...");
-                    /*if(BTArrayAdapter != null) {
-                        BTArrayAdapter.clear();
-                    }*/
                     mBlueAdapter.startDiscovery();
                     registerReceiver(mBR, new IntentFilter(BluetoothDevice.ACTION_FOUND));
                     Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                     startActivityForResult(intent, REQUEST_DISCOVER_BT);
+                    mBlueIv.setImageResource(R.drawable.ic_action_on);
                     mStatusBlueTv.setText("Bluetooth detectable.");
+                }else{
+                    showToast("Detección en curso...");
                 }
             }
         });
@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean writeLog(String toWrite, String fileName){
         Context context = getBaseContext();
         boolean result = false;
-        toWrite += toWrite+"\n";
+        toWrite += toWrite+"<b>";
         File path = context.getExternalFilesDir(null);
         File file = new File(path, fileName);
         Writer out = null;
@@ -390,14 +390,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 evt.setEventLog(evento);
-                dbHelper.saveEvent(evt);
             }
             if(action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
                 final int estado = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE, BluetoothAdapter.ERROR);
                 evento = "<font color='red'>BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED :" + estado;
                 log += logAdapter(uriData, evento);
                 evt.setEventLog(evento);
-                dbHelper.saveEvent(evt);
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToast(showToastLog);
             }
@@ -406,7 +404,6 @@ public class MainActivity extends AppCompatActivity {
                 evento = "<font color='red'>BluetoothAdapter.ERROR";
                 log += logAdapter(uriData,evento);
                 evt.setEventLog(evento);
-                dbHelper.saveEvent(evt);
                 showToastLog = "BluetoothAdapter.ERROR";
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToast(showToastLog);
@@ -420,7 +417,7 @@ public class MainActivity extends AppCompatActivity {
                 dev.setName(device.getName());
                 dev.setAddress(device.getAddress());
                 dev.setContentDesc(String.valueOf(rssi));
-                dev.setBloqueado(String.valueOf(false));
+                dev.setBloqueado(String.valueOf("bloqueado"));
                 dev.setTime(String.valueOf(Calendar.getInstance().getTime()));
                 dev.setBonded(String.valueOf(false));
                 dev.setHashCode(String.valueOf(device.hashCode()));
@@ -428,7 +425,6 @@ public class MainActivity extends AppCompatActivity {
                 evento = "<font color='green'>BluetoothDevice.ACTION_FOUND";
                 log += logAdapter(uriData,evento);
                 evt.setEventLog(evento);
-                dbHelper.saveEvent(evt);
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothAdapter.ACTION_FOUND";
                 showToast(showToastLog);
@@ -469,7 +465,6 @@ public class MainActivity extends AppCompatActivity {
                         evento = "<font color='red'>Error Dispositivo Conectado ("+uuid+"): "+device.getAddress()+"; "+device.getName();
                     }
                 }
-                dbHelper.saveEvent(evt);
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_CONNECTED;
                 showToast(showToastLog);
@@ -478,7 +473,6 @@ public class MainActivity extends AppCompatActivity {
                 log += logAdapter(uriData,"BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_DISCONNECTED);
                 evento = "<font color='green'>BluetoothDevice.ACTION_ACL_DISCONNECTED";
                 evt.setEventLog(evento);
-                dbHelper.saveEvent(evt);
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_ACL_DISCONNECTED;
                 showToast(showToastLog);
@@ -488,7 +482,6 @@ public class MainActivity extends AppCompatActivity {
                 log += logAdapter(uriData,"BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_PAIRING_REQUEST);
                 evento = "<font color='green'>BluetoothDevice.ACTION_PAIRING_REQUEST";
                 evt.setEventLog(evento);
-                dbHelper.saveEvent(evt);
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 bloqueo = validaBloqueo(device.getAddress());
                 UUID uuid = UUID.randomUUID();
@@ -522,6 +515,7 @@ public class MainActivity extends AppCompatActivity {
                         log += logAdapter(uriData,evento);
                     }
                 }
+                dbHelper.saveEvent(evt);
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_PAIRING_REQUEST;
                 showToast(showToastLog);
@@ -638,6 +632,7 @@ public class MainActivity extends AppCompatActivity {
             dev.setBloqueado(d.getString(d.getColumnIndex(devicesContract.deviceEntry.bloqueado)));
             devicesBT.add(dev);
         }
+        d.close();
         return devicesBT;
     }
 
@@ -666,6 +661,7 @@ public class MainActivity extends AppCompatActivity {
             evt.setHashCode(d.getString(d.getColumnIndex(eventsContract.eventEntry.hashCode)));
             eventsBT.add(evt);
         }
+        d.close();
         return eventsBT;
     }
 
@@ -728,6 +724,8 @@ public class MainActivity extends AppCompatActivity {
             results = dbHelper.updateDevice(dev);
         }
         if(result > 0){results = true;}
+        dbHelper.close();
+        c.close();
         return results;
     }
 
