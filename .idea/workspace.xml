@@ -16,19 +16,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ba8c83e4-58f9-4121-9e25-d2458b0fb1d4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/devicesContract.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/devicesContract.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/devicesDBHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/devicesDBHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivosCursor.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivosCursor.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -48,8 +36,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-297">
-              <caret line="414" column="42" lean-forward="true" selection-start-line="414" selection-start-column="42" selection-end-line="414" selection-end-column="42" />
+            <state relative-caret-position="162">
+              <caret line="522" column="29" selection-start-line="522" selection-start-column="29" selection-end-line="522" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#validaUri#0;class#MainActivity#0" />
@@ -149,8 +137,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivos.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/devicesDBHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/devicesContract.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/devices/dispositivosCursor.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java" />
       </list>
     </option>
   </component>
@@ -665,8 +653,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-297">
-          <caret line="414" column="42" lean-forward="true" selection-start-line="414" selection-start-column="42" selection-end-line="414" selection-end-column="42" />
+        <state relative-caret-position="162">
+          <caret line="522" column="29" selection-start-line="522" selection-start-column="29" selection-end-line="522" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#validaUri#0;class#MainActivity#0" />

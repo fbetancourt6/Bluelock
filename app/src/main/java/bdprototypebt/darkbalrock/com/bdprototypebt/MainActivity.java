@@ -516,11 +516,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 dbHelper.saveEvent(evt);
-                dbHelper.close();
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_PAIRING_REQUEST;
                 showToast(showToastLog);
             }
+            dbHelper.close();
         }
     };
 
