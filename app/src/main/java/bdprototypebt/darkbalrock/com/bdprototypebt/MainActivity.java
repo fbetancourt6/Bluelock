@@ -516,6 +516,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 dbHelper.saveEvent(evt);
+                dbHelper.close();
                 logger = writeLog(log, "BluetoothAdapter.txt");
                 showToastLog = "BluetoothDevice."+BluetoothDevice.EXTRA_NAME+" - "+BluetoothDevice.ACTION_PAIRING_REQUEST;
                 showToast(showToastLog);
@@ -633,6 +634,7 @@ public class MainActivity extends AppCompatActivity {
             devicesBT.add(dev);
         }
         d.close();
+        dbHelper.close();
         return devicesBT;
     }
 
@@ -662,6 +664,7 @@ public class MainActivity extends AppCompatActivity {
             eventsBT.add(evt);
         }
         d.close();
+        dbHelper.close();
         return eventsBT;
     }
 
@@ -699,12 +702,14 @@ public class MainActivity extends AppCompatActivity {
         devicesDBHelper dbHelper = new devicesDBHelper(getApplicationContext());
         Cursor c = dbHelper.raw("SELECT "+devicesContract.deviceEntry.bloqueado+" FROM "+devicesContract.deviceEntry.tableName+" WHERE "+devicesContract.deviceEntry.address+" = '"+val+"' OR "+devicesContract.deviceEntry.name+" = '"+val+"'");
         if(c!=null && c.getCount()>0){
-            c.moveToFirst();
+            c.moveToNext();
             String bloqueado = c.getString(c.getColumnIndex(devicesContract.deviceEntry.bloqueado));
             if(bloqueado.equals("bloqueado")) {
                 result = true;
             }
         }
+        c.close();
+        dbHelper.close();
         return result;
     }
 
@@ -724,8 +729,8 @@ public class MainActivity extends AppCompatActivity {
             results = dbHelper.updateDevice(dev);
         }
         if(result > 0){results = true;}
-        dbHelper.close();
         c.close();
+        dbHelper.close();
         return results;
     }
 

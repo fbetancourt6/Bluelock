@@ -47,7 +47,6 @@ public class dispositivosCursor extends CursorAdapter {
 
         //Validamos que el estado del dispositivo en la BD
         devicesDBHelper dbHelper = new devicesDBHelper(context);
-        //Cursor c = dbHelper.raw("select "+devicesContract.deviceEntry.bloqueado+" from "+devicesContract.deviceEntry.tableName+" where "+devicesContract.deviceEntry.address+"='"+devicesContract.deviceEntry.address+"'");
 
         //Validamos que el dispositivo ya está en la BD
         String args [] = new String[1];
@@ -57,11 +56,11 @@ public class dispositivosCursor extends CursorAdapter {
         Cursor c = dbHelper.getDevice(devicesContract.deviceEntry.tableName,cols,devicesContract.deviceEntry.address+"=?",args,null,null,null);
         String lock = "empty";
         if (c!= null && c.getCount() > 0){
-            c.moveToFirst();
-            // All the logic of retrieving data from cursor
+            c.moveToNext();
             lock = c.getString(c.getColumnIndex(devicesContract.deviceEntry.bloqueado));
+            c.close();
         }
-        Log.w("Valida Internal Lock","Validando Bloqueo!"+lock);
+        Log.w("Valida Internal Lock","Validando Bloqueo! "+lock);
         if(lock == null){
             btnBlock.setImageResource(R.drawable.ic_unlock);
             Log.w("Valida Internal Lock","empty");
@@ -93,6 +92,7 @@ public class dispositivosCursor extends CursorAdapter {
                     btnBlock.setImageResource(R.drawable.ic_unlock);
                     Toast.makeText( context, "Dispositivo: "+dev.getName()+" Desbloqueado.", Toast.LENGTH_SHORT).show();
                 }
+                devHelper.close();
             }
         });
     }

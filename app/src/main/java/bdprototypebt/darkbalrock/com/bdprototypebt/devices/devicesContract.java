@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 
 public class devicesContract {
     public static abstract class deviceEntry implements BaseColumns{
-        public static final String tableName = "devices3";
+        public static final String tableName = "devices4";
         public static final String ID = "id";
         public static final String name = "name";
         public static final String address = "address";
