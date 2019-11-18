@@ -16,7 +16,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ba8c83e4-58f9-4121-9e25-d2458b0fb1d4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,8 +43,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="522" column="29" selection-start-line="522" selection-start-column="29" selection-end-line="522" selection-end-column="29" />
+            <state relative-caret-position="196">
+              <caret line="500" column="56" selection-start-line="499" selection-start-column="55" selection-end-line="500" selection-end-column="56" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#validaUri#0;class#MainActivity#0" />
@@ -205,7 +212,7 @@
     <property name="DEBUGGABLE_PROCESS" value="bdprototypebt.darkbalrock.com.bdprototypebt" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
-    <property name="device.picker.selection" value="ZY323SV7QR" />
+    <property name="device.picker.selection" value="S7M0215928003207" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunDashboard">
@@ -355,7 +362,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="735" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" sideWeight="0.5011236" side_tool="true" weight="0.4230423" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24615385" />
@@ -368,7 +374,7 @@
       <window_info id="DB Browser" order="8" sideWeight="0.4988764" weight="0.25022504" />
       <window_info id="Resources Explorer" order="9" />
       <window_info anchor="bottom" id="Run" order="0" weight="0.43283582" />
-      <window_info active="true" anchor="bottom" id="Logcat" order="1" sideWeight="0.7146715" visible="true" weight="0.41956884" />
+      <window_info active="true" anchor="bottom" id="Logcat" order="1" sideWeight="0.7146715" visible="true" weight="0.33333334" />
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" />
       <window_info anchor="bottom" id="Terminal" order="4" sideWeight="0.49864987" weight="0.3283582" />
@@ -653,8 +659,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/bdprototypebt/darkbalrock/com/bdprototypebt/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="522" column="29" selection-start-line="522" selection-start-column="29" selection-end-line="522" selection-end-column="29" />
+        <state relative-caret-position="196">
+          <caret line="500" column="56" selection-start-line="499" selection-start-column="55" selection-end-line="500" selection-end-column="56" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#validaUri#0;class#MainActivity#0" />
